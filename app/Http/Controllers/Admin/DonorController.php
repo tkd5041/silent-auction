@@ -22,10 +22,10 @@ class DonorController extends Controller
     public function index()
     {
         $donors = Donor::where('event_id', session('selected_event'))
-                            ->where('id', '> 1')
+                            ->where('id', '>', 1)
                             ->paginate(15);
 
-
+        dd($donors, session('selected_event'));
         return view('admin.donors.index')->with('donors', $donors);
     }
 
