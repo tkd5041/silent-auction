@@ -25,7 +25,7 @@ class DonorController extends Controller
                             ->where('id', '>', 1)
                             ->paginate(15);
 
-        dd($donors, session('selected_event'));
+        //dd($donors, session('selected_event'));
         return view('admin.donors.index')->with('donors', $donors);
     }
 
