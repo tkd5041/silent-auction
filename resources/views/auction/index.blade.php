@@ -142,13 +142,13 @@
                             <div>Value: {{ $item->value }} </div>
                             @if($item->current_bid == 0)
                                 <div>Minimum Bid: ${{ $item->initial_bid }}</div>
-                                <button id="modalActivate" type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#bidModal">
+                                <button id="modalActivate" type="button" class="btn btn-sm btn-success" data-toggle="modal" data-id="{{ $item->id }}" data-target="#bidModal">
                                     Enter Bid
                                 </button>
                             @else
                                 <div>Current Bid: ${{ $item->current_bid }}</div>
                                 <div>Minimum Bid: ${{ $item->current_bid + $item->increment }}</div>
-                                <button id="modalActivate" type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#bidModal">
+                                <button id="modalActivate" type="button" class="btn btn-sm btn-success" data-toggle="modal" data-id="{{ $item->id }}" data-target="#bidModal">
                                     Enter Bid
                                 </button>
                             @endif
@@ -191,6 +191,26 @@ $(".alert").slideUp(750);
 });
 
 </script>
+<script>
+$(document).ready(function () {
+    /* Submit Bid */
+    $('body').on('click', '#submit-bid', function () {
+        var item = $(this).data('id');
+        $.get('auction/'+item_id+'/edit', function (data) {
+        $('#bidModal').html("Place Bid");
+        $('#bidModal').modal('show');
+        $('#id').val(data.id);
+        $('#title').val(data.title);
+        $('#description').val(data.description);
+        $('#value').val(data.value);
+        $('#retail_value').val(data.retail_value);
+        $('#initial_bid').val(data.initial_bid);
+        $('#increment').val(data.increment);
+        $('#current_bid').val(data.current_bid);
+        })
+    });
+}
+</script>
 
 </html>
 <!-- Button trigger modal -->
@@ -226,11 +246,12 @@ aria-labelledby="bidModalLabel" aria-hidden="true">
         <form action="">
         @csrf
             <div class="container">
-                <input type="number" name="new_bid" id="new_bid">
+                <input type="number" name="bid" id="bid" />
+                <input type="hidden" name="item" value="" />
             </div>
             <div class="modal-footer">
-                <h5 class="bid-warning danger">Winning Bids Are Final!</h5>
-                <button type="button" class="btn btn-primary">Submit Bid</button>
+                <h5>Winning Bids Are Final!</h5>
+                <button type="button" class="btn btn-primary" id="submit-bid">Submit Bid</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </form>

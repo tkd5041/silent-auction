@@ -11048,12 +11048,3 @@ body {
   margin: 5px;
 }
 
-#modal .bid-warning {
-  color: firebrick !important;
-  padding-right: 10px;
-}
-
-input #new_bid {
-  margin: 15px;
-}
-

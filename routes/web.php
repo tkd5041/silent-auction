@@ -28,6 +28,7 @@ Route::get('/admin/donors/search', 'Admin\DonorController@search');
 Route::get('/admin/items/search', 'Admin\ItemController@search');
 Route::get('/admin/users/search', 'Admin\UsersController@search');
 Route::delete('/admin/image-uploads/{id}', 'Admin\ImageController@destroy');
+Route::get('/auction/index/{id}/bid', 'AuctionController@bid');
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function()
 {

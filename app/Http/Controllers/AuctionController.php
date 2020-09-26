@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Event;
 use App\Auction;
 use App\Item;
+use App\User;
+use Redirect, Response;
 
 
 use Illuminate\Http\Request;
@@ -30,6 +32,36 @@ class AuctionController extends Controller
         session(['event_name' => $event->name]);
         //dd([$event, $bids, $items]);
         return view('auction.index',['event' => $event, 'bids' => $bids, 'items' => $items]);
+    }
+
+    public function bid(Request $request, Item $item)
+    {
+        $auction = new Auction;
+        $item = Item::where('$id', $item)->get();
+
+        $auction->event_id = session('selected_event');
+        $auction->item_id = $item->id;
+        $auction->user_id = Auth::user('id');
+        $auction->username = Auth::user('username');
+        $auction->current_bid = $request('bid');
+        
+        if($auction->save()){
+            session()->flash('success', 'Bid Submitted');
+       }else{
+           session()->flash('error', 'There was an error submitting the bid');
+       }
+
+        $item->current_bidder = Auth::user('id');
+        $item->current_bid = $request('bid');
+
+        $item->save();
+
+        $event = Event::findOrFail(session('selected_event'));
+        $bids = Auction::where('event_id', session('selected_event'))->latest()->get();
+        $items = Item::where('event_id', session('selected_event'))->get();
+
+        return view('auction.index',['event' => $event, 'bids' => $bids, 'items' => $items]);
+
     }
 
     
