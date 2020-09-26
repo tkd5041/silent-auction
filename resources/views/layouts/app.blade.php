@@ -15,7 +15,9 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
+    
+    
+    <link rel="icon" type="image/png" href="https://sa.test/public/favicon.ico" />
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 
@@ -120,40 +122,33 @@
             </div>
         </main>
     </div>
-    <!--script src="{{ asset('js/app.js') }}"></script-->
-    <script src="{{ mix('/js/app.js') }}"></script>
+        <!--script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
+        </script-->
+        <script src="{{ asset('js/app.js') }}"></script>
+        
+        <script>
+            Echo.channel('auction')
+                .listen('NewMessage', (e) => {
+                    console.log(e.message);
+                })
+        </script>
 
-    <!--script src="https://code.jquery.com/jquery-3.5.1.min.js"
-        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script-->
+        <script>
+            $(".alert").fadeTo(5000, 750).slideUp(750, function () {
+                $(".alert").slideUp(750);
+            });
 
-    <script>
-        Echo.channel('auction')
-            .listen('NewMessage', (e) => {
-                console.log(e.message);
-            })
+        </script>
 
-    </script>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
 
-    <script>
-        $(".alert").fadeTo(5000, 750).slideUp(750, function () {
-            $(".alert").slideUp(750);
-        });
-
-    </script>
-
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-
-    </script>
+        </script>
 </body>
-<script src="{{ asset('js/app.js') }}"></script>
-<script>
-Echo.channel('auction')
-    .listen('NewMessage', (e) => {
-        console.log(e.message);
-    })
 
-</script>
+
+
 </html>

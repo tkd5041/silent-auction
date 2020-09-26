@@ -6,6 +6,8 @@
 
         <title>Silent Auction</title>
 
+        <link rel="icon" type="image/png" href="public/favicon.ico" />
+
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 

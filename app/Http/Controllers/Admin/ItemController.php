@@ -40,7 +40,7 @@ class ItemController extends Controller
         }
 
         $donors = Donor::where('event_id', session('selected_event'))->get();
-        
+        //dd([$item, $donors]);
         return view('admin.items.edit')->with([
             'item' => $item, 
             'donors' => $donors

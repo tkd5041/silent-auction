@@ -12,6 +12,7 @@ class AuctionController extends Controller
 {
     public function index($id)
     {
+        
         $event = Event::findOrFail($id);
         $bids = Auction::where('event_id', $id)->latest()->get();
         $items = Item::where('event_id', $id)->get();
@@ -30,17 +31,19 @@ class AuctionController extends Controller
         session(['event_name' => $event->name]);
         //dd([$event, $bids, $items]);
         return view('auction.index',['event' => $event, 'bids' => $bids, 'items' => $items]);
+        
     }
 
     public function edit($id)
     {
-        $event = session('selected_event');
-        $item = Item::where('id', $id)
-                    ->where('event_id', $event)
-                    ->get();
+        $item = Item::findOrFail($id);
+        
         $images = Images::where('item_id', $id)->get();
-
-        return view('auction.edit',['event' => $event, 'item' => $item, 'images' => $images]);
+        
+        return view('auction.edit')->with([
+            'item' => $item, 
+            'images' => $images
+        ]);
     }
 
     public function bid(Request $request, Item $item)
