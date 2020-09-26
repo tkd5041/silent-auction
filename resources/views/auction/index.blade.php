@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Auction') }}</title>
 
     <!-- Scripts -->
     <!--script src="{{ asset('js/app.js') }}" defer></script-->
@@ -142,13 +142,13 @@
                             <div>Value: {{ $item->value }} </div>
                             @if($item->current_bid == 0)
                                 <div>Minimum Bid: ${{ $item->initial_bid }}</div>
-                                <button id="modalActivate" type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModalPreview">
+                                <button id="modalActivate" type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#bidModal">
                                     Enter Bid
                                 </button>
                             @else
                                 <div>Current Bid: ${{ $item->current_bid }}</div>
                                 <div>Minimum Bid: ${{ $item->current_bid + $item->increment }}</div>
-                                <button id="modalActivate" type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModalPreview">
+                                <button id="modalActivate" type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#bidModal">
                                     Enter Bid
                                 </button>
                             @endif
@@ -196,12 +196,12 @@ $(".alert").slideUp(750);
 <!-- Button trigger modal -->
 
 <!-- Modal -->
-<div class="modal fade left" id="exampleModalPreview" tabindex="-1" role="dialog"
-aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
+<div class="modal fade left" id="bidModal" tabindex="-1" role="dialog"
+aria-labelledby="bidModalLabel" aria-hidden="true">
 <div class="modal-dialog modal-lg modal-top" role="document">
 <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalPreviewLabel">Enter Bid for {{ $item->title }}</h5>
+        <h5 class="modal-title" id="bidModalLabel">Enter Bid for {{ $item->title }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -223,13 +223,17 @@ aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
                 <div>Minimum Bid: ${{ $item->current_bid + $item->increment  }}</div>
                @endif
         </div>
-        <div>
-            <input type="number" name="new_bid" id="new_bid">
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Submit Bid</button>
+        <form action="">
+        @csrf
+            <div class="container">
+                <input type="number" name="new_bid" id="new_bid">
+            </div>
+            <div class="modal-footer">
+                <h5 class="bid-warning danger">Winning Bids Are Final!</h5>
+                <button type="button" class="btn btn-primary">Submit Bid</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </form>
     </div>
 </div>
 </div>
