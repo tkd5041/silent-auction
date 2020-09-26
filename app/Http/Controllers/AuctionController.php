@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 use App\Event;
 use App\Auction;
 use App\Item;
 use App\User;
-use Redirect, Response;
-
-
-use Illuminate\Http\Request;
+use App\Images;
 
 class AuctionController extends Controller
 {
@@ -32,6 +30,17 @@ class AuctionController extends Controller
         session(['event_name' => $event->name]);
         //dd([$event, $bids, $items]);
         return view('auction.index',['event' => $event, 'bids' => $bids, 'items' => $items]);
+    }
+
+    public function edit($id)
+    {
+        $event = session('selected_event');
+        $item = Item::where('id', $id)
+                    ->where('event_id', $event)
+                    ->get();
+        $images = Images::where('item_id', $id)->get();
+
+        return view('auction.edit',['event' => $event, 'item' => $item, 'images' => $images]);
     }
 
     public function bid(Request $request, Item $item)

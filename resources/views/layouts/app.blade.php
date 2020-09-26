@@ -148,5 +148,12 @@
 
     </script>
 </body>
+<script src="{{ asset('js/app.js') }}"></script>
+<script>
+Echo.channel('auction')
+    .listen('NewMessage', (e) => {
+        console.log(e.message);
+    })
 
+</script>
 </html>
