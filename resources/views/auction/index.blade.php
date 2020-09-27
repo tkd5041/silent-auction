@@ -23,41 +23,42 @@
                     <td>
                         @foreach($items as $item)
                             <hr>
-                            <div>
-                                <h4>{{ $item->title }}</h4>
-                            </div>
-                            <div>Value: {{ $item->value }} </div>
+                            <div><h4>{{ $item->title }}</h4></div>
+                            <div>Value: {{ $item->value }}</div>
                             @if($item->current_bid == 0)
-                                <div>Minimum Bid: ${{ $item->initial_bid }}</div>
+                            <div>Minimum Bid: ${{ $item->initial_bid }}</div>
+                            <div class="my-2">
                                 <a href="/auction/{{$item->id}}/edit"
-                                                    type="button"
-                                                    class="btn btn-outline-primary float-left btn-left fa fa-gavel"
-                                                    data-toggle="tooltip" 
-                                                    data-placement="top" 
-                                                    title="Enter Bid">
-                                                Enter Bid
-                                                </a>
+                                    type="button"
+                                    class="btn btn-outline-primary btn-left fa fa-gavel"
+                                    data-toggle="tooltip" 
+                                    data-placement="top" 
+                                    title="Enter Bid">
+                                Enter Bid
+                                </a>
+                            </div>
                             @else
-                                <div>Current Bid: ${{ $item->current_bid }}</div>
-                                <div>Minimum Bid: ${{ $item->current_bid + $item->increment }}</div>
+                            <div>Current Bid: ${{ $item->current_bid }}</div>
+                            <div>Minimum Bid: ${{ $item->current_bid + $item->increment }}</div>
+                            <div class="my-2">
                                 <a href="/auction/{{$item->id}}/edit"
-                                                    type="button"
-                                                    class="btn btn-outline-primary float-left btn-left fa fa-gavell"
-                                                    data-toggle="tooltip" 
-                                                    data-placement="top" 
-                                                    title="Enter Bid">
-                                                Enter Bid
-                                                </a>
+                                    type="button"
+                                    class="btn btn-outline-primary btn-left fa fa-gavel"
+                                    data-toggle="tooltip" 
+                                    data-placement="top" 
+                                    title="Enter Bid">
+                                    Enter Bid
+                                </a>
+                            </div>
                             @endif
                         @endforeach
                     </td>
                     <td>
                         @foreach($bids as $bid)
                             <hr>
-                            <div>
-                                <h4>{{ $bid->title }}</h4>
-                            </div>
+                            <div><h4>{{ $bid->title }}</h4></div>
                             <div>{{ $bid->username }} bid ${{ $bid->current_bid }}</div>
+                            <div>{{ $bid->updated_at }}</div>
                         @endforeach
                     </td>
                 </tr>

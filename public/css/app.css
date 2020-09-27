@@ -11029,22 +11029,47 @@ body {
   display: flex;
   flex-wrap: wrap;
   padding: 5px;
+  margin: 5px;
   justify-content: space-evenly;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid rgba(70, 51, 51, 0.25);
-  box-shadow: 0 0 20px -10px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 10px -5px rgba(212, 175, 55, 0.5);
 }
 
 .gallery img {
   transition: transform 0.5s ease;
+  display: inline-block;
+  max-width: 200px;
+  margin: 10px;
+  border-radius: 10px;
 }
 
 .gallery img:hover {
-  transform: scale(2.5);
+  transform: scale(2);
+  margin: auto;
 }
 
 .item {
   width: 100px;
   margin: 5px;
+}
+
+.bid {
+  margin-bottom: 5px;
+}
+
+.bid input {
+  border-color: #1fc21f;
+  border-radius: 5px;
+  text-align: right;
+  max-width: 100px;
+}
+
+.bid button {
+  width: 180px;
+}
+
+a .btn {
+  width: 180px;
 }
 

@@ -9,8 +9,9 @@ class Item extends Model
   protected $table = 'items';
 
   protected $fillable = [
-    'title', 'description', 'value', 'retail_value', 'initial_bid', 'increment'
-];
+    'title', 'description', 'value', 'retail_value', 'initial_bid', 'increment', 
+    'current_bidder', 'current_bid', 'sold', 'paid', 'letter_sent'
+  ];
 
   public function event()
   {

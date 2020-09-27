@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Auction;
 use App\Item;
-use App\User;
 use App\Images;
 
 class AuctionController extends Controller
@@ -38,8 +38,9 @@ class AuctionController extends Controller
     {
         $item = Item::findOrFail($id);
         
-        $images = Images::where('item_id', $id)->get();
+        $images = Images::where('item_id', $id)->get();        
         
+        //dd($item, $images);
         return view('auction.edit')->with([
             'item' => $item, 
             'images' => $images
@@ -48,31 +49,38 @@ class AuctionController extends Controller
 
     public function bid(Request $request, Item $item)
     {
+        $user = Auth::user();
+       
+        $item = Item::findOrFail(request('id'));
+        
+        $item->current_bid = request('bid');
+        $item->current_bidder = $user->id;
+        
+        $item->save();
+
         $auction = new Auction;
-        $item = Item::where('$id', $item)->get();
 
         $auction->event_id = session('selected_event');
         $auction->item_id = $item->id;
-        $auction->user_id = Auth::user('id');
-        $auction->username = Auth::user('username');
-        $auction->current_bid = $request('bid');
-        
+        $auction->user_id = $user->id;
+        $auction->title = $item->title;
+        $auction->username = $user->username;
+        $auction->current_bid = $item->current_bid;
+
+        //dd($auction);
+
         if($auction->save()){
             session()->flash('success', 'Bid Submitted');
        }else{
            session()->flash('error', 'There was an error submitting the bid');
        }
 
-        $item->current_bidder = Auth::user('id');
-        $item->current_bid = $request('bid');
-
-        $item->save();
 
         $event = Event::findOrFail(session('selected_event'));
         $bids = Auction::where('event_id', session('selected_event'))->latest()->get();
         $items = Item::where('event_id', session('selected_event'))->get();
 
-        return view('auction.index',['event' => $event, 'bids' => $bids, 'items' => $items]);
+        return redirect()->route('auction',['id' => $event, 'bids' => $bids, 'items' => $items]);
 
     }
 

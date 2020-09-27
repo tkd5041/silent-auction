@@ -23,7 +23,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/auction/{id}/bid', 'AuctionController@bid')->middleware('auth')->name('auction.bid');
+Route::put('/auction/{id}/bid', 'AuctionController@bid')->middleware('auth')->name('auction.bid');
 Route::get('/auction/{id}/edit', 'AuctionController@edit')->middleware('auth')->name('auction.edit');
 Route::get('/auction/{id}', 'AuctionController@index')->middleware('auth')->name('auction');
 Route::get('/admin/donors/search', 'Admin\DonorController@search');

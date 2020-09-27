@@ -34,11 +34,6 @@ class ItemController extends Controller
 
     public function edit(Item $item)
     {
-        if(Gate::denies('edit-users'))
-        {
-            return redirect(route('login'));
-        }
-
         $donors = Donor::where('event_id', session('selected_event'))->get();
         //dd([$item, $donors]);
         return view('admin.items.edit')->with([
