@@ -24,8 +24,8 @@ class StripeController extends Controller
                      ->sum('current_bid');
 
         
-        dd($items, $total);
-        return view('stripe/stripe', ['items' => $items, $total]);
+        //dd($items, $total);
+        return view('stripe/stripe', ['items' => $items, 'total' => $total]);
     }
 
     public function stripePost(Request $request)
@@ -35,7 +35,7 @@ class StripeController extends Controller
                 "amount" => 100 * 100,
                 "currency" => "usd",
                 "source" => $request->stripeToken,
-                "description" => "Test payment from itsolutionstuff.com." 
+                "description" => "PAL Silent Auction" 
         ]);
   
         Session::flash('success', 'Payment successful!');
