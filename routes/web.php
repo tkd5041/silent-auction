@@ -26,6 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::put('/auction/{id}/bid', 'AuctionController@bid')->middleware('auth')->name('auction.bid');
 Route::get('/auction/{id}/edit', 'AuctionController@edit')->middleware('auth')->name('auction.edit');
 Route::get('/auction/{id}', 'AuctionController@index')->middleware('auth')->name('auction');
+Route::get('/stripe/stripe', 'StripeController@stripe')->middleware('auth')->name('stripe');
 Route::get('/admin/donors/search', 'Admin\DonorController@search');
 Route::get('/admin/items/search', 'Admin\ItemController@search');
 Route::get('/admin/users/search', 'Admin\UsersController@search');
