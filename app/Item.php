@@ -10,7 +10,7 @@ class Item extends Model
 
   protected $fillable = [
     'title', 'description', 'value', 'retail_value', 'initial_bid', 'increment', 
-    'current_bidder', 'current_bid', 'sold', 'paid', 'letter_sent'
+    'current_bidder', 'current_bid', 'sold', 'notes_for_winner','paid', 'letter_sent'
   ];
 
   public function event()

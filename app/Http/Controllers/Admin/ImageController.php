@@ -40,7 +40,7 @@ class ImageController extends Controller
             $image->move(public_path('/images'), $original );
            
             Images::create([
-                'event_id' => 1,
+                'event_id' => 3,
                 'item_id' => 1,
                 'image' => '/images/' . $original,
 

@@ -128,6 +128,21 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                            <label for="notes_for_winner" class="col-md-2 col-form-label text-md-right">Notes For Winner</label>
+    
+                            <div class="col-md-8">
+                                <input id="notes_for_winner" type="text" class="form-control @error('notes_for_winner') is-invalid @enderror"
+                                    name="notes_for_winner" value="{{$item->notes_for_winner}}"  autofocus>
+    
+                                @error('notes_for_winner')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                     <div>
                         <button class="btn btn-primary" type="submit">
                             Update Item

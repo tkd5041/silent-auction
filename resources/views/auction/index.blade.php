@@ -33,8 +33,8 @@
                                     class="btn btn-outline-primary btn-left fa fa-gavel"
                                     data-toggle="tooltip" 
                                     data-placement="top" 
-                                    title="Enter Bid">
-                                Enter Bid
+                                    title="View Item">
+                                View Item
                                 </a>
                             </div>
                             @else
@@ -46,8 +46,8 @@
                                     class="btn btn-outline-primary btn-left fa fa-gavel"
                                     data-toggle="tooltip" 
                                     data-placement="top" 
-                                    title="Enter Bid">
-                                    Enter Bid
+                                    title="View Item">
+                                    View Item
                                 </a>
                             </div>
                             @endif

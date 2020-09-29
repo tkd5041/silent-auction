@@ -28,6 +28,7 @@ class CreateItemsTable extends Migration
             $table->integer('current_bid');
             $table->boolean('sold');
             $table->boolean('paid');
+            $table->text('notes_for_winner', 512);
             $table->boolean('letter_sent');
             $table->timestamps();
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');

@@ -18,7 +18,7 @@
                     @if($images->isEmpty())
                         <div class="text-center"><h4>No Images Available</h4></div>
                     @else
-                        <div class="gallery max-w">
+                        <div class="gallery">
                             @foreach($images as $image)
                             <img src="{{ $image->image }} " alt="{{ $item->title }}_image_{{ $image->id }}">
                             @endforeach

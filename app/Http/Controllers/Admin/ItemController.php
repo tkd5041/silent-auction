@@ -67,6 +67,7 @@ class ItemController extends Controller
         $item->current_bid = 0;
         $item->sold = false;
         $item->paid = false;
+        $item->notes_for_winner = request('notes_for_winner');
         $item->letter_sent = false;
         
         if($item->save()){
@@ -88,6 +89,7 @@ class ItemController extends Controller
         $item->retail_value = request('retail_value');
         $item->initial_bid = request('initial_bid');
         $item->increment = request('increment');
+        $item->notes_for_winner = request('notes_for_winner');
 
         if($item->save()){
             $request->session()->flash('success', $item->title . ' has been updated');
