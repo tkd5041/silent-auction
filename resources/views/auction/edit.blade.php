@@ -73,8 +73,8 @@
                 </form>
 
             </div>
-            <div class="card-footer">
-                 <a href="{{ URL::previous() }}" class="btn btn-outline-primary"> <i class="fa fa-chevron-circle-left"></i> Cancel and Go Back</a>
+            <div class="card-footer bid">
+                 <a href="{{ URL::previous() }}" class="btn btn-outline-primary bid"> <i class="fa fa-chevron-circle-left"></i> Cancel and Go Back</a>
             </div>
         </div>
     </div>

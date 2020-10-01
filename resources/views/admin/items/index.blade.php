@@ -36,17 +36,17 @@
                                     <th scope="col">Title</th>
                                     <th scope="col">Initial Bid</th>
                                     <th scope="col">Increment</th>
-                                    <th scope="col">Actions</th>
+                                    <th scope="col" class="actions">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($items as $item)
                                     <tr>
-                                        <th scope="row">{{ $item->id }}</th>
-                                        <td>{{ $item->title }}</td>
-                                        <td>{{ $item->initial_bid }}</td>
-                                        <td>{{ $item->increment }}</td>
-                                        <td>
+                                        <th scope="row" style="text-align: center">{{ $item->id }}</th>
+                                        <td style="text-align: center">{{ $item->title }}</td>
+                                        <td style="text-align: center">{{ $item->initial_bid }}</td>
+                                        <td style="text-align: center">{{ $item->increment }}</td>
+                                        <td class="actions">
                                             @can('edit-users')
                                                 <a href="{{ route('admin.items.edit', $item->id) }}"
                                                     type="button"
