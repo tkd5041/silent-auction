@@ -11080,7 +11080,7 @@ body {
 }
 
 .gallery img {
-  transition: transform 1s ease;
+  transition: transform 0.5s ease;
   display: inline-block;
   margin: 10px;
   border-radius: 10px;
@@ -11089,7 +11089,7 @@ body {
 }
 
 .gallery img:hover {
-  transform: scale(3.5);
+  transform: scale(2);
   margin: auto;
 }
 
