@@ -18,10 +18,16 @@
                     @if($images->isEmpty())
                         <div class="text-center"><h4>No Images Available</h4></div>
                     @else
+                    <div>
+                            <h6><small class="text-muted">Hover To Enlarge Image</small></h6>
+                        </div>
                         <div class="gallery">
                             @foreach($images as $image)
                             <img src="{{ $image->image }} " alt="{{ $item->title }}_image_{{ $image->id }}">
                             @endforeach
+                        </div>
+                        <div>
+                            <h6><small class="text-muted">On Mobile Tap Image to Enlarge, Tap Off Image to Close</small></h6>
                         </div>
                     @endif
                     <div class="my-3">

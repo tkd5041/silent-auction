@@ -57,7 +57,7 @@
                                                 </a>
                                             @endcan
                                             @can('edit-users')
-                                                <a href="{{ route('admin.image-uploads.index', $item->id) }}"
+                                                <a href="{{ route('admin.image-uploads.edit', $item->id) }}"
                                                     type="button"
                                                     class="btn btn-outline-success float-left btn-left fa fa-picture-o"
                                                     data-toggle="tooltip" 

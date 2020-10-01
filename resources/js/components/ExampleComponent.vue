@@ -19,7 +19,7 @@
         },
         mounted() {
             this.dropzone = new Dropzone(this.$refs.imageUpload, {
-                url: '/api/images'
+                url: '/api/images/{$item->id}'
             });
         }
     }

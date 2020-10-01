@@ -10,27 +10,30 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
+
+//use Illuminate\Support\Facades\Storage;
+
 class ImageController extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        
-        // $images = Image::latest()->get();
-        // return view('images',compact('images'));
-        //return view('admin.image-uploads.index');
-        
-        $images = Images::where('event_id', session('selected_event'))
-            ->where('item_id', 1)    
-            ->latest()
-            ->get();
-        //dd($images);
-        return view('admin.image-uploads.index', compact('images'));  //->with('images', $images);
+        $item = Item::findOrFail($id);
+        $event = session('selected_event');
+        $images = Images::where('event_id', $event)
+                        ->where('item_id', $id)
+                        ->get();
+        //dd($images, $item);
+        return view('admin.image-uploads.index')->with([
+            'images' => $images,
+            'item' => $item,
+        ]);
     }
     
-    public function store(Request $request)
+    public function store(Request $request, Item $item)
     {
+        console.log($item);
         if ( ! is_dir(public_path('/images'))){
-            mkdir(public_path('/images'), 0777);
+            mkdir(public_path('/images'), 0755);
         }
         $images = Collection::wrap(request()->file('file'));
 

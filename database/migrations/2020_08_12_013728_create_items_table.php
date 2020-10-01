@@ -24,8 +24,9 @@ class CreateItemsTable extends Migration
             $table->integer('retail_value');
             $table->integer('initial_bid');
             $table->integer('increment');
-            $table->BigInteger('current_bidder');
-            $table->integer('current_bid');
+            $table->text('image')->nullable();
+            $table->BigInteger('current_bidder')->nullable();
+            $table->integer('current_bid')->nullable();
             $table->boolean('sold');
             $table->boolean('paid');
             $table->text('notes_for_winner', 512);
