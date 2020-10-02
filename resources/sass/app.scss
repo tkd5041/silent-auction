@@ -170,16 +170,16 @@ html, body {
 }
 
 .gallery img {
-    transition:transform 1.0s ease;
+    transition:transform 0.5s ease;
     display: inline-block;
     margin: 10px;
     border-radius: 10px;
     width: 50%;
-    height: 50%
+    height: 50%;
 }
 
 .gallery img:hover {
-    transform: scale(3.5);
+    transform: scale(2.0);
     margin: auto;
 }
 

@@ -24,4 +24,4 @@ use Illuminate\Support\Facades\Route;
         Route::post('items/{item}/bid', 'AuctionController@store');
     });
 
-    Route::post('/images/{id}', 'Admin\ImageController@store');
+    Route::post('/images', 'Admin\ImageController@store');

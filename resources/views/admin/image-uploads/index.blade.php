@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dz')
 
 @section('content')
     <div class="row justify-content-center">
@@ -11,10 +11,25 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <h4><b>Manage Images For: </b><br>{{ $item->title }}</h4>
+                    <h4><b>Manage Images For:</b></h4>
+                    <h5>{{ $item->title }}</h5>
                     <hr>
                     <div class="flex-center">
-                        <example-component></example-component>
+                        <div class="container">
+                            <div class="row">
+                                <form action="{{ route('image.upload', $item->id) }}" 
+                                      method="POST" 
+                                      accept-charset="UTF-8"
+                                      enctype="multipart/form-data"
+                                      class="dropzone dz-clickable"
+                                      id="image-upload">
+                                    @csrf
+                                    <div class="dz-default dz-message">
+                                        <h3>Drop Image(s) Here - Maximum 6</h3>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                         <div class="container">
                             <div class="row">

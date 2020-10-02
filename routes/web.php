@@ -30,8 +30,8 @@ Route::get('/stripe/stripe', 'StripeController@stripe')->middleware('auth')->nam
 Route::get('/admin/donors/search', 'Admin\DonorController@search');
 Route::get('/admin/items/search', 'Admin\ItemController@search');
 Route::get('/admin/users/search', 'Admin\UsersController@search');
-Route::get('/admin/image-uploads/{id}/edit', 'Admin\ImageController@index');
-Route::delete('/admin/image-uploads/{id}', 'Admin\ImageController@destroy');
+Route::get('/admin/image-uploads/{id}/edit', 'Admin\ImageController@index')->name('image.upload');
+Route::delete('/admin/image-uploads/{id}', 'Admin\ImageController@destroy')->name('image.destroy');
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function()
 {

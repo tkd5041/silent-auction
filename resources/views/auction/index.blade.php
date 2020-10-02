@@ -11,7 +11,7 @@
         <em>End Date: </em>{{ $event->end_date }} <em>End Time: </em>{{ $event->end_time }}
     </div>
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4">
             @foreach($items as $item)
             <div class="col mb-4">
                 <div class="card">

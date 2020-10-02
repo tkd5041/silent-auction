@@ -17,7 +17,7 @@
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     
     
-    <link rel="icon" type="image/png" href="https://sa.test/public/favicon.ico" />
+    <link rel="icon" type="image/png" href="https://silent-auction.test/favicon.ico" />
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 
@@ -127,13 +127,6 @@
         </script-->
         <script src="{{ asset('js/app.js') }}"></script>
         
-        <script>
-            Echo.channel('auction')
-                .listen('NewMessage', (e) => {
-                    console.log(e.message);
-                })
-        </script>
-
         <script>
             $(".alert").fadeTo(5000, 750).slideUp(750, function () {
                 $(".alert").slideUp(750);
