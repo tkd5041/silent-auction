@@ -19,7 +19,7 @@
         integrity="sha512-3g+prZHHfmnvE1HBLwUnVuunaPOob7dpksI7/v6UnF/rnKGwHf/GdEq9K7iEN7qTtW+S0iivTcGpeTBqqB04wA=="
         crossorigin="anonymous" />
 
-    <link rel="icon" type="image/png" href="https://silent-auction.test/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.ico" />
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 
