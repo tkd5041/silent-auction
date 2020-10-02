@@ -6,7 +6,7 @@
 
         <title>Silent Auction</title>
 
-        <link rel="icon" type="image/png" href="public/favicon.ico" />
+        <link rel="icon" type="image/png" href="/favicon.ico" />
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -43,11 +43,5 @@
             </div>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
-    <script>
-        Echo.channel('auction')
-            .listen('NewMessage', (e) => {
-                console.log(e.message);
-        })
-    </script>
     </body>
 </html>
