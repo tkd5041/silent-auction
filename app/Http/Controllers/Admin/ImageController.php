@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 
@@ -29,35 +31,36 @@ class ImageController extends Controller
         ]);
     }
     
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        $image = $request->file('file');
+        $item = Item::findOrFail($id);
+        $event = session('selected_event');
 
-        $basename = Str::random();
-        $imageName = $basename . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('images'), $imageName );
-        return response()->json(['success'=>$imageName]);
+        if ($request->hasFile('image')) {
+            $validated = $request->validate([
+                'image' => 'mimes:jpeg,jpeg,png,gif|max:1024',
+            ]);
+            $basename = Str::random();
+            $extension = $request->image->extension();
+            $imageName = $basename . '.' . $extension;
+            
+            $request->image->move(public_path('/images'), $imageName);
+            
+            Images::create([
+                    'event_id' => $event,
+                    'item_id' => $item->id,
+                    'image' => '/images/' . $imageName,
+            ]);
 
-
+            if ($item->image == '') {
+                $item->image = "/images/" . $imageName;
+                $item->save();
+            }
+            Session::flash('success', "Image uploaded successfully!");
+            return \Redirect::back();
+        }
+        abort(500, 'Could not upload image.');
         
-        // console.log($item);
-        // if ( ! is_dir(public_path('/images'))){
-        //     mkdir(public_path('/images'), 0755);
-        // }
-        // $images = Collection::wrap(request()->file('file'));
-
-        // $images->each(function($image) {
-        //     $basename = Str::random();
-        //     $original = $basename . '.' . $image->getClientOriginalExtension();
-        //     $image->move(public_path('/images'), $original );
-           
-        //     Images::create([
-        //         'event_id' => 3,
-        //         'item_id' => 1,
-        //         'image' => '/images/' . $original,
-
-        //     ]);
-        // });
     }
 
     public function destroy(Images $image)
@@ -74,11 +77,6 @@ class ImageController extends Controller
 
         // redirect
         return back()->withInput();
-    }
-
-    public function dropzone() 
-    {
-        return view('image.upload');
     }
 }
 
