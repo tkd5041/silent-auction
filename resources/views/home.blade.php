@@ -2,7 +2,29 @@
 
 @section('content')
 <div class="container" id="events">
-    <h1>Select An Event To Continue</h1>
+    <h1>Time Until Next Event:</h1>
+<div class="row py-2 justify-content-center">
+    <div id="clockdiv">
+        <div>
+            <span class="days"></span>
+            <div class="smalltext">Days</div>
+        </div>
+        <div>
+            <span class="hours"></span>
+            <div class="smalltext">Hours</div>
+        </div>
+        <div>
+            <span class="minutes"></span>
+            <div class="smalltext">Minutes</div>
+        </div>
+        <div>
+            <span class="seconds"></span>
+            <div class="smalltext">Seconds</div>
+        </div>
+    </div>
+</div>
+                        
+    <h1>Select An Event To Continue:</h1>
     <div class="row justify-content-center">
         <div class="event-cards">
             <div class="row">
@@ -15,7 +37,7 @@
                             <dt>Start Time:</dt><dd>{{ date('g:i A', strtotime($event->start_time)) }}</dd>
                             <dt>End Date:</dt><dd>{{ date('D, M j, Y ', strtotime($event->end_date)) }}</dd>
                             <dt>End Time:</dt><dd>{{ date('g:i A', strtotime($event->end_time)) }}</dd>
-                        <a href="{{  route('auction', $event->id) }}" class="btn btn-primary">Select Event</a>
+                            <a href="{{  route('auction', $event->id) }}" class="btn btn-primary">Select Event</a>
                         </div>
                     </div>
                 @endforeach

@@ -11123,3 +11123,32 @@ a .bid {
   justify-content: center;
 }
 
+#clockdiv {
+  font-family: sans-serif;
+  color: #fff;
+  display: inline-block;
+  font-weight: 50;
+  text-align: center;
+  font-size: 30px;
+}
+
+#clockdiv > div {
+  padding: 10px;
+  border-radius: 3px;
+  background: #E9E6DA;
+  display: inline-block;
+}
+
+#clockdiv div > span {
+  padding: 15px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #6e0707, #6d3e3e);
+  display: inline-block;
+}
+
+.smalltext {
+  color: #626B6F;
+  padding-top: 5px;
+  font-size: 14px;
+}
+
