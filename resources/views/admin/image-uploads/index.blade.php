@@ -52,6 +52,9 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer">
+            <a class="btn btn-outline-primary float-right fa fa-hand-o-left"href="{{ route('admin.items.index') }}"> Go Back</a>
+            </div>
         </div>
     </div>
 </div>
