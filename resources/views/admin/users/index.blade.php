@@ -43,7 +43,10 @@
                                         @can('edit-users')
                                             <a href="{{ route('admin.users.edit', $user->id) }}"
                                                 type="button"
-                                                class="btn btn-outline-primary float-left btn-left fa fa-pencil">
+                                                class="btn btn-outline-primary float-left btn-left fa fa-pencil"
+                                                data-toggle="tooltip" 
+                                                data-placement="top" 
+                                                title="Edit User">
                                             </a>
                                         @endcan
                                         @can('delete-users')
@@ -56,7 +59,10 @@
                                                 <a
                                                     href="{{ route('admin.users.destroy', $user->id) }}">
                                                     <button type="submit"
-                                                        class="btn btn-outline-danger float-left fa fa-trash-o">
+                                                        class="btn btn-outline-danger float-left fa fa-trash-o"
+                                                        data-toggle="tooltip" 
+                                                        data-placement="top" 
+                                                        title="Delete User">
                                                     </button>
                                                 </a>
                                             </form>

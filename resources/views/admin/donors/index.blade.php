@@ -50,7 +50,10 @@
                                             @can('edit-users')
                                                 <a href="{{ route('admin.donors.edit', $donor->id) }}"
                                                     type="button"
-                                                    class="btn btn-outline-primary float-left btn-left fa fa-pencil">
+                                                    class="btn btn-outline-primary float-left btn-left fa fa-pencil"
+                                                    data-toggle="tooltip" 
+                                                    data-placement="top" 
+                                                    title="Edit Donor">
                                                 </a>
                                             @endcan
                                             @can('delete-users')
@@ -60,11 +63,12 @@
                                                     onsubmit="return confirm('Do you wish to delete this donor?')">
                                                     @csrf
                                                     {{ method_field('DELETE') }}
-                                                    <a
-                                                        href="{{ route('admin.donors.destroy', $donor->id) }}">
-                                                        <button type="submit"
-                                                            class="btn btn-outline-danger float-left fa fa-trash-o">
-                                                        </button>
+                                                    <button type="submit"
+                                                            class="btn btn-outline-danger float-left fa fa-trash-o"
+                                                            data-toggle="tooltip" 
+                                                            data-placement="top" 
+                                                            title="Delete Donor">
+                                                    </button>
                                                     </a>
                                                 </form>
                                             @endcan
