@@ -5,7 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ __('Edit User') }} {{ $user->name }}</div>
+                <div class="card-header">{{ __('Edit User') }} {{ $user->name }}
+                    <a href="{{ URL::previous() }}"
+                       class="btn btn-outline-primary float-right fa fa-hand-o-left">
+                       Back</a>
+                </div>
 
                 <div class="card-body">
                     <form action="{{ route('admin.users.update', $user) }}" method="POST">

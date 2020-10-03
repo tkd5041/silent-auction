@@ -4,7 +4,11 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">{{ __('Edit Event') }}</div>
+                <div class="card-header">{{ __('Edit Event') }}
+                    <a href="{{ URL::previous() }}"
+                       class="btn btn-outline-primary float-right fa fa-hand-o-left">
+                       Back</a>
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -92,10 +96,27 @@
 
                         <div class="form-group row">
                             <label for="active" class="col-md-2 col-form-label text-md-right">Active</label>
-
-                            <div class="form-check">
-                                <input type="checkbox" name="active" id="active" value="{{ $event->id }}"
-                                @if($event->active === 1) checked @endif>
+                            
+                            <div class="form-check-inline ml-3">
+                                <label class="form-check-label text-info">
+                                    <input type="radio" name="active" id="active" value="0"
+                                    @if($event->active === 0) checked @endif>
+                                    Inactive
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label text-success">
+                                    <input type="radio" name="active" id="active" value="1"
+                                    @if($event->active === 1) checked @endif>
+                                    Active
+                                </label>
+                            </div>
+                            <div class="form-check-inline text-danger">
+                                <label class="form-check-label">
+                                    <input type="radio" name="active" id="active" value="2"
+                                    @if($event->active === 2) checked @endif>
+                                    Closed
+                                </label>
                             </div>
                         </div>
     

@@ -41,26 +41,43 @@
                             <td style="text-align: center">{{ $event->end_time }}</td>
                             <td style="text-align: center">
                                 <div
-                                    style="text-align: center; color: @if ($event->active ===1) green @else red @endif;">
+                                    class="text-center
+                                            @if ($event->active === 1) text-success 
+                                            @elseif ($event->active === 2) text-danger 
+                                            @else text-info @endif;"
+                                    style="text-align: center; color: "
+                                    data-toggle="tooltip" 
+                                    data-placement="top" 
+                                    title="@if ($event->active === 1) Event Active 
+                                           @elseif ($event->active === 2) Event Closed 
+                                           @else Event Inactive 
+                                            @endif">
                                     <i class="fa fa-check" aria-hidden="true"></i>
                                 </div>
                             </td>
                             <td>
                                 <div class="actions">
                                     @can('edit-users')
-                                    <a href="{{ route('admin.events.edit', $event->id) }}" type="button"
-                                        class="btn btn-outline-primary float-left btn-left fa fa-pencil">
+                                    <a href="{{ route('admin.events.edit', $event->id) }}" 
+                                        type="button"
+                                        class="btn btn-outline-primary float-left btn-left fa fa-pencil"
+                                        data-toggle="tooltip" 
+                                        data-placement="top" 
+                                        title="Edit Event">
                                     </a>
                                     @endcan
                                     @can('delete-users')
-                                    <form action="{{ route('admin.events.destroy', $event) }}" method="POST"
-                                        onsubmit="return confirm('Do you wish to delete this event?')">
+                                    <form action="{{ route('admin.events.destroy', $event) }}" 
+                                          method="POST"
+                                          onsubmit="return confirm('Do you wish to delete this event?')">
                                         @csrf
                                         {{ method_field('DELETE') }}
-                                        <a href="{{ route('admin.events.destroy', $event->id) }}">
-                                            <button type="submit"
-                                                class="btn btn-outline-danger float-left fa fa-trash-o">
-                                            </button>
+                                        <button type="submit"
+                                            class="btn btn-outline-danger float-left fa fa-trash-o"
+                                            data-toggle="tooltip" 
+                                            data-placement="top" 
+                                            title="Delete Event">
+                                        </button>
                                         </a>
                                     </form>
                                     @endcan

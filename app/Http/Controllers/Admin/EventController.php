@@ -60,7 +60,7 @@ class EventController extends Controller
         $event->start_time = $request->start_time;
         $event->end_date = $request->end_date;
         $event->end_time = $request->end_time;
-        $event->active = ($request->active ? 1 : 0);
+        $event->active = $request->active;
 
         if($event->save()){
             $request->session()->flash('success', $event->name . ' has been updated');
