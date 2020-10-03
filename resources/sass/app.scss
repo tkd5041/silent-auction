@@ -174,8 +174,11 @@ html, body {
     display: inline-block;
     margin: 10px;
     border-radius: 10px;
-    width: 50%;
-    height: 50%;
+    max-width:300px;
+    max-height:300px;
+    width: auto;
+    height: auto;
+    
 }
 
 .gallery img:hover {
@@ -241,5 +244,10 @@ a .bid{
     color: #626B6F;
 	padding-top: 5px;
 	font-size: 14px;
+}
+
+.auction-header{
+    display: inline-block;
+    margin: 10px;
 }
 

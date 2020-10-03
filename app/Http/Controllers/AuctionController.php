@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Event;
 use App\Auction;
 use App\Item;
@@ -29,8 +30,21 @@ class AuctionController extends Controller
         
         session(['selected_event' => $id]);
         session(['event_name' => $event->name]);
-        //dd([$event, $bids, $items]);
-        return view('auction.index',['event' => $event, 'bids' => $bids, 'items' => $items]);
+        session(['bids_start' => $event->start_date . 'T' . $event->start_time]);
+        session(['bids_end' => $event->end_date . 'T' . $event->end_time]);
+        $bids_start = session('bids_start');
+        $bids_end = session('bids_end');
+        $date_now = Carbon::now()->setTimezone('MST')->toDateTimeLocalString();
+
+        //dd([$event, $bids, $items, $bids_start, $bids_end]);
+        return view('auction.index',[
+            'event' => $event, 
+            'bids' => $bids, 
+            'items' => $items,
+            'bids_start' => $bids_start,
+            'bids_end' => $bids_end,
+            'date_now' => $date_now,
+        ]);
         
     }
 

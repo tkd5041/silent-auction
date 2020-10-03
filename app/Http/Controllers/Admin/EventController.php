@@ -42,7 +42,7 @@ class EventController extends Controller
         $event->start_time = request('start_time');
         $event->end_date = request('end_date');
         $event->end_time = request('end_time');
-        $event->active = 1;
+        $event->active = 0;
 
         if($event->save()){
              session()->flash('success', $event->name . ' has been created');
