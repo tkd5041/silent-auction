@@ -39,7 +39,8 @@ class HomeController extends Controller
         }
         //dd($events);
         // if no events are active
-        if ($events->isEmpty()) {
+        if ($events->isEmpty()) 
+        {
             $events = Event::where('id', 1)
                             ->orderBy('start_date')
                             ->get();
@@ -54,9 +55,13 @@ class HomeController extends Controller
         $first = Event::where('id','>', 1)
                         ->where('active', 1)
                         ->first();
-                        
-        $firstDate = $first->start_date . ' ' . $first->start_time;
-        
+        //dd($first);
+        if (empty($first)) {
+            $firstDate = Carbon::now()->addDays(1)->toDateTimeLocalString();
+        } else {
+            $firstDate = $first->start_date . ' ' . $first->start_time;
+        }              
+        //dd($first, $firstDate);
         return view('home')->with([
             'events' => $events,
             'firstDate' => $firstDate,           
