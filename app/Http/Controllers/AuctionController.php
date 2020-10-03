@@ -30,20 +30,24 @@ class AuctionController extends Controller
         
         session(['selected_event' => $id]);
         session(['event_name' => $event->name]);
-        session(['bids_start' => $event->start_date . 'T' . $event->start_time]);
-        session(['bids_end' => $event->end_date . 'T' . $event->end_time]);
+        session(['bids_start' => $event->start_date . ' ' . $event->start_time]);
+        session(['bids_end' => $event->end_date . ' ' . $event->end_time]);
         $bids_start = session('bids_start');
         $bids_end = session('bids_end');
-        $date_now = Carbon::now()->setTimezone('MST')->toDateTimeLocalString();
-
-        //dd([$event, $bids, $items, $bids_start, $bids_end]);
+        $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
+        $dt_st = Carbon::parse($bids_start)->timestamp;
+        $dt_sp = Carbon::parse($bids_end)->timestamp;
+        
+        //dd([$event, $bids, $items, $bids_start, $bids_end, $dt_now, $dt_st, $dt_sp]);
         return view('auction.index',[
             'event' => $event, 
             'bids' => $bids, 
             'items' => $items,
             'bids_start' => $bids_start,
             'bids_end' => $bids_end,
-            'date_now' => $date_now,
+            'dt_now' => $dt_now,
+            'dt_st' => $dt_st,
+            'dt_sp' => $dt_sp,
         ]);
         
     }

@@ -121,7 +121,9 @@
                 @yield('content')
             </div>
         </main>
-        
+        <div id="demo1"></div>
+        <div id="demo2"></div>
+        <div id="demo3"></div>
     </div>
         <!--script src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
@@ -174,6 +176,7 @@
 
                     if (t.total <= 0) {
                     clearInterval(timeinterval);
+                    location.reload();
                     }
                 }
 
@@ -181,14 +184,24 @@
                 var timeinterval = setInterval(updateClock, 1000);
                 }
 
-                var dNow = Date.parse('{{ $date_now }}');
-                var dStart = Date.parse('{{ $bids_start }}');
-                var dEnd = Date.parse('{{ $bids_end }}');
-
+                var dNow = {{$dt_now}};
+                var dStart = {{$dt_st}};
+                var dEnd = {{$dt_sp}};
                 
+                if (dNow < dStart)
+                {
                     var deadline = new Date(Date.parse('{{ $bids_start }}'));
                     document.getElementById("bidStatus").innerHTML = "Time Until Bidding Starts:";
-                
+                }
+                else if (dNow > dStart && dNow < dEnd)
+                {
+                    var deadline = new Date(Date.parse('{{ $bids_end }}'));
+                    document.getElementById("bidStatus").innerHTML = "Time Until Bidding Ends:";
+                } else
+                {
+                    document.getElementById("bidStatus").innerHTML = "Bidding Closed:";
+                    document.getElementById("clockdiv").innerHTML = "<a href='#' class='btn btn-primary'>Pay Now</a>";
+                }
                 
                 initializeClock('clockdiv', deadline);
         </script>

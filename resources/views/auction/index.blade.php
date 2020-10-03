@@ -6,7 +6,7 @@
     <div class="auction-header">
         <h2>{{ $event->name }}<br><br>
             <small>Starts: <span class="text-muted">{{ date('D, M j, Y ', strtotime($event->start_date)) }} @ {{ date('g:i A', strtotime($event->start_time)) }} (MST) </span></small><br>
-            <small>Starts: <span class="text-muted">{{ date('D, M j, Y ', strtotime($event->start_date)) }} @ {{ date('g:i A', strtotime($event->start_time)) }} (MST) </span></small>
+            <small>Starts: <span class="text-muted">{{ date('D, M j, Y ', strtotime($event->end_date)) }} @ {{ date('g:i A', strtotime($event->end_time)) }} (MST) </span></small>
         </h2>
     </div>
     <div class="auction-header float-right">
