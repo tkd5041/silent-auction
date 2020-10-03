@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Event;
 
@@ -36,16 +37,25 @@ class HomeController extends Controller
                             ->orderBy('start_date')
                             ->get();
         }
+        //dd($events);
+        // if no events are active
+        if ($events->isEmpty()) {
+            $events = Event::where('id', 1)
+                            ->orderBy('start_date')
+                            ->get();
+            $firstDate = Carbon::now()->addDays(1)->toDateTimeLocalString();
+            //dd($events, $firstDate);
+            return view('home')->with([
+                'events' => $events,
+                'firstDate' => $firstDate,           
+                ]);
+        }
 
         $first = Event::where('id','>', 1)
                         ->where('active', 1)
                         ->first();
                         
         $firstDate = $first->start_date . ' ' . $first->start_time;
-        
-        $firstEvent = strtotime($firstDate);
-        //dd($firstEvent);
-        //dd($events, $firstDatet);
         
         return view('home')->with([
             'events' => $events,
