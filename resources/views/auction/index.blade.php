@@ -55,7 +55,7 @@
                         @if($item->current_bid == 0)
                         <p>Minimum Bid: ${{ $item->initial_bid }}.00</p>
                         </div> <!-- div card-body -->
-                        <div class="card-footer">
+                        <div class="card-footer"  id="view-item">
                             <div class="my-2 float-right">
                                 <a href="/auction/{{$item->id}}/edit" 
                                     class="btn btn-outline-primary btn-left fa fa-eye" 
@@ -72,7 +72,7 @@
                                 <b>Minimum Bid: $</b>{{ $item->current_bid + $item->increment }}.00
                             </p>
                         </div> <!-- div card-body -->
-                        <div class="card-footer">
+                        <div class="card-footer" id="view-item">
                             <div class="my-2 float-right">
                                 <a href="/auction/{{$item->id}}/edit"
                                    class="btn btn-outline-primary btn-left fa fa-eye" 

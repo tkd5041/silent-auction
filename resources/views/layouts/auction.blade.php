@@ -192,6 +192,7 @@
                 {
                     var deadline = new Date(Date.parse('{{ $bids_start }}'));
                     document.getElementById("bidStatus").innerHTML = "Time Until Bidding Starts:";
+                    $('.card-footer').remove();
                 }
                 else if (dNow > dStart && dNow < dEnd)
                 {
