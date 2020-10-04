@@ -36,17 +36,17 @@
                                 @if($event->active === 0)
                                     <br>
                                     <small class="text-warning">
-                                        (Event Inactive)
+                                        (Inactive)
                                     </small>
                                 @elseif($event->active === 1)
                                     <br>
                                     <small class="text-success">
-                                        (Event Active)
+                                        (Active)
                                     </small>
                                 @else
                                     <br>
                                     <small class="text-danger">
-                                        (Event Closed)
+                                        (Closed)
                                     </small>
                                 @endif
                             @endcan

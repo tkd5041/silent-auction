@@ -191,18 +191,15 @@
                 if (dNow < dStart)
                 {
                     var deadline = new Date(Date.parse('{{ $bids_start }}'));
-                    document.getElementById("bidStatus").innerHTML = "Time Until Bidding Starts:";
-                    $('.card-footer').remove();
+                    $('.bid-group').remove();
                 }
                 else if (dNow > dStart && dNow < dEnd)
                 {
                     var deadline = new Date(Date.parse('{{ $bids_end }}'));
-                    document.getElementById("bidStatus").innerHTML = "Time Until Bidding Ends:";
                 } else
                 {
-                    document.getElementById("bidStatus").innerHTML = "Bidding Closed:";
-                    document.getElementById("clockdiv").innerHTML = "<a href='#' class='btn btn-primary'>Pay Now</a>";
-                    $('.card-footer').remove();
+                    $('.bid-group').remove();
+                    window.location="https://silent-auction.test/auction/{{ $item->event_id }}";
                 }
                 
                 initializeClock('clockdiv', deadline);
