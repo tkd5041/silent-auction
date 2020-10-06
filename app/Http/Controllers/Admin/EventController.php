@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use App\Event;
 
 class EventController extends Controller
 {

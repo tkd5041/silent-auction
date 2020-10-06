@@ -23,13 +23,21 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::put('/auction/{id}/bid', 'AuctionController@bid')->middleware('auth')->name('auction.bid');
+
+Route::get('/pay/{id}/edit', 'PayController@edit')->middleware('auth')->name('pay.edit');
+Route::get('/pay/{id}/response', 'PayController@response')->middleware('auth')->name('pay.response');
+Route::get('/pay/checkout', 'PayController@checkout')->middleware('auth')->name('pay.checkout');
+Route::post('/pay/stripe', 'PayController@stripe')->middleware('auth')->name('pay.stripe');
+Route::get('/pay', 'PayController@index')->name('pay.index');
+
+Route::put('/auction/{id}/bid', 'AuctionController@bid')->middleware('auth')->middleware('auth')->name('auction.bid');
 Route::get('/auction/{id}/edit', 'AuctionController@edit')->middleware('auth')->name('auction.edit');
 Route::get('/auction/{id}', 'AuctionController@index')->middleware('auth')->name('auction');
-Route::get('/stripe/stripe', 'StripeController@stripe')->middleware('auth')->name('stripe');
+
 Route::get('/admin/donors/search', 'Admin\DonorController@search');
 Route::get('/admin/items/search', 'Admin\ItemController@search');
 Route::get('/admin/users/search', 'Admin\UsersController@search');
+
 Route::get('/admin/image-uploads/{id}/edit', 'Admin\ImageController@index')->name('image.upload');
 Route::post('/admin/image-uploads/{id}/edit', 'Admin\ImageController@store')->name('image.add');
 Route::delete('/admin/image-uploads/{id}', 'Admin\ImageController@destroy')->name('image.destroy');

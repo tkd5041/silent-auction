@@ -201,7 +201,7 @@
                 } else
                 {
                     document.getElementById("bidStatus").innerHTML = "Bidding Closed:";
-                    document.getElementById("clockdiv").innerHTML = "<a href='#' class='btn btn-primary'>Pay Now</a>";
+                    document.getElementById("clockdiv").innerHTML = "<a href='/pay/{{ $event->id }}/edit' class='btn btn-primary'>Pay Now</a>";
                     $('.card-footer').remove();
                 }
                 

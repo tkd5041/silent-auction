@@ -19,7 +19,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
         "pusher/pusher-php-server": "^4.1",
-        "stripe/stripe-php": "^7.56"
+        "stripe/stripe-php": "^7.57"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
