@@ -38,7 +38,7 @@ class ImageController extends Controller
 
         if ($request->hasFile('image')) {
             $validated = $request->validate([
-                'image' => 'mimes:jpeg,jpeg,png,gif|max:1024',
+                'image' => 'mimes:jpeg,jpeg,png,gif|max:2048',
             ]);
             $basename = Str::random();
             $extension = $request->image->extension();
@@ -63,17 +63,24 @@ class ImageController extends Controller
         
     }
 
-    public function destroy(Images $image)
+    public function destroy($id)
     {
         
-                  
-        // delete the files
+        //dd($id);
+        $image = Images::findOrFail($id);
+        $item = Item::findOrFail($image->item_id);
+        
+        // delete the file
         File::delete([
             public_path($image->image)
         ]);
 
+        // delete default image from items
+        $item->image = NULL;
+        $item->save();
+
         // delete record from database
-        $image->delete();
+        Images::destroy($id);
 
         // redirect
         return back()->withInput();

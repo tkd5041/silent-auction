@@ -39,12 +39,12 @@
                         <div class="col-2 m-3 p-3 border border-info rounded">
                             <img class="w-100" src="{{ $image->image }}" alt="">
 
-                            <form action="{{ route('admin.image-uploads.destroy', $image) }}" method="post"
+                            <form action="{{ route('admin.image-uploads.destroy', $image->id) }}" method="post"
                                 onsubmit="return confirm('Do you wish to delete this image?')">
                                 @method('DELETE')
                                 @csrf
+                                <input type="hidden" name="image" value="{{ $image->image }}">
                                 <input type="hidden" name="id" value="{{ $image->id }}">
-                                <input type="hidden" name="item_id" value="{{ $item->id }}">
                                 <button class="small btn btn-outline-danger mt-2 w-100">Delete</button>
                             </form>
                         </div>

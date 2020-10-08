@@ -16,7 +16,9 @@ class AuctionController extends Controller
         
         $event = Event::findOrFail($id);
         $bids = Auction::where('event_id', $id)->latest()->get();
-        $items = Item::where('event_id', $id)->get();
+        $items = Item::where('event_id', $id)
+                       ->orderBy('title', 'ASC')
+                       ->get();
         
         if ($bids->isEmpty()) {
             $bids = Auction::where('event_id',1)->get();
