@@ -65,7 +65,8 @@ class ImageController extends Controller
             Session::flash('success', "Image uploaded successfully!");
             return \Redirect::back();
         }
-        abort(500, 'Could not upload image.');
+        Session::flash('success', "Please choose an image.");
+            return \Redirect::back();
         
     }
 

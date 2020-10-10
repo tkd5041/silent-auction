@@ -39,11 +39,11 @@
                         <div class="col-2 m-3 p-3 border border-info rounded">
 
                             <a class="btn btn-sm mb-2 
-                                      {{ ($image->main == 1) ? 'btn-primary' : 'btn-outline-secondary' }}"
-                               @if ($image->main == 1)
-                                    href="#"
+                                {{ ($image->main == 1) ? 'btn-primary' : 'btn-outline-secondary' }}" @if ($image->main
+                                == 1)
+                                href="#"
                                 @else
-                                    href="/admin/image-uploads/{{$image->id}}/mp"
+                                href="/admin/image-uploads/{{$image->id}}/mp"
                                 @endif
                                 style="min-width: 80px;">
                                 <small>
@@ -65,12 +65,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <a class="btn btn-outline-primary float-right fa fa-hand-o-left" href="{{ route('admin.items.index') }}"> Go
-                Back</a>
-        </div>
+            <div class="card-footer">
+                <a class="btn btn-outline-primary float-right fa fa-hand-o-left" href="{{ route('admin.items.index') }}"> Go
+                    Back</a>
+                </div>
+            </div>
     </div>
-</div>
 </div>
 @endsection
