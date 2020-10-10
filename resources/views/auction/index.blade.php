@@ -36,7 +36,7 @@
         <div class="row  row-cols-sm-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-4">
             @foreach($items as $item)
             <div class="col mb-4">
-                <div class="card" style="width: 16rem;">
+                <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">{{ Str::limit($item->title, 40) }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">(Retail Value: ${{ $item->retail_value }}.00)</h6>

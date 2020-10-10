@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Event;
 
 class EventController extends Controller
@@ -42,6 +43,8 @@ class EventController extends Controller
         $event->start_time = request('start_time');
         $event->end_date = request('end_date');
         $event->end_time = request('end_time');
+        $event->start = request('start_date') . ' ' . request('start_time');
+        $event->end = request('end_date') . ' ' . request('end_time');
         $event->active = 0;
 
         if($event->save()){
@@ -61,6 +64,8 @@ class EventController extends Controller
         $event->end_date = $request->end_date;
         $event->end_time = $request->end_time;
         $event->active = $request->active;
+        $event->start = request('start_date') . ' ' . request('start_time');
+        $event->end = request('end_date') . ' ' . request('end_time');
 
         if($event->save()){
             $request->session()->flash('success', $event->name . ' has been updated');

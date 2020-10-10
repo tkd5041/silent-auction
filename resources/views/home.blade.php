@@ -55,13 +55,13 @@
                     <div class="card-body">
                         <h3 class="card-title">{{ $event->name }}</h3>
                         <dt>Start Date: </dt>
-                        <dd>{{ date('D, M j, Y ', strtotime($event->start_date)) }} (MST)</dd>
+                        <dd>{{ date('D, M j, Y ', strtotime($event->start)) }} (MST)</dd>
                         <dt>Start Time:</dt>
-                        <dd>{{ date('g:i A', strtotime($event->start_time)) }}</dd>
+                        <dd>{{ date('g:i A', strtotime($event->start)) }}</dd>
                         <dt>End Date: </dt>
-                        <dd>{{ date('D, M j, Y ', strtotime($event->end_date)) }} (MST)</dd>
+                        <dd>{{ date('D, M j, Y ', strtotime($event->end)) }} (MST)</dd>
                         <dt>End Time:</dt>
-                        <dd>{{ date('g:i A', strtotime($event->end_time)) }}</dd>
+                        <dd>{{ date('g:i A', strtotime($event->end)) }}</dd>
                         <a href="{{  route('auction', $event->id) }}" class="btn btn-primary">Select Event</a>
                     </div>
                 </div>

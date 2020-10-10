@@ -11179,17 +11179,3 @@ b {
   -webkit-box-orient: vertical;
 }
 
-.images .container {
-  display: flex;
-  width: 100%;
-  margin-right: auto;
-}
-
-.images .card {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-flow: wrap;
-  width: 8rem;
-}
-

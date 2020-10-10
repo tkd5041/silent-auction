@@ -62,10 +62,10 @@ class ImageController extends Controller
                 $images->save();
             }
 
-            Session::flash('success', "Image uploaded successfully!");
+            Session::flash('session', "Image uploaded successfully!");
             return \Redirect::back();
         }
-        Session::flash('success', "Please choose an image.");
+        Session::flash('status', "Please choose an image.");
             return \Redirect::back();
         
     }

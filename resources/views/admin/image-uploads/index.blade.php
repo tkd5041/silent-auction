@@ -7,7 +7,7 @@
             <div class="card-header">{{ __('Manage Images') }}</div>
             <div class="card-body">
                 @if (session('status'))
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-info" role="alert">
                     {{ session('status') }}
                 </div>
                 @endif
@@ -21,7 +21,7 @@
                                 enctype="multipart/form-data" class="m-8" id="image-upload">
                                 @csrf
                                 <div class="text-center">
-                                    <h4 class="text-info">Image Types (jpeg/jpg/png/gif) | 1024MB Max</h4>
+                                    <h4 class="text-info">Image Types (jpeg/jpg/png/gif) | 2048MB Max</h4>
                                 </div>
                                 <div class="form-group text-center">
                                     <label for="image text-primary">Select Image</label>
@@ -66,10 +66,11 @@
                 </div>
             </div>
             <div class="card-footer">
-                <a class="btn btn-outline-primary float-right fa fa-hand-o-left" href="{{ route('admin.items.index') }}"> Go
+                <a class="btn btn-outline-primary float-right fa fa-hand-o-left"
+                    href="{{ route('admin.items.index') }}"> Go
                     Back</a>
-                </div>
             </div>
+        </div>
     </div>
 </div>
 @endsection
