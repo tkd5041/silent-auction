@@ -52,15 +52,45 @@ class ImageController extends Controller
                     'image' => '/images/' . $imageName,
             ]);
 
-            if ($item->image == '') {
+            $images = Images::where('item_id', $id)->first();
+
+            if ($item->image == NULL) {
                 $item->image = "/images/" . $imageName;
                 $item->save();
+                //dd($images, $item);
+                $images->main = true;
+                $images->save();
             }
+
             Session::flash('success', "Image uploaded successfully!");
             return \Redirect::back();
         }
         abort(500, 'Could not upload image.');
         
+    }
+
+    public function primary($id)
+    {
+        // get image and item
+        $image_m = Images::findOrFail($id);
+        $item = Item::findOrFail($image_m->item_id);
+        $images = Images::where('item_id', $item->id)->get();;
+        //dd($image, $item, $item->id, $images);
+
+        // set images to false
+        foreach($images as $image)
+        {
+            $image->main = false;
+            $image->save(); 
+        }
+
+        $image_m->main = true;
+        $image_m->save();
+
+        $item->image = $image_m->image;
+        $item->save();
+
+        return back()->withInput();        
     }
 
     public function destroy($id)
@@ -82,8 +112,6 @@ class ImageController extends Controller
         // delete record from database
         Images::destroy($id);
 
-        // redirect
-        return back()->withInput();
+        return back();
     }
 }
-

@@ -15,12 +15,18 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="donor" class="col-md-2 col-form-label text-md-right">Select Donor</label>
+                            <label for="donor" 
+                                class="col-md-2 col-form-label text-md-right"
+                                data-toggle="tooltip"
+                                data-placement="top" 
+                                title="Required to Save! Do This First!">
+                                Select Donor
+                            </label>
     
                             <div class="input-group col-md-8">
                                 <select id="donor"  class="form-control @error('donor') is-invalid @enderror"
                                     name="donor" required autofocus>
-                                    <option value="">Select Donor</option>
+                                    <option value="">Select Donor (Required to Save Item)</option>
                                     @foreach ($donors as $donor)
                                     <option value="{{ $donor->id }}">{{ $donor->name }}</option>  
                                     @endforeach
@@ -39,11 +45,17 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="title" class="col-md-2 col-form-label text-md-right">Item Title</label>
+                            <label for="title" 
+                                   class="col-md-2 col-form-label text-md-right"
+                                   data-toggle="tooltip"
+                                   data-placement="top" 
+                                   title="Something Catchy">
+                                   Item Title
+                                </label>
     
                             <div class="col-md-8">
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror"
-                                    name="title" required autofocus>
+                                    name="title"  maxlength="40" placeholder="Catchy title, in 40 characters or less!" required autofocus>
     
                                 @error('title')
                                     <span class="invalid-feedback" role="alert">
@@ -54,10 +66,16 @@
                         </div>
     
                         <div class="form-group row">
-                            <label for="description " class="col-md-2 col-form-label text-md-right">Item Description </label>
+                            <label for="description " 
+                                class="col-md-2 col-form-label text-md-right"
+                                data-toggle="tooltip"
+                                data-placement="top" 
+                                title="Colorful Description | Double Enter for Paragraph">
+                                Item Description
+                            </label>
     
                             <div class="col-md-8">
-                                <textarea class="form-control" name="description" id="description" cols="40" rows="5" @error('description') is-invalid @enderror required autofocus></textarea>
+                                <textarea class="form-control @error('value') is-invalid @enderror" name="description" id="description" cols="40" rows="5" placeholder="Colorful Fun Description. Hit [Enter] twice to separate paragraphs..."required autofocus></textarea>
     
                                 @error('description ')
                                     <span class="invalid-feedback" role="alert">
@@ -68,11 +86,17 @@
                         </div>
     
                         <div class="form-group row">
-                            <label for="value" class="col-md-2 col-form-label text-md-right">Item Value</label>
+                            <label for="value" 
+                                class="col-md-2 col-form-label text-md-right"
+                                data-toggle="tooltip"
+                                data-placement="top" 
+                                title="Narrative Value; eg Priceless! (30 characters max)">
+                                Item Value
+                            </label>
     
                             <div class="col-md-8">
                                 <input id="value" type="text" class="form-control @error('value') is-invalid @enderror"
-                                    name="value"  required  autofocus>
+                                    name="value"  maxlength="30" placeholder="Use a narrative value, ie: Priceless, One Of A Kind, etc. (30 characters max)" required  autofocus>
     
                                 @error('value')
                                     <span class="invalid-feedback" role="alert">
@@ -83,7 +107,13 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="retail_value" class="col-md-2 col-form-label text-md-right">Item Retail Value</label>
+                            <label for="retail_value" 
+                                class="col-md-2 col-form-label text-md-right"
+                                data-toggle="tooltip"
+                                data-placement="top" 
+                                title="Actual Retail Value; Numbers only">
+                                Item Retail Value
+                            </label>
     
                             <div class="col-md-8">
                                 <input id="retail_value" type="number" class="form-control @error('retail_value') is-invalid @enderror"
@@ -98,7 +128,13 @@
                         </div>
     
                         <div class="form-group row">
-                            <label for="inital_bid" class="col-md-2 col-form-label text-md-right">Initial Bid Value</label>
+                            <label for="inital_bid" 
+                                class="col-md-2 col-form-label text-md-right"
+                                data-toggle="tooltip"
+                                data-placement="top" 
+                                title="Minimum First Bid; Numbers only">
+                                Initial Bid Value
+                            </label>
     
                             <div class="col-md-8">
                                 <input id="initial_bid" type="number" class="form-control @error('initial_bid') is-invalid @enderror"
@@ -113,7 +149,13 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="increment" class="col-md-2 col-form-label text-md-right">Increment Value</label>
+                            <label for="increment" 
+                                class="col-md-2 col-form-label text-md-right"
+                                data-toggle="tooltip"
+                                data-placement="top" 
+                                title="Minimum Bid Increment; Numbers only">
+                                Increment Value
+                            </label>
     
                             <div class="col-md-8">
                                 <input id="increment" type="number" class="form-control @error('increment') is-invalid @enderror"
@@ -128,11 +170,17 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="notes_for_winner" class="col-md-2 col-form-label text-md-right">Notes For Winner</label>
+                            <label for="notes_for_winner" 
+                                class="col-md-2 col-form-label text-md-right"
+                                data-toggle="tooltip"
+                                data-placement="top" 
+                                title="Pickup Instructions, etc.">
+                                Notes For Winner
+                            </label>
     
                             <div class="col-md-8">
                                 <input id="notes_for_winner" type="text" class="form-control @error('incrnotes_for_winnerement') is-invalid @enderror"
-                                    name="notes_for_winner"  autofocus>
+                                    name="notes_for_winner"  placeholder="Enter notes the winning bidder will need, ie: where or how to obtain the item" autofocus>
     
                                 @error('notes_for_winner')
                                     <span class="invalid-feedback" role="alert">

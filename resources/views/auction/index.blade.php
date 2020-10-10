@@ -4,13 +4,13 @@
 
 <div class="container" id="events">
     <div class="auction-header">
-        <h2>{{ $event->name }}<br><br>
-            <small>Starts: <span class="text-muted">{{ date('D, M j, Y ', strtotime($event->start_date)) }} @ {{ date('g:i A', strtotime($event->start_time)) }} (MST) </span></small><br>
-            <small>Ends: <span class="text-muted">{{ date('D, M j, Y ', strtotime($event->end_date)) }} @ {{ date('g:i A', strtotime($event->end_time)) }} (MST) </span></small>
-        </h2>
+        <h4><b>{{ $event->name }}</b><br><br>
+            <small><b>Starts: </b><span class="text-muted">{{ date('D, M j, Y ', strtotime($event->start_date)) }} @ {{ date('g:i A', strtotime($event->start_time)) }} (MST) </span></small><br>
+            <small><b>Ends: </b><span class="text-muted">{{ date('D, M j, Y ', strtotime($event->end_date)) }} @ {{ date('g:i A', strtotime($event->end_time)) }} (MST) </span></small>
+        </h4>
     </div>
     <div class="auction-header float-right">
-    <h4 id="bidStatus">Time Before Starts:</h4>
+    <b><h4 id="bidStatus">Time Before Starts:</h4><b>
     <div class="row py-2 justify-content-center">
         <div id="clockdiv">
             <div>
@@ -38,7 +38,7 @@
             <div class="col mb-4">
                 <div class="card" style="width: 16rem;">
                     <div class="card-header">
-                        <h5 class="card-title">{{ $item->title}}</h5>
+                        <h5 class="card-title">{{ Str::limit($item->title, 40) }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">(Retail Value: ${{ $item->retail_value }}.00)</h6>
 
                     </div>
@@ -53,27 +53,38 @@
                         @endif
                         <hr />
                         @if($item->current_bid == 0)
-                        <p>Minimum Bid: ${{ $item->initial_bid }}.00</p>
+                        <p><b>Minimum Bid: </b> <span class="text-muted">${{ $item->initial_bid }}.00</span></p>
                         </div> <!-- div card-body -->
-                        <div class="card-footer"  id="view-item">
-                            <div class="my-2 float-right">
-                                <a href="/auction/{{$item->id}}/edit" 
-                                    class="btn btn-outline-primary btn-left fa fa-eye" 
-                                    data-toggle="tooltip"
-                                    data-placement="top" 
-                                    title="View Item">
+                        <div class="card-footer">
+                            <div class="view-description">
+                                <blockquote>
+                                    {{ Str::limit($item->description, 200 ) }}
+                                </blockquote>
+                            </div>
+                            <div class="my-2 float-right view-item">
+                                <a href="/auction/{{$item->id}}/edit"
+                                   class="btn btn-outline-primary btn-left fa fa-eye" 
+                                   data-toggle="tooltip"
+                                   data-placement="top" 
+                                   title="View Item">
                                     View Item
                                 </a>
                             </div>
                         </div>
                         @else
                             <p>
-                                <b>Current Bid: $</b>{{ $item->current_bid }}.00<br>
-                                <b>Minimum Bid: $</b>{{ $item->current_bid + $item->increment }}.00
+                                <b>Current Bid: </b>${{ $item->current_bid }}.00<br>
+                                <b>Bidder: </b>{{ $item->username }}<br>
+                                <b>Minimum Bid: </b>${{ $item->current_bid + $item->increment }}.00
                             </p>
                         </div> <!-- div card-body -->
-                        <div class="card-footer" id="view-item">
-                            <div class="my-2 float-right">
+                        <div class="card-footer">
+                            <div class="view-description">
+                                <blockquote class="description">
+                                    {{ Str::limit($item->description, 200 ) }}
+                                </blockquote>
+                            </div>
+                            <div class="my-2 float-right view-item">
                                 <a href="/auction/{{$item->id}}/edit"
                                    class="btn btn-outline-primary btn-left fa fa-eye" 
                                    data-toggle="tooltip"

@@ -38,6 +38,7 @@ Route::get('/admin/donors/search', 'Admin\DonorController@search');
 Route::get('/admin/items/search', 'Admin\ItemController@search');
 Route::get('/admin/users/search', 'Admin\UsersController@search');
 
+Route::get('/admin/image-uploads/{id}/mp', 'Admin\ImageController@primary')->name('image.primary');
 Route::get('/admin/image-uploads/{id}/edit', 'Admin\ImageController@index')->name('image.upload');
 Route::post('/admin/image-uploads/{id}/edit', 'Admin\ImageController@store')->name('image.add');
 Route::delete('/admin/image-uploads/{id}', 'Admin\ImageController@destroy')->name('image.destroy');

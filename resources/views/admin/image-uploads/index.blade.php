@@ -21,7 +21,7 @@
                                 enctype="multipart/form-data" class="m-8" id="image-upload">
                                 @csrf
                                 <div class="text-center">
-                                    <h4 class="text-info">Image Types (jpeg/jpg/png/gif) | 2048MB Max</h4>
+                                    <h4 class="text-info">Image Types (jpeg/jpg/png/gif) | 1024MB Max</h4>
                                 </div>
                                 <div class="form-group text-center">
                                     <label for="image text-primary">Select Image</label>
@@ -37,25 +37,40 @@
                     <div class="row">
                         @foreach ($images as $image)
                         <div class="col-2 m-3 p-3 border border-info rounded">
-                            <img class="w-100" src="{{ $image->image }}" alt="">
 
-                            <form action="{{ route('admin.image-uploads.destroy', $image->id) }}" method="post"
+                            <a class="btn btn-sm mb-2 
+                                      {{ ($image->main == 1) ? 'btn-primary' : 'btn-outline-secondary' }}"
+                               @if ($image->main == 1)
+                                    href="#"
+                                @else
+                                    href="/admin/image-uploads/{{$image->id}}/mp"
+                                @endif
+                                style="min-width: 80px;">
+                                <small>
+                                    {{ ($image->main == 1) ? 'Primary' : 'Make Primary' }}
+                                </small>
+                            </a>
+                            <form action="{{ route('admin.image-uploads.destroy', $image) }}" method="post"
                                 onsubmit="return confirm('Do you wish to delete this image?')">
                                 @method('DELETE')
                                 @csrf
-                                <input type="hidden" name="image" value="{{ $image->image }}">
                                 <input type="hidden" name="id" value="{{ $image->id }}">
-                                <button class="small btn btn-outline-danger mt-2 w-100">Delete</button>
+                                <input type="hidden" name="item_id" value="{{ $item->id }}">
+                                <button class="small btn btn-sm btn-outline-danger mb-2 w-100">Delete</button>
                             </form>
+                            <hr>
+                            <img class="w-100" src="{{ $image->image }}" alt="">
                         </div>
                         @endforeach
                     </div>
                 </div>
             </div>
-            <div class="card-footer">
-            <a class="btn btn-outline-primary float-right fa fa-hand-o-left"href="{{ route('admin.items.index') }}"> Go Back</a>
-            </div>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-outline-primary float-right fa fa-hand-o-left" href="{{ route('admin.items.index') }}"> Go
+                Back</a>
         </div>
     </div>
+</div>
 </div>
 @endsection

@@ -7,7 +7,9 @@ use Carbon\Carbon;
 use App\Event;
 use App\Auction;
 use App\Item;
+use App\Users;
 use App\Images;
+use DB;
 
 class AuctionController extends Controller
 {
@@ -16,9 +18,16 @@ class AuctionController extends Controller
         
         $event = Event::findOrFail($id);
         $bids = Auction::where('event_id', $id)->latest()->get();
-        $items = Item::where('event_id', $id)
-                       ->orderBy('title', 'ASC')
-                       ->get();
+        $items = DB::table('items')
+                   ->where('items.event_id', '=', $id)
+                   ->LeftJoin('users', 'users.id', '=', 'items.current_bidder')
+                   ->select('items.*', 'users.username')
+                   ->orderBy('title', 'ASC')
+                   ->get();
+        //dd($items);
+        // $items = Item::where('event_id', $id)
+        //                ->orderBy('title', 'ASC')
+        //                ->get();
         
         if ($bids->isEmpty()) {
             $bids = Auction::where('event_id',1)->get();

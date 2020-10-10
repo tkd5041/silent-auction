@@ -11160,3 +11160,36 @@ a .bid {
   max-width: 450px;
 }
 
+b {
+  font-weight: bold;
+  color: #6D0709;
+}
+
+.description {
+  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 16px;
+  /* fallback */
+  max-height: 32px;
+  /* fallback */
+  -webkit-line-clamp: 5;
+  /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.images .container {
+  display: flex;
+  width: 100%;
+  margin-right: auto;
+}
+
+.images .card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-flow: wrap;
+  width: 8rem;
+}
+

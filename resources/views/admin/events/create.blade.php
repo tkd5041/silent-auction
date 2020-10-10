@@ -17,11 +17,12 @@
                 <form action="{{ route('admin.events.store') }}" method="POST">
                     @csrf
                     <div class="form-group row">
-                        <label for="name" class="col-md-2 col-form-label text-md-right">Event Name</label>
+                        <label for="name" 
+                               class="col-md-2 col-form-label text-md-right">Event Name</label>
 
                         <div class="col-md-6">
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                                name="name" required autofocus>
+                                name="name" maxlength="40" placeholder="Limit 40 Characters" required autofocus>
 
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
