@@ -3,16 +3,16 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-10">
+        @if(session('status'))
+        <div class="alert alert-info" role="alert">
+            {{ session('status') }}
+        </div>
+        @endif
         <div class="card">
             <div class="card-header text-center">
                 <h2>{{ $item->title }}</h2>
             </div>
             <div class="card-body">
-                @if(session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
-                </div>
-                @endif
                 <div>
                     <blockquote>{{ $item->description }}</blockquote>
                     @if($images->isEmpty())
@@ -38,29 +38,29 @@
                         <h5><small>(Retail Value: ${{ $item->retail_value }}.00)</small></h5>
                     </div>
                     <div class="bid-group">
-                    <hr />
-                    <div class="container mb-3">
-                        <div class="row mb-3">
-                            <div id="clockdiv">
-                                <div>
-                                    <span class="days"></span>
-                                    <div class="smalltext">Days</div>
-                                </div>
-                                <div>
-                                    <span class="hours"></span>
-                                    <div class="smalltext">Hours</div>
-                                </div>
-                                <div>
-                                    <span class="minutes"></span>
-                                    <div class="smalltext">Minutes</div>
-                                </div>
-                                <div>
-                                    <span class="seconds"></span>
-                                    <div class="smalltext">Seconds</div>
+                        <hr />
+                        <div class="container mb-3">
+                            <div class="row mb-3">
+                                <div id="clockdiv">
+                                    <div>
+                                        <span class="days"></span>
+                                        <div class="smalltext">Days</div>
+                                    </div>
+                                    <div>
+                                        <span class="hours"></span>
+                                        <div class="smalltext">Hours</div>
+                                    </div>
+                                    <div>
+                                        <span class="minutes"></span>
+                                        <div class="smalltext">Minutes</div>
+                                    </div>
+                                    <div>
+                                        <span class="seconds"></span>
+                                        <div class="smalltext">Seconds</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                         @if($item->current_bid > $item->initial_bid)
                         <div>
                             <h5>Current Bid: <i class="fa fa-usd" aria-hidden="true"></i>{{ $item->current_bid }}.00
@@ -82,6 +82,9 @@
                             {{ method_field('PUT') }}
                             <input type="hidden" name="id" value="{{ $item->id}}">
                             <input type="hidden" name="title" value="{{ $item->title}}">
+                            <input type="hidden" name="min_bid" value="{{ $item->current_bid + $item->increment }}">
+                            <input type="hidden" name="cur_bid" value="{{ $item->current_bid }}">
+
                             <div class="input-group mb-3 bid">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
