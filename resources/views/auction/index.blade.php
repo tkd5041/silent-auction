@@ -94,7 +94,7 @@
                     </div>
                     @endif
                     @if($item->sold)
-                    <div class="justify-contents-center sold">
+                    <div class="text-center sold">
                         <img class="sold" src="/img/sold-stamp.png" alt="item sold">
                     </div>
                     @endif
