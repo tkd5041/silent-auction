@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Twilio\Rest\Client;
 use Carbon\Carbon;
 use App\Event;
 use App\Auction;
@@ -113,27 +114,30 @@ class AuctionController extends Controller
         // send a mail notification
         if($item->current_bidder > 0)
         {
-            $to = $cb->email;
+            $sid    = env( 'TWILIO_SID' );
+            $token  = env( 'TWILIO_TOKEN' );
+            $client = new Client( $sid, $token );
+            $number = $cb->phone;
+            $message = "You have been outbid on item " . $item->title . ". https://silent-auction.test/auction/" . $item->id . "/edit";
+            //dd($sid, $token, $client, $number, $message);
+            $client->messages->create(
+                $number,
+                [
+                    'from' => env( 'TWILIO_FROM' ),
+                    'body' => $message,
+                ]
+            );
+
+            $email = $cb->email;
             $subject = "Pal-Auction Outbid Notice";
-            $message = 
-                "
-                <html>
-                <head>
-                <title> Outbid Notice </title>
-                </head>
-                <body>" .
-                $cb->username . ",<br>
-                You have been outbid on item:<br>
-                <blockquote>" . $item->title . "</blockquote>
-                Pal-Auction
-                </body>
-                </html>
-                ";
+            $message = "<html><head><title> pal-auction Outbid Notice </title></head><body>" . 
+                $cb->username . "!<br><br>You have been outbid on item:<blockquote><a href='https:pal-auction.org/acution/" . 
+                $item->id . "/edit'>" . $item->title . "</a></blockquote>Pal-Auction</body></html>";
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: <no-reply@pal-auction.org>' . "\r\n";
-            
-            mail($to,$subject,$message,$headers);
+            //dd($email, $message);
+            mail($email,$subject,$message,$headers);
         }
         
         //dd($user, $event, $item);

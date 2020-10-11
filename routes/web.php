@@ -24,6 +24,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::view('/bulksms', 'bulksms')->middleware('can:manage-users');
+Route::post('/bulksms', 'BulkSmsController@sendSms')->middleware('auth');
+
 Route::get('/pay/{id}/edit', 'PayController@edit')->middleware('auth')->name('pay.edit');
 Route::get('/pay/{id}/response', 'PayController@response')->middleware('auth')->name('pay.response');
 Route::get('/pay/checkout', 'PayController@checkout')->middleware('auth')->name('pay.checkout');
