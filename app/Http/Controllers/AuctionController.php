@@ -118,7 +118,7 @@ class AuctionController extends Controller
             $token  = env( 'TWILIO_TOKEN' );
             $client = new Client( $sid, $token );
             $number = $cb->phone;
-            $message = "You have been outbid on item " . $item->title . ". https://silent-auction.test/auction/" . $item->id . "/edit";
+            $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/auction/" . $item->id . "/edit";
             //dd($sid, $token, $client, $number, $message);
             $client->messages->create(
                 $number,
