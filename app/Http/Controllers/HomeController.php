@@ -28,13 +28,13 @@ class HomeController extends Controller
         {
             $events = Event::where('id','>', 1)
                             ->where('active', 1)
-                            ->orderBy('start_date')
+                            ->orderBy('start')
                             ->get();
         } 
         else 
         {
             $events = Event::where('id','>', 1)
-                            ->orderBy('start_date')
+                            ->orderBy('start')
                             ->get();
         }
         //dd($events);
@@ -42,7 +42,7 @@ class HomeController extends Controller
         if ($events->isEmpty()) 
         {
             $events = Event::where('id', 1)
-                            ->orderBy('start_date')
+                            ->orderBy('start')
                             ->get();
             $firstDate = Carbon::now()->addDays(1)->toDateTimeLocalString();
             //dd($events, $firstDate);
@@ -59,7 +59,7 @@ class HomeController extends Controller
         if (empty($first)) {
             $firstDate = Carbon::now()->addDays(1)->toDateTimeLocalString();
         } else {
-            $firstDate = $first->start_date . ' ' . $first->start_time;
+            $firstDate = $first->start;
         }              
         //dd($first, $firstDate);
         return view('home')->with([

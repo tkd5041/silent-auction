@@ -11179,3 +11179,7 @@ b {
   -webkit-box-orient: vertical;
 }
 
+.card {
+  min-width: 150px;
+}
+

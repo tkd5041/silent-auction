@@ -27,6 +27,7 @@ class CreateItemsTable extends Migration
             $table->text('image')->nullable();
             $table->BigInteger('current_bidder')->nullable();
             $table->integer('current_bid')->nullable();
+            $table->timestamp('end_time')->nullable();
             $table->boolean('sold');
             $table->boolean('paid');
             $table->text('notes_for_winner', 512);

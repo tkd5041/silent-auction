@@ -39,10 +39,10 @@ class EventController extends Controller
         $event = new Event();
 
         $event->name = request('name');
-        $event->start_date = request('start_date');
-        $event->start_time = request('start_time');
-        $event->end_date = request('end_date');
-        $event->end_time = request('end_time');
+        //$event->start_date = request('start_date');
+        //$event->start_time = request('start_time');
+        //$event->end_date = request('end_date');
+        //$event->end_time = request('end_time');
         $event->start = request('start_date') . ' ' . request('start_time');
         $event->end = request('end_date') . ' ' . request('end_time');
         $event->active = 0;

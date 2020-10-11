@@ -18,6 +18,7 @@ class CreateImagesTable extends Migration
             $table->bigInteger('event_id')->unsigned();
             $table->bigInteger('item_id')->unsigned();
             $table->string('image')->nullable();
+            $table->boolean('main')->default(false);
             $table->tinyInteger('order')->unsigned()->default(0);
             $table->timestamps();
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');

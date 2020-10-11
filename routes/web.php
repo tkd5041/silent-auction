@@ -31,6 +31,7 @@ Route::post('/pay/stripe', 'PayController@stripe')->middleware('auth')->name('pa
 Route::get('/pay', 'PayController@index')->name('pay.index');
 
 Route::put('/auction/{id}/bid', 'AuctionController@bid')->middleware('auth')->middleware('auth')->name('auction.bid');
+Route::get('/auction/{id}/monitor', 'AuctionController@monitor')->middleware('auth')->middleware('auth')->name('auction.monitor');
 Route::get('/auction/{id}/edit', 'AuctionController@edit')->middleware('auth')->name('auction.edit');
 Route::get('/auction/{id}', 'AuctionController@index')->middleware('auth')->name('auction');
 
