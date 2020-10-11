@@ -51,9 +51,10 @@ class HomeController extends Controller
                 'firstDate' => $firstDate,           
                 ]);
         }
-
+        $now = Carbon::now();
         $first = Event::where('id','>', 1)
                         ->where('active', 1)
+                        ->where('start', '>=', $now )
                         ->first();
         //dd($first);
         if (empty($first)) {
