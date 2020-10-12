@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-12">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
@@ -118,9 +118,7 @@
                 @yield('content')
             </div>
         </main>
-        <div id="demo1"></div>
-        <div id="demo2"></div>
-        <div id="demo3"></div>
+
     </div>
     <!--script src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
@@ -138,78 +136,11 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
     </script>
-    <script>
-    function getTimeRemaining(endtime) {
-        var t = Date.parse(endtime) - Date.parse(new Date());
-        var seconds = Math.floor((t / 1000) % 60);
-        var minutes = Math.floor((t / 1000 / 60) % 60);
-        var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-        var days = Math.floor(t / (1000 * 60 * 60 * 24));
-        return {
-            'total': t,
-            'days': days,
-            'hours': hours,
-            'minutes': minutes,
-            'seconds': seconds
-        };
-    }
+    <script src="https://cdn.tiny.cloud/1/j4v9nbg5ep2dediec74yzc70bmzlo02cjvyvva2t13fxjdv6/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
 
-    function initializeClock(id, endtime) {
-        var clock = document.getElementById(id);
-        var daysSpan = clock.querySelector('.days');
-        var hoursSpan = clock.querySelector('.hours');
-        var minutesSpan = clock.querySelector('.minutes');
-        var secondsSpan = clock.querySelector('.seconds');
-
-        function updateClock() {
-            var t = getTimeRemaining(endtime);
-
-            daysSpan.innerHTML = t.days;
-            hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-            minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-            secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-            if (t.total <= 0) {
-                clearInterval(timeinterval);
-                location.reload();
-            }
-        }
-
-        updateClock();
-        var timeinterval = setInterval(updateClock, 1000);
-    }
-
-    var dNow = {
-        {
-            $dt_now
-        }
-    };
-    var dStart = {
-        {
-            $dt_st
-        }
-    };
-    var dEnd = {
-        {
-            $dt_sp
-        }
-    };
-
-    if (dNow < dStart) {
-        var deadline = new Date(Date.parse('{{ $bids_start }}'));
-        $('.bid-group').remove();
-    } else if (dNow > dStart && dNow < dEnd) {
-        var deadline = new Date(Date.parse('{{ $bids_end }}'));
-    } else {
-        $('.bid-group').remove();
-        window.location = "https://silent-auction.test/auction/{{ $item->event_id }}";
-    }
-
-    initializeClock('clockdiv', deadline);
-    </script>
+    
 
 </body>
-
-
 
 </html>

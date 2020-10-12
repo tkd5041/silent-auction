@@ -15,8 +15,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    
-    
+
+
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
@@ -30,7 +30,7 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img class="nav-img image-fluid" src="../../../img/sa-words.png" alt="silent auction">
                     @if(session('event_name'))
-                        <span class="current_event">➢ {{ session('event_name') }}</span>
+                    <span class="current_event">➢ {{ session('event_name') }}</span>
                     @endif
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -49,62 +49,59 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                    href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if(Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link"
-                                        href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                        @if(Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                        @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a href="{{ route('home') }}" class="dropdown-item">
+                                    Home
+                                </a>
+                                @if(session('selected_event'))
+                                <a href="{{ route('auction', session('selected_event')) }}" class="dropdown-item">
+                                    Auction
+                                </a>
+                                @endif
+
+                                @can('manage-users')
+                                <a href="{{ route('admin.donors.index') }}" class="dropdown-item">
+                                    Donors
+                                </a>
+                                <a href="{{ route('admin.events.index') }}" class="dropdown-item">
+                                    Events
+                                </a>
+                                <a href="{{ route('admin.items.index') }}" class="dropdown-item">
+                                    Items
+                                </a>
+                                <a href="{{ route('admin.users.index') }}" class="dropdown-item">
+                                    Users
+                                </a>
+                                <a href="{{ route('sms.index') }}" class="dropdown-item">
+                                    SMS
+                                </a>
+                                @endcan
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a href="{{ route('home') }}" class="dropdown-item">
-                                        Home
-                                    </a>
-                                    @if(session('selected_event'))
-                                        <a href="{{ route('auction', session('selected_event')) }}" class="dropdown-item">
-                                            Auction
-                                        </a>
-                                     @endif
-
-                                    @can('manage-users')
-                                        <a href="{{ route('admin.donors.index') }}"
-                                            class="dropdown-item">
-                                            Donors
-                                        </a>
-                                        <a href="{{ route('admin.events.index') }}"
-                                            class="dropdown-item">
-                                            Events
-                                        </a>
-                                        <a href="{{ route('admin.items.index') }}"
-                                            class="dropdown-item">
-                                            Items
-                                        </a>
-                                        <a href="{{ route('admin.users.index') }}"
-                                            class="dropdown-item">
-                                            Users
-                                        </a>
-                                    @endcan
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}"
-                                        method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                         @endguest
                     </ul>
                 </div>
@@ -121,70 +118,68 @@
                 @yield('content')
             </div>
         </main>
-        
+
     </div>
-        <!--script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    <!--script src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
         </script-->
-        <script src="{{ asset('js/app.js') }}"></script>
-        
-        <script>
-            $(".alert").fadeTo(5000, 750).slideUp(750, function () {
-                $(".alert").slideUp(750);
-            });
+    <script src="{{ asset('js/app.js') }}"></script>
 
-        </script>
+    <script>
+    $(".alert").fadeTo(5000, 750).slideUp(750, function() {
+        $(".alert").slideUp(750);
+    });
+    </script>
 
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip();
-            });
+    <script>
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
+    <script>
+    function getTimeRemaining(endtime) {
+        var t = Date.parse(endtime) - Date.parse(new Date());
+        var seconds = Math.floor((t / 1000) % 60);
+        var minutes = Math.floor((t / 1000 / 60) % 60);
+        var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+        var days = Math.floor(t / (1000 * 60 * 60 * 24));
+        return {
+            'total': t,
+            'days': days,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
+        };
+    }
 
-        </script>
-        <script>
-            function getTimeRemaining(endtime) {
-                var t = Date.parse(endtime) - Date.parse(new Date());
-                var seconds = Math.floor((t / 1000) % 60);
-                var minutes = Math.floor((t / 1000 / 60) % 60);
-                var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-                var days = Math.floor(t / (1000 * 60 * 60 * 24));
-                return {
-                    'total': t,
-                    'days': days,
-                    'hours': hours,
-                    'minutes': minutes,
-                    'seconds': seconds
-                };
-                }
+    function initializeClock(id, endtime) {
+        var clock = document.getElementById(id);
+        var daysSpan = clock.querySelector('.days');
+        var hoursSpan = clock.querySelector('.hours');
+        var minutesSpan = clock.querySelector('.minutes');
+        var secondsSpan = clock.querySelector('.seconds');
 
-                function initializeClock(id, endtime) {
-                var clock = document.getElementById(id);
-                var daysSpan = clock.querySelector('.days');
-                var hoursSpan = clock.querySelector('.hours');
-                var minutesSpan = clock.querySelector('.minutes');
-                var secondsSpan = clock.querySelector('.seconds');
+        function updateClock() {
+            var t = getTimeRemaining(endtime);
 
-                function updateClock() {
-                    var t = getTimeRemaining(endtime);
+            daysSpan.innerHTML = t.days;
+            hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+            minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+            secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 
-                    daysSpan.innerHTML = t.days;
-                    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-                    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-                    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+            if (t.total <= 0) {
+                clearInterval(timeinterval);
+            }
+        }
 
-                    if (t.total <= 0) {
-                    clearInterval(timeinterval);
-                    }
-                }
+        updateClock();
+        var timeinterval = setInterval(updateClock, 1000);
+    }
+    var deadline = new Date(Date.parse('{{ $firstDate }}'));
 
-                updateClock();
-                var timeinterval = setInterval(updateClock, 1000);
-                }
-                var deadline = new Date(Date.parse('{{ $firstDate }}'));
-                
-                initializeClock('clockdiv', deadline);
-        </script>
-        
+    initializeClock('clockdiv', deadline);
+    </script>
+
 </body>
 
 

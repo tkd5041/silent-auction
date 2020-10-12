@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.item')
 
 @section('content')
     <div class="row justify-content-center">
@@ -75,7 +75,7 @@
                             </label>
     
                             <div class="col-md-8">
-                                <textarea class="form-control @error('value') is-invalid @enderror" name="description" id="description" cols="40" rows="5" placeholder="Colorful Fun Description. Hit [Enter] twice to separate paragraphs..."required autofocus></textarea>
+                                <textarea class="form-control @error('value') is-invalid @enderror" name="description" id="description" cols="40" rows="5" placeholder="Colorful Fun Description."required autofocus></textarea>
     
                                 @error('description ')
                                     <span class="invalid-feedback" role="alert">

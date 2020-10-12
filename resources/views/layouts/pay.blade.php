@@ -107,6 +107,9 @@
                                 <a href="{{ route('admin.users.index') }}" class="dropdown-item">
                                     Users
                                 </a>
+                                <a href="{{ route('sms.index') }}" class="dropdown-item">
+                                    SMS
+                                </a>
                                 @endcan
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

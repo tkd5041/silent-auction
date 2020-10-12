@@ -22,7 +22,8 @@ class EventController extends Controller
         {
             return redirect(route('admin.events.index'));
         }
-
+        $event->start = Carbon::parse($event->start)->format('m-d-Y h:i');
+        $event->end = Carbon::parse($event->end)->format('m-d-Y h:i');
         return view('admin.events.edit')->with([
             'event' => $event,
         ]);
@@ -39,12 +40,8 @@ class EventController extends Controller
         $event = new Event();
 
         $event->name = request('name');
-        //$event->start_date = request('start_date');
-        //$event->start_time = request('start_time');
-        //$event->end_date = request('end_date');
-        //$event->end_time = request('end_time');
-        $event->start = request('start_date') . ' ' . request('start_time');
-        $event->end = request('end_date') . ' ' . request('end_time');
+        $event->start = request('start');
+        $event->end = request('end');
         $event->active = 0;
 
         if($event->save()){
@@ -59,13 +56,8 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         $event->name = $request->name;
-        $event->start_date = $request->start_date;
-        $event->start_time = $request->start_time;
-        $event->end_date = $request->end_date;
-        $event->end_time = $request->end_time;
-        $event->active = $request->active;
-        $event->start = request('start_date') . ' ' . request('start_time');
-        $event->end = request('end_date') . ' ' . request('end_time');
+        $event->start = request('start');
+        $event->end = request('end');
 
         if($event->save()){
             $request->session()->flash('success', $event->name . ' has been updated');

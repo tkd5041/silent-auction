@@ -114,19 +114,26 @@ class AuctionController extends Controller
         // send a mail notification
         if($item->current_bidder > 0)
         {
-            $sid    = env( 'TWILIO_SID' );
-            $token  = env( 'TWILIO_TOKEN' );
+            $sid    = env( 'TWILIO_ACCOUNT_SID' );
+            $token  = env( 'TWILIO_AUTH_TOKEN' );
             $client = new Client( $sid, $token );
+
             $number = $cb->phone;
-            $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/auction/" . $item->id . "/edit";
-            //dd($sid, $token, $client, $number, $message);
-            $client->messages->create(
-                $number,
-                [
-                    'from' => env( 'TWILIO_FROM' ),
-                    'body' => $message,
-                ]
-            );
+            $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
+
+                // if number has no error codes then send the message
+            if ( ! $phone->carrier['error_code'] ) {
+                $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/auction/" . $item->id . "/edit";
+                //dd($sid, $token, $client, $number, $message);
+                $client->messages->create(
+                    $number,
+                    [
+                        'from' => env( 'TWILIO_FROM' ),
+                        'body' => $message,
+                    ]
+                );
+
+            }
 
             $email = $cb->email;
             $subject = "Pal-Auction Outbid Notice";

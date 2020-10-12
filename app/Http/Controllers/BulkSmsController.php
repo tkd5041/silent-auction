@@ -10,41 +10,60 @@ class BulkSmsController extends Controller
 {
     public function sendSms( Request $request )
     {
-       // Your Account SID and Auth Token from twilio.com/console
-       $sid    = env( 'TWILIO_SID' );
-       $token  = env( 'TWILIO_TOKEN' );
-       $client = new Client( $sid, $token );
+        // Your Account SID and Auth Token from twilio.com/console
+        $sid    = env( 'TWILIO_ACCOUNT_SID' );
+        $token  = env( 'TWILIO_AUTH_TOKEN' );
+        $client = new Client( $sid, $token );
 
-       $validator = Validator::make($request->all(), [
-           'numbers' => 'required',
-           'message' => 'required'
-       ]);
+        // Validate data from form
+        $validator = Validator::make($request->all(), [
+            'numbers' => 'required',
+            'message' => 'required',
+            'pin' => 'required',
+        ]);
+        
+        if ( $validator->passes() ) 
+        { // if-1
 
-       if ( $validator->passes() ) {
+            // set variables for cycle
+            $numbers_in_arrays = explode( ',' , $request->input( 'numbers' ) );
+            $message = $request->input( 'message' );
+            $pin = $request->input( 'pin' );
+            $count = 0;
+            
+            // check pin for authorization
+            if ( $pin != 11225 ) {
+                return back()->with( 'error', " Invalid PIN" );
+            }
 
-           $numbers_in_arrays = explode( ',' , $request->input( 'numbers' ) );
+            // begin checking numbers and sending messages
+            foreach( $numbers_in_arrays as $number )
+            { // foreach
+                // check if number is valid
+                $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
 
-           $message = $request->input( 'message' );
-           $count = 0;
+                // if number has no error codes then send the message
+                if ( ! $phone->carrier['error_code'] ) 
+                { // if-2
+                    $count ++;
 
-           foreach( $numbers_in_arrays as $number )
-           {
-               $count++;
+                    $client->messages->create(
+                        $number,
+                        [
+                            'from' => env( 'TWILIO_FROM' ),
+                            'body' => $message,
+                        ]
+                        );
+                } // if-2
 
-               $client->messages->create(
-                   $number,
-                   [
-                       'from' => env( 'TWILIO_FROM' ),
-                       'body' => $message,
-                   ]
-               );
-           }
+            } // foreach
+            return back()->with( 'success', $count . " message/s sent!" );
+        } // if-1
+        else
+        { // else
+            return back()->withErrors( $validator );
+        } // else 
+        
+    } // function
 
-           return back()->with( 'success', $count . " messages sent!" );
-              
-       } else {
-           return back()->withErrors( $validator );
-       }
-   }
-
-}
+} // class
