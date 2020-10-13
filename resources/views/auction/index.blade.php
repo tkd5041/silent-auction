@@ -70,6 +70,11 @@
                                 View Item
                             </a>
                         </div>
+                        @if($item->sold && $dt_now > $bids_end)
+                        <div class="text-center sold">
+                            <h3 class="text-info">Item Closed</h3>
+                        </div>
+                        @endif
                     </div>
                     @else
                     <p>
@@ -85,25 +90,24 @@
                             {{ Str::limit($item->description, 200 ) }}
                         </blockquote>
                     </div>
-                    @if(!$item->sold)
-                    <div class="my-2 float-right view-item">
+                    @if(!$item->sold && $dt_now < $bids_end) <div class="my-2 float-right view-item">
                         <a href="/auction/{{$item->id}}/edit" class="btn btn-outline-primary btn-left fa fa-eye"
                             data-toggle="tooltip" data-placement="top" title="View Item">
                             View Item
                         </a>
-                    </div>
-                    @endif
-                    @if($item->sold)
-                    <div class="text-center sold">
-                        <img class="sold" src="/img/sold-stamp.png" alt="item sold">
-                    </div>
-                    @endif
+                </div>
+                @endif
+                @if($item->sold)
+                <div class="text-center sold">
+                    <img class="sold" src="/img/sold-stamp.png" alt="item sold">
                 </div>
                 @endif
             </div>
+            @endif
         </div>
-        @endforeach
     </div>
+    @endforeach
+</div>
 </div>
 
 </div>
