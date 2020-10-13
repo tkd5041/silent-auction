@@ -21,23 +21,27 @@ class PayController extends Controller
         $user   = Auth::user();
         $event  = Event::findOrFail($id);
         $items  = Item::where('event_id', session('selected_event'))
-                     ->where('current_bidder', $user->id)
-                     ->where('sold', 1)
-                     ->where('paid', 0)
-                     ->get();
+                      ->where('current_bidder', $user->id)
+                      ->where('sold', 1)
+                      ->get();
 
         $total  = Item::where('event_id', session('selected_event'))
                      ->where('current_bidder', $user->id)
                      ->where('sold', 1)
-                     ->where('paid', 0)
                      ->sum('current_bid');
 
+        $paid   =  Item::where('event_id', session('selected_event'))
+                        ->where('current_bidder', $user->id)
+                        ->where('paid', 1)
+                        ->sum('paid'); 
+
         
-        //dd($event, $items, $total);
+        //dd($event, $items, $total, $paid);
         return view('pay.edit',)->with([
             'event' => $event,
             'items' => $items, 
-            'total' => $total
+            'total' => $total,
+            'paid'  => $paid
             ]);
 
     }
@@ -71,9 +75,16 @@ class PayController extends Controller
         $items  = Item::where('event_id', $id)
                      ->where('current_bidder', $user->id)
                      ->where('sold', 1)
-                     ->where('paid', 0)
                      ->get();
+        $total  = Item::where('event_id', session('selected_event'))
+                     ->where('current_bidder', $user->id)
+                     ->where('sold', 1)
+                     ->sum('current_bid');
 
+        $paid   =  Item::where('event_id', session('selected_event'))
+                     ->where('current_bidder', $user->id)
+                     ->where('paid', 1)
+                     ->sum('paid'); 
         //dd($user, $event, $items);
         foreach($items as $item)
         {
@@ -81,7 +92,20 @@ class PayController extends Controller
             $item->save();
         }
         
-        return redirect()->back()->with('message', 'Thank You For Your Payment!');
+        $paid   =  Item::where('event_id', session('selected_event'))
+                        ->where('current_bidder', $user->id)
+                        ->where('paid', 1)
+                        ->sum('paid'); 
+
+        session()->flash('success', 'Thank you for your payment!');
+
+        return view('pay.edit',)->with([
+            'event' => $event,
+            'items' => $items, 
+            'total' => $total,
+            'paid' => $paid,
+            ]);
+        //return redirect()->back()->with('message', 'Thank You For Your Payment!');
     }
 
 }
