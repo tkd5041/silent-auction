@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Donor;
+use App\Event;
 use App\Item;
 
 class ItemController extends Controller
@@ -48,10 +49,12 @@ class ItemController extends Controller
         $donors = Donor::where('event_id', session('selected_event'))
                 ->orderBy('name')
                 ->get();
+        
         return view('admin.items.create')->with(['donors' => $donors]);
     }
 
     public function store() {
+        $event = Event::findOrFail(session('selected_event'));
 
         $item = new Item();
 
@@ -65,6 +68,7 @@ class ItemController extends Controller
         $item->increment = request('increment');
         $item->current_bidder = 0;
         $item->current_bid = 0;
+        $item->end_time = $event->end;
         $item->sold = false;
         $item->paid = false;
         $item->notes_for_winner = request('notes_for_winner');
@@ -81,6 +85,8 @@ class ItemController extends Controller
 
     public function update(Request $request, Item $item)
     {
+        $event = Event::findOrFail(session('selected_event'));
+
         $item->event_id = session('selected_event');
         $item->donor_id = request('donor');
         $item->title = request('title');
@@ -89,6 +95,7 @@ class ItemController extends Controller
         $item->retail_value = request('retail_value');
         $item->initial_bid = request('initial_bid');
         $item->increment = request('increment');
+        $item->end_time = $event->end;
         $item->notes_for_winner = request('notes_for_winner');
 
         if($item->save()){

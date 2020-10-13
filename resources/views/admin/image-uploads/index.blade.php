@@ -21,7 +21,7 @@
                                 enctype="multipart/form-data" class="m-8" id="image-upload">
                                 @csrf
                                 <div class="text-center">
-                                    <h4 class="text-info">Image Types (jpeg/jpg/png/gif) | 2048MB Max</h4>
+                                    <h4 class="text-info">Image Types (jpeg/jpg/png/gif) | 4096KB Max</h4>
                                 </div>
                                 <div class="form-group text-center">
                                     <label for="image text-primary">Select Image</label>

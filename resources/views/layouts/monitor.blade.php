@@ -173,12 +173,10 @@
                     secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
                     
                     
-                    if (t.total <= 1) {
-                        clearInterval(timeinterval);
-                        setTimeout(function(){ 
-                            alert("Auction Closed"); 
-                            location.reload();
-                        }, 1000);
+
+                    if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                    location.reload();
                     }
                 }
 
@@ -194,20 +192,15 @@
                 {
                     var deadline = new Date(Date.parse('{{ $bids_start }}'));
                     document.getElementById("bidStatus").innerHTML = "Time Until Bidding Starts:";
-                    $('.view-item').remove();
                 }
                 else if (dNow > dStart && dNow < dEnd)
                 {
                     var deadline = new Date(Date.parse('{{ $bids_end }}'));
                     document.getElementById("bidStatus").innerHTML = "Time Until Bidding Ends:";
-                    $('.view-description').remove();
                 } else
                 {
                     document.getElementById("bidStatus").innerHTML = "Bidding Closed:";
                     document.getElementById("clockdiv").innerHTML = "<a href='/pay/{{ $event->id }}/edit' class='btn btn-primary'>Pay Now</a>";
-                    $('.view-item').remove();
-                    $('.view-description').remove();
-                    
                 }
                 
                 initializeClock('clockdiv', deadline);

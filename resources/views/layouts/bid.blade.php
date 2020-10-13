@@ -171,7 +171,10 @@
 
             if (t.total <= 0) {
                 clearInterval(timeinterval);
-                location.reload();
+                setTimeout(function(){ 
+                    alert("Auction Closed"); 
+                    location.reload();
+                }, 1000);
             }
         }
 
@@ -179,21 +182,9 @@
         var timeinterval = setInterval(updateClock, 1000);
     }
 
-    var dNow = {
-        {
-            $dt_now
-        }
-    };
-    var dStart = {
-        {
-            $dt_st
-        }
-    };
-    var dEnd = {
-        {
-            $dt_sp
-        }
-    };
+    var dNow = {{$dt_now}};
+    var dStart = {{$dt_st}};
+    var dEnd = {{$dt_sp}};
 
     if (dNow < dStart) {
         var deadline = new Date(Date.parse('{{ $bids_start }}'));

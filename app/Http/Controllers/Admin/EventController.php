@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Event;
+use App\Item;
 
 class EventController extends Controller
 {
@@ -55,9 +56,20 @@ class EventController extends Controller
 
     public function update(Request $request, Event $event)
     {
-        $event->name = $request->name;
+        // get related items so they can be saved
+        $items = Item::where('event_id',$event->id)->get();
+        
+        $event->name = request('name');
         $event->start = request('start');
         $event->end = request('end');
+        $event->active = request('active');
+        //dd($items, $event);
+
+        foreach($items as $item)
+        {
+            $item->end_time = $event->end;
+            $item->save();
+        }
 
         if($event->save()){
             $request->session()->flash('success', $event->name . ' has been updated');

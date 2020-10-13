@@ -38,7 +38,7 @@ class ImageController extends Controller
 
         if ($request->hasFile('image')) {
             $validated = $request->validate([
-                'image' => 'mimes:jpeg,jpeg,png,gif|max:2048',
+                'image' => 'mimes:jpeg,jpeg,png,gif|max:4096',
             ]);
             $basename = Str::random();
             $extension = $request->image->extension();

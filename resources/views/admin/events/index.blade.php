@@ -22,10 +22,8 @@
                         <tr>
                             <th scope="col" style="text-align: center">#</th>
                             <th scope="col" style="text-align: center">Name</th>
-                            <th scope="col" style="text-align: center">Start Date</th>
-                            <th scope="col" style="text-align: center">Start Time</th>
-                            <th scope="col" style="text-align: center">End Date</th>
-                            <th scope="col" style="text-align: center">End Time</th>
+                            <th scope="col" style="text-align: center">Start</th>
+                            <th scope="col" style="text-align: center">End</th>
                             <th scope="col" style="text-align: center">Active</th>
                             <th scope="col" style="text-align: center" class="actions">Actions</th>
                         </tr>
@@ -35,10 +33,8 @@
                         <tr>
                             <th scope="row" style="text-align: center">{{ $event->id }}</th>
                             <td style="text-align: center">{{ $event->name }}</td>
-                            <td style="text-align: center">{{ $event->start_date }}</td>
-                            <td style="text-align: center">{{ $event->start_time }}</td>
-                            <td style="text-align: center">{{ $event->end_date }}</td>
-                            <td style="text-align: center">{{ $event->end_time }}</td>
+                            <td style="text-align: center">{{ $event->start }}</td>
+                            <td style="text-align: center">{{ $event->end }}</td>
                             <td style="text-align: center">
                                 <div
                                     class="text-center
