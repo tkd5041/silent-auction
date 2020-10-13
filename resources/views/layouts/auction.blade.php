@@ -27,9 +27,13 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="https://pal-auction.org/home">
                     <img class="nav-img image-fluid" src="../../../img/sa-words.png" alt="silent auction">
-                    @if(session('event_name'))
+                    @if(!session('event_name'))
+                    <script type="text/javascript">
+                        window.location = "{ url('/home') }";//here double curly bracket
+                    </script>
+                    @else
                         <span class="current_event">➢ {{ session('event_name') }}</span>
                     @endif
                 </a>

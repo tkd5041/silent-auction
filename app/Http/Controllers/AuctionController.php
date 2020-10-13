@@ -15,6 +15,8 @@ use DB;
 
 class AuctionController extends Controller
 {
+
+// INDEX    
     public function index($id)
     {
         
@@ -62,21 +64,56 @@ class AuctionController extends Controller
         
     }
 
+ // EDIT
     public function edit($id)
     {
+        $event = Event::findOrFail(session('selected_event'));
+        //dd($event);
         $item = Item::findOrFail($id);
         $images = Images::where('item_id', $id)->get();
-               
+        
+        $bids_start = session('bids_start');
+        $bids_end = session('bids_end');
+        $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
+        $dt_st = Carbon::parse($bids_start)->timestamp;
+        $dt_sp = Carbon::parse($bids_end)->timestamp;
+        
+        // sdd($item, $images);
+        return view('auction.edit')->with([
+            '$event' => $event,
+            'item' => $item, 
+            'images' => $images,
+            'bids_start' => $bids_start,
+            'bids_end' => $bids_end,
+            'dt_now' => $dt_now,
+            'dt_st' => $dt_st,
+            'dt_sp' => $dt_sp,
+            ]);
+        }
+        
+// LIST
+    public function list($id)
+    {
+        $event = Event::findOrFail($id);
+        $items = DB::table('items')
+                    ->where('items.event_id', '=', $id)
+                    ->orderBy('title', 'ASC')
+                    ->get();
+
+        // get all the fresh auction time information
+        session(['selected_event' => $id]);
+        session(['event_name' => $event->name]);
+        session(['bids_start' => $event->start]);
+        session(['bids_end' => $event->end]);
         $bids_start = session('bids_start');
         $bids_end = session('bids_end');
         $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
         $dt_st = Carbon::parse($bids_start)->timestamp;
         $dt_sp = Carbon::parse($bids_end)->timestamp;
 
-        // sdd($item, $images);
-        return view('auction.edit')->with([
-            'item' => $item, 
-            'images' => $images,
+        return view('auction.list',[
+            'event' => $event, 
+            'items' => $items,
             'bids_start' => $bids_start,
             'bids_end' => $bids_end,
             'dt_now' => $dt_now,
@@ -85,6 +122,7 @@ class AuctionController extends Controller
         ]);
     }
 
+// BID
     public function bid(Request $request, Item $item)
     {
     // get bid request info to check
@@ -213,6 +251,7 @@ class AuctionController extends Controller
         }
     }
 
+// MONITOR
     public function monitor($id) 
     {
     // this is similar to the index but it is just to monitor the closing of the auction and update the event and item information    
