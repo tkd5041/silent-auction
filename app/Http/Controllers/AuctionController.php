@@ -172,7 +172,7 @@ class AuctionController extends Controller
 
                 // if number has no error codes then send the message
             if ( ! $phone->carrier['error_code'] ) {
-                $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org to bid again!";
+                $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/home to bid again!";
                 //dd($sid, $token, $client, $number, $message);
                 $client->messages->create(
                     $number,
@@ -309,7 +309,7 @@ class AuctionController extends Controller
 
                             // if number has no error codes then send the message
                         if ( ! $phone->carrier['error_code'] ) {
-                            $message = "Congratulations! You have won " . $item->title . " for " . $item->current_bid . "! Please visit https://pal-auction.org to pay. Thank you for your support!";
+                            $message = "Congratulations! You have won " . $item->title . " for " . $item->current_bid . "! Please visit https://pal-auction.org/home to pay. Thank you for your support!";
                             //dd($sid, $token, $client, $number, $message);
                             $client->messages->create(
                                 $number,

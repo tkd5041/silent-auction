@@ -158,6 +158,12 @@
                 }
             });
         },
+        style: {
+            layout: 'vertical',
+            color: 'blue',
+            shape: 'rect',
+            label: 'checkout'
+        },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
                 window.location.href = $url;
