@@ -29,14 +29,8 @@
             <div class="container">
                 <a class="navbar-brand" href="https://pal-auction.org/home">
                     <img class="nav-img image-fluid" src="../../../img/sa-words.png" alt="silent auction">
-                    @if(!session('event_name'))
-                    <script type="text/javascript">
-                        window.location = "{ url('/home') }";//here double curly bracket
-                    </script>
-                    @else
-                        <span class="current_event">➢ {{ session('event_name') }}</span>
-                    @endif
-                </a>
+                    <span class="current_event">➢ {{ session('event_name') }}</span>
+                    </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">

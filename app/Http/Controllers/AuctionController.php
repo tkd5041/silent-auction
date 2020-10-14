@@ -70,8 +70,8 @@ class AuctionController extends Controller
     public function edit($id)
     {
         $event = Event::findOrFail(session('selected_event'));
-        //dd($event);
         $item = Item::findOrFail($id);
+        //dd($event);
         $images = Images::where('item_id', $id)->get();
         
         $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
@@ -172,7 +172,7 @@ class AuctionController extends Controller
 
                 // if number has no error codes then send the message
             if ( ! $phone->carrier['error_code'] ) {
-                $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/auction/" . $item->id . "/edit to bid again!";
+                $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org to bid again!";
                 //dd($sid, $token, $client, $number, $message);
                 $client->messages->create(
                     $number,
@@ -298,6 +298,28 @@ class AuctionController extends Controller
                     else
                     {
                         $item->sold = true;
+
+                        // Text the winner
+                        $sid    = env( 'TWILIO_ACCOUNT_SID' );
+                        $token  = env( 'TWILIO_AUTH_TOKEN' );
+                        $client = new Client( $sid, $token );
+                        $winner = User::findOrFail($item->current_bidder);
+                        $number = $winner->phone;
+                        $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
+
+                            // if number has no error codes then send the message
+                        if ( ! $phone->carrier['error_code'] ) {
+                            $message = "Congratulations! You have won " . $item->title . " for " . $item->current_bid . "! Please visit https://pal-auction.org to pay. Thank you for your support!";
+                            //dd($sid, $token, $client, $number, $message);
+                            $client->messages->create(
+                                $number,
+                                [
+                                    'from' => env( 'TWILIO_FROM' ),
+                                    'body' => $message,
+                                ]
+                            );
+
+                        }
                     }
 
                     $item->save();

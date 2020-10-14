@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Twilio\Rest\Client;
 // use Session;
 use Stripe;
 use App\Event;
+use App\User;
 use App\Item;
 
 class PayController extends Controller
@@ -96,6 +98,29 @@ class PayController extends Controller
                         ->where('current_bidder', $user->id)
                         ->where('paid', 1)
                         ->sum('paid'); 
+
+        // text winner of successful payment
+        // Text the winner
+        $sid    = env( 'TWILIO_ACCOUNT_SID' );
+        $token  = env( 'TWILIO_AUTH_TOKEN' );
+        $client = new Client( $sid, $token );
+        $winner = User::findOrFail($item->current_bidder);
+        $number = $winner->phone;
+        $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
+
+            // if number has no error codes then send the message
+        if ( ! $phone->carrier['error_code'] ) {
+            $message = "Thank you for your payment of $" . $paid . ".00. PalGroup appreciates your support.";
+            //dd($sid, $token, $client, $number, $message);
+            $client->messages->create(
+                $number,
+                [
+                    'from' => env( 'TWILIO_FROM' ),
+                    'body' => $message,
+                ]
+            );
+
+        }
 
         session()->flash('success', 'Thank you for your payment!');
 
