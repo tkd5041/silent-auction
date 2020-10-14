@@ -58,9 +58,9 @@ class HomeController extends Controller
                         ->first();
         //dd($first);
         if (empty($first)) {
-            $firstDate = Carbon::now()->addDays(1)->toDateTimeLocalString();
+            $firstDate = Carbon::now()->addDays(1)->format('Y-m-d\TH:i:s');
         } else {
-            $firstDate = $first->start;
+            $firstDate = Carbon::parse($first->start)->format('Y-m-d\TH:i:s');
         }              
         //dd($first, $firstDate);
         return view('home')->with([
