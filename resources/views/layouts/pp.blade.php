@@ -25,7 +25,7 @@
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     <script
-        src="https://www.paypal.com/sdk/js?client-id=AazAVZTWcyhenWYAISQEbvJBZX7QFwg8K1G4r-fQJN2bFFx0rKeDuuQruaSSRejejv2YyLhUhtBr0wqk&disable-funding=credit">
+        src="https://www.paypal.com/sdk/js?client-id=ASIpb5zQz5l2RNLQ0bFC4kWryOSXW3IufghNZ_QrmKpXavHg6_HYjY3PkNrNeGNVDVxMVsmlYLf1VE3F">
     </script>
 </head>
 
@@ -154,8 +154,6 @@
                         value: {{ $total }}
                     }
                 }],
-                application_context: {
-                    shipping_preference: 'NO_SHIPPING'
                 }
             });
         },

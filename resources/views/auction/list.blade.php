@@ -18,7 +18,7 @@
                 <thead>
                     <tr>
                         <th scope="col" style="min-width: 200px;">Title</th>
-                        <th scope="col" style="min-width: 250px;">Value</th>
+                        <th scope="col" style="min-width: 200px;">Value</th>
                         <th scope="col">Description</th>
                     </tr>
                 </thead>
