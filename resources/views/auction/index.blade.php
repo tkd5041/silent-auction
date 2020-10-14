@@ -49,7 +49,7 @@
                         <h6>{{ $bid->title }}</h6>
                         <h6 class="text-muted mb-2">{{ $bid->username }} - ${{ $bid->current_bid }}.00</h6>
                         <div class="text-muted mb-2">
-                            {{ date('g:i A', strtotime($bid->created_at)) }}  
+                            {{ date('g:i A', strtotime($bid->created_at) - 25200 ) }}  
                         </div>
                         <hr>
                         @endforeach
@@ -89,7 +89,8 @@
                                 View Item
                             </a>
                         </div>
-                        @if($item->sold == 0 && $dt_now > $dt_sp)
+                        
+                        @if($item->sold != 1 && $dt_now > $dt_sp)
                         <div class="text-center sold">
                             <h5 class="text-info">Item Closed</h5>
                         </div>
@@ -119,7 +120,7 @@
                         </a>
                 </div>
                 @endif
-                @if($item->sold == 0 && $dt_now > $dt_sp)
+                @if($item->sold != 1 && $dt_now > $dt_sp)
                     <h5 class="text-center text-info">Item Closed</h5>
                 @endif
                 @if($item->sold)
