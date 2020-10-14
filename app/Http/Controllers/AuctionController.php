@@ -21,7 +21,7 @@ class AuctionController extends Controller
     {
         
         $event = Event::findOrFail($id);
-        $bids = Auction::where('event_id', $id)->latest()->get();
+        $bids = Auction::where('event_id', $id)->latest()->limit(5)->get();
         $items = DB::table('items')
                    ->where('items.event_id', '=', $id)
                    ->LeftJoin('users', 'users.id', '=', 'items.current_bidder')
@@ -44,8 +44,10 @@ class AuctionController extends Controller
         session(['event_name' => $event->name]);
         session(['bids_start' => $event->start]);
         session(['bids_end' => $event->end]);
-        $bids_start = session('bids_start');
-        $bids_end = session('bids_end');
+        //$bids_start = session('bids_start');
+        //$bids_end = session('bids_end');
+        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
         $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
         $dt_st = Carbon::parse($bids_start)->timestamp;
         $dt_sp = Carbon::parse($bids_end)->timestamp;
@@ -72,8 +74,8 @@ class AuctionController extends Controller
         $item = Item::findOrFail($id);
         $images = Images::where('item_id', $id)->get();
         
-        $bids_start = session('bids_start');
-        $bids_end = session('bids_end');
+        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
         $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
         $dt_st = Carbon::parse($bids_start)->timestamp;
         $dt_sp = Carbon::parse($bids_end)->timestamp;
@@ -105,14 +107,15 @@ class AuctionController extends Controller
         session(['event_name' => $event->name]);
         session(['bids_start' => $event->start]);
         session(['bids_end' => $event->end]);
-        $bids_start = session('bids_start');
-        $bids_end = session('bids_end');
+        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
         $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
         $dt_st = Carbon::parse($bids_start)->timestamp;
         $dt_sp = Carbon::parse($bids_end)->timestamp;
 
-        return view('auction.list',[
+        return view('auction.monitor',[
             'event' => $event, 
+            'bids' => $bids, 
             'items' => $items,
             'bids_start' => $bids_start,
             'bids_end' => $bids_end,
@@ -185,8 +188,8 @@ class AuctionController extends Controller
             $email = $cb->email;
             $subject = "Pal-Auction Outbid Notice";
             $message = "<html><head><title> pal-auction Outbid Notice </title></head><body>" . 
-                $cb->username . "!<br><br>You have been outbid on item:<blockquote><a href='https:pal-auction.org/auction/" . 
-                $item->id . "/edit'>" . $item->title . "</a></blockquote>Pal-Auction</body></html>";
+            $cb->username . "!<br><br>You have been outbid on item:<blockquote><a href='https:pal-auction.org/auction/" . 
+            $item->id . "/edit'>" . $item->title . "</a></blockquote>Pal-Auction</body></html>";
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: <no-reply@pal-auction.org>' . "\r\n";
@@ -210,7 +213,8 @@ class AuctionController extends Controller
         
 
     // get dates to check in case its within 30 seconds of the end of the auction        
-        $bids_end = session('bids_end');
+        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
         $cur_date = Carbon::now()->subHours(7)->addSeconds(30)->setTimezone('UTC')->toDateTimeString();
         $be_new = Carbon::parse($bids_end)->addSeconds(30)->toDateTimeString();
         //dd($cur_date, $bids_end, $be_new);
@@ -270,8 +274,8 @@ class AuctionController extends Controller
         session(['event_name' => $event->name]);
         session(['bids_start' => $event->start]);
         session(['bids_end' => $event->end]);
-        $bids_start = session('bids_start');
-        $bids_end = session('bids_end');
+        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
         $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
         $dt_st = Carbon::parse($bids_start)->timestamp;
         $dt_sp = Carbon::parse($bids_end)->timestamp;

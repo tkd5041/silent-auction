@@ -141,6 +141,17 @@
             });
 
         </script>
+
+        <script>
+            window.setInterval('refresh()', 10000); 	// Call a function every 10000 milliseconds (OR 10 seconds).
+
+            // Refresh or reload page.
+            function refresh() {
+                var ref = ref++;
+                window .location.reload();
+            }
+        </script>
+
         <script>
             function getTimeRemaining(endtime) {
                 var t = Date.parse(endtime) - Date.parse(new Date());

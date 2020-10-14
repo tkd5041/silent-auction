@@ -25,7 +25,7 @@
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     <script
-        src="https://www.paypal.com/sdk/js?client-id=ASIpb5zQz5l2RNLQ0bFC4kWryOSXW3IufghNZ_QrmKpXavHg6_HYjY3PkNrNeGNVDVxMVsmlYLf1VE3F">
+        src="https://www.paypal.com/sdk/js?client-id=ASIpb5zQz5l2RNLQ0bFC4kWryOSXW3IufghNZ_QrmKpXavHg6_HYjY3PkNrNeGNVDVxMVsmlYLf1VE3F&disable-funding=credit">
     </script>
 </head>
 
@@ -154,6 +154,7 @@
                         value: {{ $total }}
                     }
                 }],
+                application_context: {
                 }
             });
         },
