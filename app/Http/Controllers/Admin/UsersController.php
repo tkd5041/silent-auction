@@ -63,6 +63,7 @@ class UsersController extends Controller
         $user->name = $request->name;
         $user->username = $request->username;
         $user->email = $request->email;
+        $user->phone = $request->phone;
 
         if($user->save()){
             $request->session()->flash('success', $user->name . ' has been updated');
