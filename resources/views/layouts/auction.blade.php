@@ -154,7 +154,9 @@
                 var now = new Date().getTime();
                 var t = cdd - now;
                 // var t = Date.parse(endtime) - Date.parse(new Date());
-                //     console.log('t: ', t);
+                     console.log('t: ', t);
+                     console.log('cdd: ', cdd);
+                     console.log('now: ', now);
                 var seconds =  Math.floor((t % (1000 * 60)) / 1000);//Math.floor((t / 1000) % 60);
                     console.log('S: ',seconds);
                 var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));//Math.floor((t / 1000 / 60) % 60);
