@@ -27,7 +27,7 @@ class HomeController extends Controller
         if(Gate::denies('edit-users'))
         {
             $events = Event::where('id','>', 1)
-                            ->where('active', '!=', 0)
+                            ->where('active', 1)
                             ->orderBy('start')
                             ->get();
         } 

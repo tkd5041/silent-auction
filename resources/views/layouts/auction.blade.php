@@ -151,9 +151,14 @@
         <script>
             function getTimeRemaining(endtime) {
                 var t = Date.parse(endtime) - Date.parse(new Date());
+                    //console.log('E: ', endtime);
+                    //console.log('t: ', t);
                 var seconds = Math.floor((t / 1000) % 60);
+                    console.log('S: ',seconds);
                 var minutes = Math.floor((t / 1000 / 60) % 60);
+                    console.log('M: ',minutes);
                 var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+                    console.log('H: ',hours);
                 var days = Math.floor(t / (1000 * 60 * 60 * 24));
                 return {
                     'total': t,

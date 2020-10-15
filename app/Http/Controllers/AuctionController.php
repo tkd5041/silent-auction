@@ -216,7 +216,7 @@ class AuctionController extends Controller
         $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
         $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
         $cur_date = Carbon::now()->subHours(7)->addSeconds(30)->setTimezone('UTC')->toDateTimeString();
-        $be_new = Carbon::parse($bids_end)->addSeconds(30)->toDateTimeString();
+        $be_new = Carbon::parse($bids_end)->addSeconds(30)->format('Y-m-d\TH:i:s');//->toDateTimeString();
         //dd($cur_date, $bids_end, $be_new);
         $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
         $dt_sp = Carbon::parse($bids_end)->timestamp;
