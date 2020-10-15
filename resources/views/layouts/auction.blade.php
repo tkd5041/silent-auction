@@ -150,16 +150,18 @@
 
         <script>
             function getTimeRemaining(endtime) {
-                var t = Date.parse(endtime) - Date.parse(new Date());
-                    //console.log('E: ', endtime);
-                    //console.log('t: ', t);
-                var seconds = Math.floor((t / 1000) % 60);
+                var cdd = new Date(endtime).getTime();
+                var now = new Date().getTime();
+                var t = cdd - now;
+                // var t = Date.parse(endtime) - Date.parse(new Date());
+                //     console.log('t: ', t);
+                var seconds =  Math.floor((t % (1000 * 60)) / 1000);//Math.floor((t / 1000) % 60);
                     console.log('S: ',seconds);
-                var minutes = Math.floor((t / 1000 / 60) % 60);
+                var minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));//Math.floor((t / 1000 / 60) % 60);
                     console.log('M: ',minutes);
-                var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+                var hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); //Math.floor((t / (1000 * 60 * 60)) % 24);
                     console.log('H: ',hours);
-                var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                var days = Math.floor(t / (1000 * 60 * 60 * 24));//Math.floor(t / (1000 * 60 * 60 * 24));
                 return {
                     'total': t,
                     'days': days,
