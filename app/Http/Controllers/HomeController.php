@@ -44,7 +44,7 @@ class HomeController extends Controller
             $events = Event::where('id', 1)
                             ->orderBy('start')
                             ->get();
-            $firstDate = Carbon::now()->addDays(1)->toDateTimeLocalString();
+            $firstDate = Carbon::now()->addDays(1)->format('Y-m-d\TH:i:s');//->toDateTimeLocalString();
             //dd($events, $firstDate);
             return view('home')->with([
                 'events' => $events,
