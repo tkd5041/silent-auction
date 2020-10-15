@@ -291,35 +291,14 @@ class AuctionController extends Controller
                 // if expired mark item as sold
                 if($dt_now >= $item_end)
                 {
-                    if($item->current_bid == 0)
+                    if($item->current_bidder == 0 )
                     {
                         $item->sold = 2; // not sold but not for sale anymore
                     }
                     else
                     {
-                        $item->sold = true;
+                        $item->sold = 1;
 
-                        // Text the winner
-                        $sid    = env( 'TWILIO_ACCOUNT_SID' );
-                        $token  = env( 'TWILIO_AUTH_TOKEN' );
-                        $client = new Client( $sid, $token );
-                        $winner = User::findOrFail($item->current_bidder);
-                        $number = $winner->phone;
-                        $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
-
-                            // if number has no error codes then send the message
-                        if ( ! $phone->carrier['error_code'] ) {
-                            $message = "Congratulations! You have won " . $item->title . " for " . $item->current_bid . "! Please visit https://pal-auction.org/home to pay. Thank you for your support!";
-                            //dd($sid, $token, $client, $number, $message);
-                            $client->messages->create(
-                                $number,
-                                [
-                                    'from' => env( 'TWILIO_FROM' ),
-                                    'body' => $message,
-                                ]
-                            );
-
-                        }
                     }
 
                     $item->save();
@@ -333,11 +312,46 @@ class AuctionController extends Controller
             $items = Item::where('event_id', $id)
             ->where('sold', 0)
             ->get();
+
+            
             
             if(!empty($items))
             {
-                $event->active = 2;
-                $event->save();
+                $event = Event::findOrFail($id);
+                if ($event->active == 1)
+                {
+                    $event->active = 2;
+                    $event->save();
+
+                    $items = Item::where('event_id', $id)
+                    ->where('sold', 1)
+                    ->get();
+                    foreach($items as $item)
+                    {
+                        // Text the winner
+                        $sid    = env( 'TWILIO_ACCOUNT_SID' );
+                        $token  = env( 'TWILIO_AUTH_TOKEN' );
+                        $client = new Client( $sid, $token );
+                        $winner = User::findOrFail($item->current_bidder);
+                        $number = $winner->phone;
+                        $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
+
+                            // if number has no error codes then send the message
+                        if ( ! $phone->carrier['error_code'] ) {
+                            $message = "Congratulations! You have won " . $item->title . " for $" . $item->current_bid . ".00! Please visit https://pal-auction.org/home to pay. Thank you for your support!";
+                            //dd($sid, $token, $client, $number, $message);
+                            $client->messages->create(
+                                $number,
+                                [
+                                    'from' => env( 'TWILIO_FROM' ),
+                                    'body' => $message,
+                                ]
+                            );
+                        }
+                    }
+
+
+                }
             }
 
     // get fresh information on the bids to send back to the index page
@@ -357,6 +371,10 @@ class AuctionController extends Controller
         if ('event_id' == 1){
             return view('auction.index',['event' => $event, 'bids' => $bids, 'items' => $items]);
         }
+
+        
+
+
         
         //dd([$event, $bids, $items, $bids_start, $bids_end, $dt_now, $dt_st, $dt_sp]);
         return view('auction.monitor',[

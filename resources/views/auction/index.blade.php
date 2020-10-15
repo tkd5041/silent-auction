@@ -90,7 +90,7 @@
                             </a>
                         </div>
                         
-                        @if($item->sold != 1 && $dt_now > $dt_sp)
+                        @if($item->sold == 2 && $dt_now > $dt_sp)
                         <div class="text-center sold">
                             <h5 class="text-info">Item Closed</h5>
                         </div>
@@ -120,10 +120,10 @@
                         </a>
                 </div>
                 @endif
-                @if($item->sold != 1 && $dt_now > $dt_sp)
+                @if($item->sold == 2 && $dt_now > $dt_sp)
                     <h5 class="text-center text-info">Item Closed</h5>
                 @endif
-                @if($item->sold)
+                @if($item->sold == 1)
                 <div class="text-center sold">
                     <img class="sold" src="/img/sold-stamp.png" alt="item sold">
                 </div>

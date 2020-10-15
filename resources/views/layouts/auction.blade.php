@@ -140,11 +140,10 @@
         </script>
 
         <script>
-            window.setInterval('refresh()', 30000); 	// Call a function every 10000 milliseconds (OR 10 seconds).
+            window.setInterval('refresh()', 10000); 	// Call a function every 10000 milliseconds (OR 10 seconds).
 
             // Refresh or reload page.
             function refresh() {
-                var ref = ref++;
                 window .location.reload();
             }
         </script>
@@ -180,7 +179,10 @@
                     minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
                     secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
                     
-                    
+                    if (t.total <= 1 && t.total >= 0) {
+                        window .location.reload();
+                    }
+
                     if (t.total <= 0) {
                         clearInterval(timeinterval);
                     }
