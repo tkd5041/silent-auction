@@ -132,7 +132,7 @@
     </script>
 
     <script>
-    window.setInterval('refresh()', 7000); // Call a function every 10000 milliseconds (OR 10 seconds).
+    window.setInterval('refresh()', 60000); // Call a function every 10000 milliseconds (OR 10 seconds).
 
     // Refresh or reload page.
     function refresh() {

@@ -11,7 +11,7 @@
                     {{ date('g:i A', strtotime($bids_end)) }} (MST) </span></small>
         </h4>
         <div class="border border-success rounded pl-2 pt-1 my-1 bid-tips" >
-            <h5 class="text-info"><i class="fa fa-info-circle" aria-hidden="true"></i><small> Page refreshes every 8
+            <h5 class="text-info"><i class="fa fa-info-circle" aria-hidden="true"></i><small> Page refreshes every 60
                     seconds.</small></h5>
             <h5><small>TIP: Hit <code><i class="fa fa-refresh" aria-hidden="true"></i></code> Refresh for quicker page
                     response.</small></h5>
