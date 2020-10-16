@@ -65,7 +65,8 @@ class HomeController extends Controller
         } else {
             $firstDate = Carbon::parse($first->start)->format('Y-m-d\TH:i:s');
         }              
-        //dd($first, $firstDate);
+        //dd($first, $firstDate); 
+        // dd returns the correct date for countdown
         return view('home')->with([
             'events' => $events,
             'firstDate' => $firstDate,           
