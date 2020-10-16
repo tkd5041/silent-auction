@@ -23,6 +23,11 @@
             </div>
         </div>
     </div>
+    <div class=" row border border-success rounded ml-auto mr-auto my-5 p-3 w-50 justify contents center">
+        <h4 class="text-danger text-center">For the best iOS experience,<br>
+            please do not access the auction with an iPhone<br>
+            unless it is currently updated to iOS 14!</h4>
+    </div>
 
     <h1>Select An Event To Continue:</h1>
     <div class="row justify-content-center">
@@ -48,7 +53,7 @@
                             @if($event->active == 2)
                             <br>
                             <small class="text-danger">
-                                (Closed For Bidding)
+                                (Closed)
                             </small>
                             @endif
                         </h5>

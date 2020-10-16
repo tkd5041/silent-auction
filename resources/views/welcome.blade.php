@@ -40,6 +40,11 @@
                 <div>
                     <h3>This Site Is Invite Only</h3>
                 </div>
+                <div class="border border-success rounded m-3 p-3">
+                    <h4 class="text-danger">For the best iOS experience,<br>
+                                    please do not access the auction with an iPhone<br>
+                                      unless it is currently updated to iOS 14!</h4>
+                </div>
             </div>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>

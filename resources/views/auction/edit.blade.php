@@ -25,7 +25,7 @@
                     </div>
                     <div class="gallery">
                         @foreach($images as $image)
-                        <img src="{{ $image->image }} " alt="{{ $item->title }}_image_{{ $image->id }}">
+                        <img src="{{ $image->image }} " alt="{{ $item['title'] }}_image_{{ $image->id }}">
                         @endforeach
                     </div>
                     <div>
@@ -63,10 +63,7 @@
                         </div>
                         @if($item->current_bid > $item->initial_bid)
                         <div>
-                            <h5>Current Bid: <i class="fa fa-usd" aria-hidden="true"></i>{{ $item->current_bid }}.00
-                            </h5>
-                        </div>
-                        <div>
+                            <h5>Current Bid: <i class="fa fa-usd" aria-hidden="true"></i>{{ $item->current_bid }}.00</h5>
                             <h5>Minimum Bid: <i class="fa fa-usd"
                                     aria-hidden="true"></i>{{ $item->current_bid + $item->increment }}.00</h5>
                         </div>
@@ -107,8 +104,10 @@
                 </div>
             </div>
             <div class="card-footer bid">
-                <a href="{{ URL::previous() }}" class="btn btn-outline-primary bid"> <i
-                        class="fa fa-chevron-circle-left"></i> Cancel and Go Back</a>
+                <button class="btn btn-outline-primary" type="button" onclick="location.href='/auction/{{session('selected_event')}}/'">Cancel and Go Back</button>
+                
+                
+                
             </div>
         </div>
     </div>

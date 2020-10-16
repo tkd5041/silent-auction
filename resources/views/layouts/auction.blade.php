@@ -132,13 +132,14 @@
     </script>
 
     <script>
-    window.setInterval('refresh()', 30000); // Call a function every 10000 milliseconds (OR 10 seconds).
+    window.setInterval('refresh()', 7000); // Call a function every 10000 milliseconds (OR 10 seconds).
 
     // Refresh or reload page.
     function refresh() {
         window.location.reload();
     }
     </script>
+    
 
     <script>
     function getTimeRemaining(endtime) {
@@ -182,10 +183,6 @@
             minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
             secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 
-            if (t.total <= 1 && t.total >= 0) {
-                window.location.reload();
-            }
-
             if (t.total <= 0) {
                 clearInterval(timeinterval);
             }
@@ -203,16 +200,21 @@
         var deadline = new Date(Date.parse('{{ $bids_start }}'));
         document.getElementById("bidStatus").innerHTML = "Time Until Bidding Starts:";
         $('.view-item').remove();
+        $('.bid-tips').remove();
     } else if (dNow > dStart && dNow < dEnd) {
         var deadline = new Date(Date.parse('{{ $bids_end }}'));
         document.getElementById("bidStatus").innerHTML = "Time Until Bidding Ends:";
         $('.view-description').remove();
+    } else if ((dNow + 1) == dEnd) {
+        alert('Auction has Closed');
+        window.location.reload();
     } else {
         document.getElementById("bidStatus").innerHTML = "Bidding Closed:";
         document.getElementById("clockdiv").innerHTML =
             "<a href='/pay/{{ $event->id }}/edit' class='btn btn-primary'>Pay Now</a>";
         $('.view-item').remove();
         $('.view-description').remove();
+        $('.bid-tips').remove();
 
     }
 

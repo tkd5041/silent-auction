@@ -69,9 +69,13 @@ class AuctionController extends Controller
  // EDIT
     public function edit($id)
     {
-        $event = Event::findOrFail(session('selected_event'));
+        //dd($id);
         $item = Item::findOrFail($id);
-        //dd($event);
+        //dd($item);
+        $event = Event::findOrFail(session('selected_event'));
+        //dd($item->current_bidder);
+        $user = User::where('id', $item->current_bidder)->get();
+        //dd($user);
         $images = Images::where('item_id', $id)->get();
         
         $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
@@ -80,10 +84,11 @@ class AuctionController extends Controller
         $dt_st = Carbon::parse($bids_start)->timestamp;
         $dt_sp = Carbon::parse($bids_end)->timestamp;
         
-        // sdd($item, $images);
-        return view('auction.edit')->with([
+        //dd($event, $item, $user, $images);
+        return view('auction.edit', [
             '$event' => $event,
-            'item' => $item, 
+            'item' => $item,
+            'user' => $user, 
             'images' => $images,
             'bids_start' => $bids_start,
             'bids_end' => $bids_end,
@@ -185,45 +190,59 @@ class AuctionController extends Controller
             }
 
     // send a mail notification to current bidder that they have been outbid. include link to re-bid
-            $email = $cb->email;
-            $subject = "Pal-Auction Outbid Notice";
-            $message = "<html><head><title> pal-auction Outbid Notice </title></head><body>" . 
-            $cb->username . "!<br><br>You have been outbid on item:<blockquote><a href='https:pal-auction.org/auction/" . 
-            $item->id . "/edit'>" . $item->title . "</a></blockquote>Pal-Auction</body></html>";
-            $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-            $headers .= 'From: <no-reply@pal-auction.org>' . "\r\n";
-            //dd($email, $message);
-            mail($email,$subject,$message,$headers);
+            // $email = $cb->email;
+            // $subject = "Pal-Auction Outbid Notice";
+            // $message = "<html><head><title> pal-auction Outbid Notice </title></head><body>" . 
+            // $cb->username . "!<br><br>You have been outbid on item:<blockquote><a href='https:pal-auction.org/auction/" . 
+            // $item->id . "/edit'>" . $item->title . "</a></blockquote>Pal-Auction</body></html>";
+            // $headers = "MIME-Version: 1.0" . "\r\n";
+            // $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            // $headers .= 'From: <no-reply@pal-auction.org>' . "\r\n";
+            // //dd($email, $message);
+            // mail($email,$subject,$message,$headers);
+        }
+            
+            $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
+            $item_sp = Carbon::parse($item->end_time)->timestamp;
+
+        if (($dt_now + 1) <= $item_sp)
+        {
+            // update item with new bidder and bid amount
+                $item->current_bid = request('bid');
+                $item->current_bidder = $user->id;
+                $item->save();
+        
+            // add a new auction entry
+                $auction = new Auction;
+                $auction->event_id = session('selected_event');
+                $auction->item_id = $item->id;
+                $auction->user_id = $user->id;
+                $auction->title = $item->title;
+                $auction->username = $user->username;
+                $auction->current_bid = $item->current_bid;
+
+        } else
+        {
+            Session::flash('error', "The Auction closed before your bid could be completed.");
+            return \Redirect::back();
         }
         
-    // update item with new bidder and bid amount
-        $item->current_bid = request('bid');
-        $item->current_bidder = $user->id;
-        $item->save();
-
-    // add a new auction entry
-        $auction = new Auction;
-        $auction->event_id = session('selected_event');
-        $auction->item_id = $item->id;
-        $auction->user_id = $user->id;
-        $auction->title = $item->title;
-        $auction->username = $user->username;
-        $auction->current_bid = $item->current_bid;
-        
-
     // get dates to check in case its within 30 seconds of the end of the auction        
-        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
-        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
-        $cur_date = Carbon::now()->subHours(7)->addSeconds(30)->setTimezone('UTC')->toDateTimeString();
-        $be_new = Carbon::parse($bids_end)->addSeconds(30)->format('Y-m-d\TH:i:s');//->toDateTimeString();
-        //dd($cur_date, $bids_end, $be_new);
-        $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
-        $dt_sp = Carbon::parse($bids_end)->timestamp;
-        $dt_ben = Carbon::parse($be_new)->timestamp;
+            $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
+            $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
+            $cur_date = Carbon::now()->subHours(7)->addSeconds(30)->setTimezone('UTC')->toDateTimeString();
+            $be_new = Carbon::parse($bids_end)->addSeconds(30)->format('Y-m-d\TH:i:s');//->toDateTimeString();
+            //dd($cur_date, $bids_end, $be_new);
+            $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
+            $dt_sp = Carbon::parse($bids_end)->timestamp;
+            $dt_ben = Carbon::parse($be_new)->timestamp;
+            
+            //dd($dt_sp, $dt_now, $dt_ben, ($dt_now +15) > $dt_sp && $dt_now < $dt_ben);
+            //dd( $dt_ben > $dt_now && $dt_now < $dt_sp);
+    
+
         
-        //dd($dt_sp, $dt_now, $dt_ben, ($dt_now +15) > $dt_sp && $dt_now < $dt_ben);
-        //dd( $dt_ben > $dt_now && $dt_now < $dt_sp);
+
     
     // if bid is within 30 seconds then add 30 seconds to that item and reset timer by 30 seconds
         if (($dt_now +15) > $dt_sp && $dt_now < $dt_ben)
@@ -359,6 +378,8 @@ class AuctionController extends Controller
                    ->where('items.event_id', '=', $id)
                    ->LeftJoin('users', 'users.id', '=', 'items.current_bidder')
                    ->select('items.*', 'users.username')
+                   ->orderBy('sold', 'ASC')
+                   ->orderBy('current_bid', 'DESC')
                    ->orderBy('title', 'ASC')
                    ->get();
                                    
