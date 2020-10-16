@@ -25,8 +25,7 @@
     </div>
     <div class=" row border border-success rounded ml-auto mr-auto my-5 p-3 w-50 justify contents center">
         <h4 class="text-danger text-center">For the best iOS experience,<br>
-            please do not access the auction with an iPhone<br>
-            unless it is currently updated to iOS 14!</h4>
+                    make sure your iPhone is updated to iOS 14!!</h4>
     </div>
 
     <h1>Select An Event To Continue:</h1>

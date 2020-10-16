@@ -42,8 +42,7 @@
                 </div>
                 <div class="border border-success rounded m-3 p-3">
                     <h4 class="text-danger">For the best iOS experience,<br>
-                                    please do not access the auction with an iPhone<br>
-                                      unless it is currently updated to iOS 14!</h4>
+                    make sure your iPhone is updated to iOS 14!</h4>
                 </div>
             </div>
         </div>
