@@ -165,20 +165,6 @@ class AuctionController extends Controller
             return \Redirect::back();
         }
         
-        // update item with new bidder and bid amount
-            $item->current_bid = request('bid');
-            $item->current_bidder = $user->id;
-            $item->save();
-    
-        // add a new auction entry
-            $auction = new Auction;
-            $auction->event_id = session('selected_event');
-            $auction->item_id = $item->id;
-            $auction->user_id = $user->id;
-            $auction->title = $item->title;
-            $auction->username = $user->username;
-            $auction->current_bid = $item->current_bid;
-            
     // send a text notification to current bidder that they have been outbid. include link to re-bid
         if($item->current_bidder > 0)
         {
@@ -216,9 +202,26 @@ class AuctionController extends Controller
             // mail($email,$subject,$message,$headers);
         }
             
-                 
+            $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
+            $item_sp = Carbon::parse($item->end_time)->timestamp;
 
-                
+        
+            // update item with new bidder and bid amount
+                $item->current_bid = request('bid');
+                $item->current_bidder = $user->id;
+                $item->save();
+        
+            // add a new auction entry
+                $auction = new Auction;
+                $auction->event_id = session('selected_event');
+                $auction->item_id = $item->id;
+                $auction->user_id = $user->id;
+                $auction->title = $item->title;
+                $auction->username = $user->username;
+                $auction->current_bid = $item->current_bid;
+
+        
+        
     // get dates to check in case its within 30 seconds of the end of the auction        
             $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
             $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
