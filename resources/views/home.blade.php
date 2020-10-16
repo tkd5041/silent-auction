@@ -33,23 +33,24 @@
                     <div class="card-header">
                         <h5>Event Details
                             @can('manage-users')
-                                @if($event->active === 0)
-                                    <br>
-                                    <small class="text-warning">
-                                        (Inactive)
-                                    </small>
-                                @elseif($event->active === 1)
-                                    <br>
-                                    <small class="text-success">
-                                        (Active)
-                                    </small>
-                                @else
-                                    <br>
-                                    <small class="text-danger">
-                                        (Closed)
-                                    </small>
-                                @endif
+                            @if($event->active == 0)
+                            <br>
+                            <small class="text-warning">
+                                (Inactive)
+                            </small>
+                            @else($event->active == 1)
+                            <br>
+                            <small class="text-success">
+                                (Active)
+                            </small>
+                            @endif
                             @endcan
+                            @if($event->active == 2)
+                            <br>
+                            <small class="text-danger">
+                                (Closed For Bidding)
+                            </small>
+                            @endif
                         </h5>
                     </div>
                     <div class="card-body">
