@@ -30,12 +30,14 @@ class HomeController extends Controller
                             ->where('active', 1)
                             ->orderBy('start')
                             ->get();
+            //return('this is the first gate');
         } 
         else 
         {
             $events = Event::where('id','>', 1)
                             ->orderBy('start')
                             ->get();
+            //return('this is the else');
         }
         //dd($events);
         // if no events are active
@@ -51,7 +53,8 @@ class HomeController extends Controller
                 'firstDate' => $firstDate,           
                 ]);
         }
-        $now = Carbon::now();
+        $now = Carbon::now()->subHours(7)->format('Y-m-d H:i:s');
+        //dd($now);
         $first = Event::where('id','>', 1)
                         ->where('active', 1)
                         ->where('start', '>=', $now )
