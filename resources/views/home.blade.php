@@ -23,10 +23,10 @@
             </div>
         </div>
     </div>
-    <div class=" row border border-success rounded ml-auto mr-auto my-5 p-3 w-50 justify contents center">
-        <h4 class="text-danger text-center">For the best iOS experience,<br>
-                    make sure your iPhone is updated to iOS 14!!</h4>
-    </div>
+    <div class="border border-success rounded m-3 p-3 w-50 mx-auto my-5">
+                <h6 class="text-danger text-center">To get the best view of the items, we suggest you view this on your computer. <br>If
+                    you’re on an iPhone, it works best if you make sure you’re updated to iOS 14. Have fun!</h6>
+            </div>
 
     <h1>Select An Event To Continue:</h1>
     <div class="row justify-content-center">
