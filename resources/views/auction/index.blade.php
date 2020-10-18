@@ -10,20 +10,31 @@
             <small><b>End Time: </b><span class="text-muted pl-2">{{ date('D, M j, Y ', strtotime($bids_end)) }} @
                     {{ date('g:i A', strtotime($bids_end)) }} (MST) </span></small>
         </h4>
+        @if($auction_closed == 0)
         <div class="border border-success rounded pl-2 pt-1 my-1 bid-tips">
             <h5 class="text-info"><i class="fa fa-info-circle" aria-hidden="true"></i><small> Page refreshes every 60
                     seconds.</small></h5>
             <h5><small>TIP: Hit <code><i class="fa fa-refresh" aria-hidden="true"></i></code> Refresh for quicker page
                     response.</small></h5>
-        </div>d
+        </div>
+        @endif
     </div> <!--  auction-header 1  -->
     <div class="auction-header float-right">
-        <h3 class="text-danger">Bidding Ends:</h3>
-        <h4 class="text-muted ml-2">8:00 PM Eastern Time</h4>
-        <h4 class="text-muted ml-2">5:00 PM Mountain Standard</h4>
+        <div>
+        @if($auction_closed == 0)
+            <h3 class="text-danger">Bidding Ends:</h3>
+            <h4 class="text-muted ml-2">8:00 PM Eastern Time</h4>
+            <h4 class="text-muted ml-2">5:00 PM Mountain Standard</h4>
+        @endif
         <h4 class="text-muted ml-2">Auction Is: <span
                 class="{{ ($auction_closed == 0 ) ? 'text-success' : 'text-danger' }}">{{ ($auction_closed == 0 ) ? 'OPEN' : 'CLOSED' }}</span>
         </h4>
+        @if($auction_closed)
+        <div class="text-center">
+        <a href='/pay/{{ $event->id }}/edit' class='btn btn-primary'>Pay Now</a>
+        </div>
+        @endif
+        </div>
     </div> <!--  auction-header timer and pay button  -->
     <div class="container">
         <!--  container for item cards  -->
@@ -52,7 +63,7 @@
                         <p><b>Minimum Bid: </b> <span class="text-danger">${{ $item->initial_bid }}.00</span></p>
                     </div> <!-- div card-body -->
                     <div class="card-footer">
-                    @if($auction_closed == 1)
+                        @if($auction_closed == 1)
                         <div class="view-description">
                             <blockquote>
                                 {{ Str::limit($item->description, 200 ) }}
@@ -89,7 +100,7 @@
                         </blockquote>
                     </div>
                     @endif
-                    @if( $auction_closed == 0) 
+                    @if( $auction_closed == 0)
                     <div class="text-center view-item">
                         <a href="/auction/{{$item->id}}/edit" class="btn btn-outline-primary btn-left fa fa-eye"
                             data-toggle="tooltip" data-placement="top" title="View Item">
