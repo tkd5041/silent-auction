@@ -40,8 +40,10 @@
                     <div class="bid-group">
                         <hr />
                         <div class="container mb-3">
-                            <div class="row mb-3">
-                                <div id="clockdiv">
+                                <h3 class="text-danger">Bidding Ends:</h3>
+                                <h4 class="text-muted ml-2">8:00 PM Eastern Time</h4>
+                                <h4 class="text-muted ml-2">5:00 PM Mountain Standard</h4>
+                            <!--div class="row mb-3">
                                     <div>
                                         <span class="days"></span>
                                         <div class="smalltext">Days</div>
@@ -59,7 +61,7 @@
                                         <div class="smalltext">Seconds</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div-->
                         </div>
                         @if($item->current_bid > $item->initial_bid)
                         <div>

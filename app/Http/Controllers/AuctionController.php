@@ -22,6 +22,7 @@ class AuctionController extends Controller
         
         $event = Event::findOrFail($id);
         $bids = Auction::where('event_id', $id)->latest()->limit(5)->get();
+        $auction_closed = session('auction_closed');
         $items = DB::table('items')
                    ->where('items.event_id', '=', $id)
                    ->LeftJoin('users', 'users.id', '=', 'items.current_bidder')
@@ -55,7 +56,8 @@ class AuctionController extends Controller
         //dd([$event, $bids, $items, $bids_start, $bids_end, $dt_now, $dt_st, $dt_sp]);
         return view('auction.index',[
             'event' => $event, 
-            'bids' => $bids, 
+            'bids' => $bids,
+            'auction_closed' => $auction_closed, 
             'items' => $items,
             'bids_start' => $bids_start,
             'bids_end' => $bids_end,
@@ -77,6 +79,7 @@ class AuctionController extends Controller
         $user = User::where('id', $item->current_bidder)->get();
         //dd($user);
         $images = Images::where('item_id', $id)->get();
+        $auction_closed = session('auction_closed');
         
         $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
         $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
@@ -88,6 +91,7 @@ class AuctionController extends Controller
         return view('auction.edit', [
             '$event' => $event,
             'item' => $item,
+            'auction_closed' => $auction_closed,
             'user' => $user, 
             'images' => $images,
             'bids_start' => $bids_start,
@@ -118,6 +122,7 @@ class AuctionController extends Controller
         $dt_st = Carbon::parse($bids_start)->timestamp;
         $dt_sp = Carbon::parse($bids_end)->timestamp;
 
+        
         return view('auction.monitor',[
             'event' => $event, 
             'bids' => $bids, 
@@ -137,6 +142,7 @@ class AuctionController extends Controller
         $bid = request('bid');
         $min_bid = request('min_bid');
         $cur_bid = request('cur_bid');
+        
 
     // if less than minimum bid reject else record the bid
         if ($bid < $min_bid)
@@ -223,14 +229,14 @@ class AuctionController extends Controller
         
         
     // get dates to check in case its within 30 seconds of the end of the auction        
-            $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
-            $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
-            $cur_date = Carbon::now()->subHours(7)->addSeconds(30)->setTimezone('UTC')->toDateTimeString();
-            $be_new = Carbon::parse($bids_end)->addSeconds(30)->format('Y-m-d\TH:i:s');//->toDateTimeString();
-            //dd($cur_date, $bids_end, $be_new);
-            $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
-            $dt_sp = Carbon::parse($bids_end)->timestamp;
-            $dt_ben = Carbon::parse($be_new)->timestamp;
+            // $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
+            // $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
+            // $cur_date = Carbon::now()->subHours(7)->addSeconds(30)->setTimezone('UTC')->toDateTimeString();
+            // $be_new = Carbon::parse($bids_end)->addSeconds(30)->format('Y-m-d\TH:i:s');//->toDateTimeString();
+            // //dd($cur_date, $bids_end, $be_new);
+            // $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
+            // $dt_sp = Carbon::parse($bids_end)->timestamp;
+            // $dt_ben = Carbon::parse($be_new)->timestamp;
             
             //dd($dt_sp, $dt_now, $dt_ben, ($dt_now +15) > $dt_sp && $dt_now < $dt_ben);
             //dd( $dt_ben > $dt_now && $dt_now < $dt_sp);
@@ -240,18 +246,18 @@ class AuctionController extends Controller
 
     
     // if bid is within 30 seconds then add 30 seconds to that item and reset timer by 30 seconds
-        if (($dt_now +15) > $dt_sp && $dt_now < $dt_ben)
-        {
-            $old_time = Carbon::parse($bids_end)->toTimeString();
-            $new_time = Carbon::parse($be_new)->toTimeString();
-            $event->end = $be_new;
-            $event->save();
+        //if (($dt_now +15) > $dt_sp && $dt_now < $dt_ben)
+   //{
+        //     $old_time = Carbon::parse($bids_end)->toTimeString();
+        //     $new_time = Carbon::parse($be_new)->toTimeString();
+        //     $event->end = $be_new;
+        //     $event->save();
     
-        // update individual item by 30 seconds
-            $item->end_time = $be_new;
-            $item->save();
+        // // update individual item by 30 seconds
+        //     $item->end_time = $be_new;
+        //     $item->save();
             
-        }
+     //   }
 
     // save auction and notify bidder of successful bid
         if($auction->save()){
@@ -293,7 +299,14 @@ class AuctionController extends Controller
         $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
         $dt_st = Carbon::parse($bids_start)->timestamp;
         $dt_sp = Carbon::parse($bids_end)->timestamp;
-
+        if($dt_now >= $dt_sp)
+        {
+            session(['auction_closed' => 1 ]);
+        } else 
+        {
+            session(['auction_closed' => 0 ]);
+        }
+        //dd([$event, $bids, $items, $bids_start, $bids_end, $dt_now, $dt_st, $dt_sp]);
     // check if any items are left
         if(!empty($items))
         {
