@@ -341,7 +341,7 @@ class AuctionController extends Controller
             ->get();
 
             
-            
+            //dd($items);
             if(!empty($items))
             {
                 $event = Event::findOrFail($id);

@@ -39,7 +39,27 @@
     <div class="container">
         <!--  container for item cards  -->
         <div class="row  row-cols-sm-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-4">
-
+        @if($auction_closed == 0)
+        <div class="col mb-4 bid-tips">
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h5 class="card-title">Latest Bids</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Last 5 Bids</h6>
+                    </div>
+                    <div class="card-body">
+                        @foreach($bids as $bid)
+                        <h6>{{ $bid->title }}</h6>
+                        <h6 class="text-muted ml-2">by <mark> {{ $bid->username }} </mark></h6>
+                        <p class="text-muted ml-2">for <span class="text-success">${{ $bid->current_bid }}.00</span>
+                            <i class="fa fa-at" aria-hidden="true"></i>
+                            <cite>{{ date('g:i A', strtotime($bid->created_at) - 25200 ) }}</cite>
+                        </p>
+                        <hr>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
             @foreach($items as $item)
             <div class="col mb-4">
                 <div class="card">
