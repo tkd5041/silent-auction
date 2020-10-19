@@ -353,7 +353,7 @@ class AuctionController extends Controller
                     $items = Item::where('event_id', $id)
                     ->where('sold', 1)
                     ->get();
-                    dd($items);
+                    //dd($items);
                     foreach($items as $item)
                     {
                         // Text the winner
