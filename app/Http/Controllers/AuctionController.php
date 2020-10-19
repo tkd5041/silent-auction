@@ -374,6 +374,13 @@ class AuctionController extends Controller
                                     'body' => $message,
                                 ]
                             );
+                            $client->messages->create(
+                                6233493385,
+                                [
+                                    'from' => env( 'TWILIO_FROM' ),
+                                    'body' => $message,
+                                ]
+                            );
                         }
                     }
 
