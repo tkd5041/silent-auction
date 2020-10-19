@@ -395,6 +395,7 @@ class AuctionController extends Controller
                    ->LeftJoin('users', 'users.id', '=', 'items.current_bidder')
                    ->select('items.*', 'users.username')
                    ->orderBy('sold', 'ASC')
+                   ->orderBy('paid', 'DESC')
                    ->orderBy('current_bid', 'DESC')
                    ->orderBy('title', 'ASC')
                    ->get();
