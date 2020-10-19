@@ -72,21 +72,8 @@
                         <p><b>Minimum Bid: </b> <span class="text-danger">${{ $item->initial_bid }}.00</span></p>
                     </div> <!-- div card-body -->
                     <div class="card-footer">
-                        @if($auction_closed == 1)
-                        <div class="view-description">
-                            <blockquote>
-                                {{ Str::limit($item->description, 200 ) }}
-                            </blockquote>
-                        </div>
-                        @endif
-                        @if( $auction_closed == 0)
-                        <div class="text-center view-item">
-                            <a href="/auction/{{$item->id}}/edit" class="btn btn-outline-primary btn-left fa fa-eye"
-                                data-toggle="tooltip" data-placement="top" title="View Item">
-                                View Item
-                            </a>
-                        </div>
-                        @endif
+                        
+                        
                         @if(($item->sold == 0 || $item->sold == 2) && $auction_closed == 1)
                         <div class="text-center sold">
                             <h5 class="text-info">Item Closed</h5>
@@ -102,21 +89,7 @@
                     </p>
                 </div> <!-- div card-body -->
                 <div class="card-footer">
-                    @if($auction_closed == 1)
-                    <div class="view-description">
-                        <blockquote class="description">
-                            {{ Str::limit($item->description, 200 ) }}
-                        </blockquote>
-                    </div>
-                    @endif
-                    @if( $auction_closed == 0)
-                    <div class="text-center view-item">
-                        <a href="/auction/{{$item->id}}/edit" class="btn btn-outline-primary btn-left fa fa-eye"
-                            data-toggle="tooltip" data-placement="top" title="View Item">
-                            View Item
-                        </a>
-                    </div>
-                    @endif
+                   
                     @if($item->sold == 0 && $auction_closed == 1)
                     <div class="text-center sold">
                         <h5 class="text-info">Item Closed</h5>
