@@ -116,15 +116,17 @@ return [
          * certificate chain of issuers. The private key also may be contained
          * in a separate file specified by local_pk.
          */
-        'local_cert' => '/Users/td/.config/valet/Certificates/sa.test.TLD.crt',
-        // env('LARAVEL_WEBSOCKETS_SSL_LOCAL_CERT', null),
+        'local_cert' => 
+        // '/Users/td/.config/valet/Certificates/sa.test.TLD.crt',
+         env('LARAVEL_WEBSOCKETS_SSL_LOCAL_CERT', null),
 
         /*
          * Path to local private key file on filesystem in case of separate files for
          * certificate (local_cert) and private key.
          */
-        'local_pk' => '/Users/td/.config/valet/Certificates/sa.test.TLD.crt',
-        // env('LARAVEL_WEBSOCKETS_SSL_LOCAL_PK', null),
+        'local_pk' => 
+        // '/Users/td/.config/valet/Certificates/sa.test.TLD.crt',
+         env('LARAVEL_WEBSOCKETS_SSL_LOCAL_PK', null),
 
         /*
          * Passphrase for your local_cert file.
