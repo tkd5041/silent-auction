@@ -2,27 +2,6 @@
 
 @section('content')
 <div class="container" id="events">
-    <h1>Time Until Next Event:</h1>
-    <div class="row py-2 justify-content-center">
-        <div id="clockdiv">
-            <div>
-                <span class="days"></span>
-                <div class="smalltext">Days</div>
-            </div>
-            <div>
-                <span class="hours"></span>
-                <div class="smalltext">Hours</div>
-            </div>
-            <div>
-                <span class="minutes"></span>
-                <div class="smalltext">Minutes</div>
-            </div>
-            <div>
-                <span class="seconds"></span>
-                <div class="smalltext">Seconds</div>
-            </div>
-        </div>
-    </div>
     <div class="border border-success rounded m-3 p-3 w-50 mx-auto my-5">
                 <h6 class="text-danger text-center">To get the best view of the items, we suggest you view this on your computer. <br>If
                     you’re on an iPhone, it works best if you make sure you’re updated to iOS 14. Have fun!</h6>

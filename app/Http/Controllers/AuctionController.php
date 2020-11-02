@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Http\Request;
 use Twilio\Rest\Client;
 use Carbon\Carbon;
@@ -11,6 +12,7 @@ use App\Auction;
 use App\Item;
 use App\User;
 use App\Images;
+use App\Events\NewBid;
 use DB;
 
 class AuctionController extends Controller
@@ -174,26 +176,26 @@ class AuctionController extends Controller
     // send a text notification to current bidder that they have been outbid. include link to re-bid
         if($item->current_bidder > 0)
         {
-            $sid    = env( 'TWILIO_ACCOUNT_SID' );
-            $token  = env( 'TWILIO_AUTH_TOKEN' );
-            $client = new Client( $sid, $token );
+            // $sid    = env( 'TWILIO_ACCOUNT_SID' );
+            // $token  = env( 'TWILIO_AUTH_TOKEN' );
+            // $client = new Client( $sid, $token );
 
-            $number = $cb->phone;
-            $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
+            // $number = $cb->phone;
+            // $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
 
-                // if number has no error codes then send the message
-            if ( ! $phone->carrier['error_code'] ) {
-                $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/home to bid again!";
-                //dd($sid, $token, $client, $number, $message);
-                $client->messages->create(
-                    $number,
-                    [
-                        'from' => env( 'TWILIO_FROM' ),
-                        'body' => $message,
-                    ]
-                );
+            //     // if number has no error codes then send the message
+            // if ( ! $phone->carrier['error_code'] ) {
+            //     $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/home to bid again!";
+            //     //dd($sid, $token, $client, $number, $message);
+            //     $client->messages->create(
+            //         $number,
+            //         [
+            //             'from' => env( 'TWILIO_FROM' ),
+            //             'body' => $message,
+            //         ]
+            //     );
 
-            }
+            // }
 
     // send a mail notification to current bidder that they have been outbid. include link to re-bid
             // $email = $cb->email;
@@ -261,6 +263,8 @@ class AuctionController extends Controller
 
     // save auction and notify bidder of successful bid
         if($auction->save()){
+            $bids = Auction::where('event_id', session('selected_event'))->latest()->limit(5)->get();
+            broadcast(new NewBid($bids))->toOthers();
             session()->flash('success', 'Bid Submitted');
         }else{
             session()->flash('error', 'There was an error submitting the bid');
