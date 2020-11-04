@@ -25,6 +25,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/bids', 'BidsController@get')->middleware('auth');
 Route::post('/bids', 'BidsController@get')->middleware('auth');
+Route::get('/item/{id}', 'ItemController@get')->middleware('auth');
+Route::post('/item', 'ItemController@get')->middleware('auth');
 
 Route::view('/bulksms', 'bulksms')->middleware('can:manage-users')->name('sms.index');
 Route::post('/bulksms', 'BulkSmsController@sendSms')->middleware('auth');

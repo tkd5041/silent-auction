@@ -15,7 +15,7 @@ import 'v-toaster/dist/v-toaster.css'
 Vue.use(Toaster, {timeout: 3000})
 
 Vue.component('current-bids', require('./components/CurrentBids.vue').default);
-Vue.component('item-bid', require('./components/ItemBid.vue'));
+Vue.component('item-bid', require('./components/ItemBid.vue').default);
 
 const app = new Vue({
     el: '#app',
@@ -37,11 +37,11 @@ const app = new Vue({
                 //console.log(bids);
             })
             .joining((user) => {
-                // this.numberOfUsers += 1;
+                 this.numberOfUsers += 1;
                 // this.$toaster.info(user.name+' has joined the room.');
             })
             .leaving((user) => {
-                // this.numberOfUsers -= 1;
+                 this.numberOfUsers -= 1;
                 // this.$toaster.warning(user.name+' has left the room.');
             });
     }

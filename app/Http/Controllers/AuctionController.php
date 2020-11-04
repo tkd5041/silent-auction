@@ -264,12 +264,13 @@ class AuctionController extends Controller
     // save auction and notify bidder of successful bid
         if($auction->save()){
             $bids = Auction::where('event_id', session('selected_event'))->latest()->limit(5)->get();
-            broadcast(new NewBid($bids))->toOthers();
+            $items = Item::where('event_id', session('selected_event'))->get();
+            broadcast(new NewBid($bids, $items))->toOthers();
             session()->flash('success', 'Bid Submitted');
         }else{
             session()->flash('error', 'There was an error submitting the bid');
         }
-
+        
     // get latest information and return to auction index with fresh data
         $event = Event::findOrFail(session('selected_event'));
         $bids = Auction::where('event_id', session('selected_event'))->latest()->get();
@@ -306,7 +307,10 @@ class AuctionController extends Controller
         if($dt_now >= $dt_sp)
         {
             session(['auction_closed' => 1 ]);
-        } else 
+        } elseif ($dt_now < $dt_st)
+        {
+            session(['auction_closed' => 2 ]);
+        } else
         {
             session(['auction_closed' => 0 ]);
         }
@@ -329,12 +333,10 @@ class AuctionController extends Controller
                     else
                     {
                         $item->sold = 1;
-
                     }
 
                     $item->save();
                 } 
-
             }
 
         } 

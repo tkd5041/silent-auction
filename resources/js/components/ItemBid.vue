@@ -1,28 +1,28 @@
 <template>
-    <div :v-bind="item-bid-item.id">
-        <p v-if="current_bid == 0">
-            <b>Minimum Bid: </b>
-            <span class="text-danger">${{ initial_bid }}.00</span>
-        </p>
-        <p v-else>
-            <b>Bidder: </b>
-            <span class="text-muted ml-1"><mark> {{ username }} </mark></span><br>
-            <b>Current Bid: </b>
-            <span class="text-success ml-2">${{ current_bid }}.00</span><br>
-            <b>Minimum Bid: </b>
-            <span class="text-danger">
-                ${{ current_bid + increment }}.00
-            </span>
-        </p>
-    </div>
+    
+        <div >
+            <div>
+                <b>Bidder: </b><span class="text-muted mr-2 float-right"><mark :class="'bidder'+item.id" :id="'bidder'+item.id" :ref="'bidder'+item.id">{{ item.username }}</mark></span>
+            </div>
+            <div>
+                <b>Current Bid: </b><span class="text-success mr-2 float-right" :id="'bid'+item.id" :ref="'bid'+item.id">${{item.current_bid }}.00</span>
+            </div>
+            <div>
+                <b>Minimum Next Bid: </b><span class="text-danger mr-2 float-right" :id="'next'+item.id" :ref="'next'+item.id">${{ item.current_bid + item.increment }}.00</span>
+            </div>
+        </div>
+   
 </template>
-<script>
-export default({
+ <script>
+ export default({
     props: {
-        items: {
-        type: Array,
+        item: {
+        type: Object,
         default: [],
         },
-    },
-})
-</script>
+     },
+     mounted() {
+         //console.log(this.$refs);
+     },
+ })
+ </script>

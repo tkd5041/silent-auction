@@ -110,7 +110,7 @@ class PayController extends Controller
 
             // if number has no error codes then send the message
         if ( ! $phone->carrier['error_code'] ) {
-            $message = "Thank you for your payment of $" . $paid . ".00. PalGroup appreciates your support.";
+            $message = "Thank you for your payment. PalGroup appreciates your support.";
             //dd($sid, $token, $client, $number, $message);
             $client->messages->create(
                 $number,

@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
                 <div>
-                    <blockquote>{{ $item->description }}</blockquote>
+                    <p style="font-size:20px;">{{ $item->description }}</p>
                     @if($images->isEmpty())
                     <div class="text-center">
                         <h4>No Images Available</h4>
@@ -34,38 +34,22 @@
                     </div>
                     @endif
                     <div class="my-3">
-                        <h3>Value: {{ $item->value }}</h3>
+                        <h4>Value: {{ $item->value }}</h4>
                         <h5><small>(Retail Value: ${{ $item->retail_value }}.00)</small></h5>
                     </div>
                     <div class="bid-group">
                         <hr />
                         <div class="container mb-3">
-                                <h3 class="text-danger">Bidding Ends:</h3>
-                                <h4 class="text-muted ml-2">8:00 PM Eastern Time</h4>
-                                <h4 class="text-muted ml-2">5:00 PM Mountain Standard</h4>
-                            <!--div class="row mb-3">
-                                    <div>
-                                        <span class="days"></span>
-                                        <div class="smalltext">Days</div>
-                                    </div>
-                                    <div>
-                                        <span class="hours"></span>
-                                        <div class="smalltext">Hours</div>
-                                    </div>
-                                    <div>
-                                        <span class="minutes"></span>
-                                        <div class="smalltext">Minutes</div>
-                                    </div>
-                                    <div>
-                                        <span class="seconds"></span>
-                                        <div class="smalltext">Seconds</div>
-                                    </div>
-                                </div>
-                            </div-->
+                            <h5 class="text-danger">Bidding Ends:<br>
+                                <small><span class="text-muted pl-2">{{ date('D, M j, Y ', strtotime($bids_end)) }} @
+                                        {{ date('g:i A', strtotime($bids_end)) }} (MST) </span></small>
+                            </h5>
+
                         </div>
                         @if($item->current_bid > $item->initial_bid)
                         <div>
-                            <h5>Current Bid: <i class="fa fa-usd" aria-hidden="true"></i>{{ $item->current_bid }}.00</h5>
+                            <h5>Current Bid: <i class="fa fa-usd" aria-hidden="true"></i>{{ $item->current_bid }}.00
+                            </h5>
                             <h5>Minimum Bid: <i class="fa fa-usd"
                                     aria-hidden="true"></i>{{ $item->current_bid + $item->increment }}.00</h5>
                         </div>
@@ -106,10 +90,11 @@
                 </div>
             </div>
             <div class="card-footer bid">
-                <button class="btn btn-outline-primary" type="button" onclick="location.href='/auction/{{session('selected_event')}}/'">Cancel and Go Back</button>
-                
-                
-                
+                <button class="btn btn-outline-primary" type="button"
+                    onclick="location.href='/auction/{{session('selected_event')}}/'">Cancel and Go Back</button>
+
+
+
             </div>
         </div>
     </div>

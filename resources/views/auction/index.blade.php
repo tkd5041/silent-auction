@@ -33,6 +33,7 @@
     <div class="container">
         <!--  container for item cards  -->
         <div class="row  row-cols-sm-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-4">
+            
             <!-- first card is latest bids -->
             @if($dt_now > $dt_st && $dt_now < $dt_sp)
             <div class="col mb-4">
@@ -72,25 +73,7 @@
 
                         <hr />
 
-                        @if($item->current_bid == 0)
-                        <p>
-                            <div>
-                                <b>Minimum Bid: </b> <span class="text-danger mr-2 float-right">${{ $item->initial_bid }}.00</span>
-                            </div>
-                        </p>
-                        @else
-                        <p>
-                            <div>
-                                <b>Bidder: </b><span class="text-muted mr-1 float-right"><mark> {{ $item->username }}</mark></span>
-                            </div>
-                            <div>
-                                <b>Current Bid: </b><span class="text-success mr-2 float-right">${{ $item->current_bid }}.00</span>
-                            </div>
-                            <div>
-                                <b>Minimum Next Bid: </b><span class="text-danger mr-2 float-right">${{ $item->current_bid + $item->increment }}.00</span>
-                            </div>
-                        </p>
-                        @endif
+                        <item-bid :item="{{ json_encode($item) }}" />
 
                     </div> 
                     <!-- card body end -->
