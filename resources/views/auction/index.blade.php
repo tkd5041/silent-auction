@@ -29,6 +29,7 @@
         <!--  container for item cards  -->
         <div class="row  row-cols-sm-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-4">
 <<<<<<< HEAD
+<<<<<<< HEAD
             
             <!-- first card is latest bids -->
             @if($dt_now > $dt_st && $dt_now < $dt_sp)
@@ -47,6 +48,9 @@
             <!--  end of latest bids -->
 
             <!--  begin loop of items -->
+=======
+        
+>>>>>>> parent of d794874... websockets update 20201101-2100
 =======
         
 >>>>>>> parent of d794874... websockets update 20201101-2100
@@ -70,6 +74,7 @@
                         @endif
                         <hr />
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                         <item-bid :item="{{ json_encode($item) }}" />
 
@@ -77,6 +82,11 @@
                     <!-- card body end -->
 
                     <!-- card footer start -->
+=======
+                        @if($item->current_bid == 0)
+                        <p><b>Minimum Bid: </b> <span class="text-danger">${{ $item->initial_bid }}.00</span></p>
+                    </div> <!-- div card-body -->
+>>>>>>> parent of d794874... websockets update 20201101-2100
 =======
                         @if($item->current_bid == 0)
                         <p><b>Minimum Bid: </b> <span class="text-danger">${{ $item->initial_bid }}.00</span></p>

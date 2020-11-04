@@ -11084,23 +11084,14 @@ body {
   display: inline-block;
   margin: 10px;
   border-radius: 10px;
-<<<<<<< HEAD
   max-width: 250px;
   max-height: 250px;
-=======
-  max-width: 300px;
-  max-height: 300px;
->>>>>>> parent of d794874... websockets update 20201101-2100
   width: auto;
   height: auto;
 }
 
 .gallery img:hover {
-<<<<<<< HEAD
   transform: scale(1.5);
-=======
-  transform: scale(2);
->>>>>>> parent of d794874... websockets update 20201101-2100
   margin: auto;
 }
 
