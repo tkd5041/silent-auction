@@ -21,7 +21,7 @@
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 
-    <link rel='shortcut icon' href='/favicon.ico' type='image/x-icon' />
+    <link rel="icon" type="image/png" href="/favicon.ico" />
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     <script

@@ -16,7 +16,3 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
-
-Broadcast::channel('bids', function($user) {
-    return ['name' =>$user->username];
-});

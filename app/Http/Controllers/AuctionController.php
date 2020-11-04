@@ -307,10 +307,7 @@ class AuctionController extends Controller
         if($dt_now >= $dt_sp)
         {
             session(['auction_closed' => 1 ]);
-        } elseif ($dt_now < $dt_st)
-        {
-            session(['auction_closed' => 2 ]);
-        } else
+        } else 
         {
             session(['auction_closed' => 0 ]);
         }
@@ -333,10 +330,12 @@ class AuctionController extends Controller
                     else
                     {
                         $item->sold = 1;
+
                     }
 
                     $item->save();
                 } 
+
             }
 
         } 

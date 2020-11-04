@@ -129,9 +129,9 @@
     </script>
 
     <script>
-        Echo.channel('bids')
-            .listen('NewBid', (e) => {
-                console.log(e)
+        Echo.channel('auction')
+            .listen('NewMessage', (e) => {
+                console.log(e.message)
             })
     </script>
 
