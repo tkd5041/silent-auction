@@ -29,11 +29,11 @@ const app = new Vue({
             })
             .joining((user) => {
                  this.numberOfUsers += 1;
-                this.$toaster.info(user.name+' has joined the room.');
+                //this.$toaster.info(user.name+' has joined the room.');
             })
             .leaving((user) => {
                  this.numberOfUsers -= 1;
-                this.$toaster.warning(user.name+' has left the room.');
+                //this.$toaster.warning(user.name+' has left the room.');
             });
         }
 

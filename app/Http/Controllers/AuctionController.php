@@ -177,7 +177,7 @@ class AuctionController extends Controller
                 if($item->current_bidder > 0)
                 {
                     $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/home to bid again!";
-                    sendMessage($cb->phone, $message);
+                    //sendMessage($cb->phone, $message);
                 }
 
                 // send a mail notification to current bidder that they have been outbid. include link to re-bid
