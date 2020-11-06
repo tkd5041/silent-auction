@@ -143,7 +143,7 @@
         </script>
 
         <script>
-            window.setInterval('refresh()', 2000); 	// Call a function every 10000 milliseconds (OR 10 seconds).
+            window.setInterval('refresh()', 3000); 	// Call a function every 10000 milliseconds (OR 10 seconds).
 
             // Refresh or reload page.
             function refresh() {
@@ -202,17 +202,12 @@
                 if (dNow < dStart)
                 {
                     var deadline = new Date(Date.parse('{{ $bids_start }}'));
-                    document.getElementById("bidStatus").innerHTML = "Time Until Bidding Starts:";
+
                 }
                 else if (dNow > dStart && dNow < dEnd)
                 {
                     var deadline = new Date(Date.parse('{{ $bids_end }}'));
-                    document.getElementById("bidStatus").innerHTML = "Time Until Bidding Ends:";
-                } else
-                {
-                    document.getElementById("bidStatus").innerHTML = "Bidding Closed:";
-                    document.getElementById("clockdiv").innerHTML = "<a href='/pay/{{ $event->id }}/edit' class='btn btn-primary'>Pay Now</a>";
-                }
+                } 
                 
                 initializeClock('clockdiv', deadline);
         </script>

@@ -110,12 +110,15 @@
                 </div>
                 @yield('content')
             </div>
+            <div>{{ strToTime($event->start) }}</div>
+            <div>{{ strToTime($event->end) }}</div>
         </main>
     </div>
-    <!--script src="https://code.jquery.com/jquery-3.5.1.min.js"
-            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
-        </script-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
+    </script>
     <script src="{{ mix('js/app.js') }}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
     <script>
     $(".alert").fadeTo(5000, 750).slideUp(750, function() {
         $(".alert").slideUp(750);
@@ -129,10 +132,28 @@
     </script>
 
     <script>
-        Echo.channel('auction')
-            .listen('NewMessage', (e) => {
-                console.log(e.message)
-            })
+    var dt_st = {{ strToTime($event->start) }};
+    var dt_sp = {{ strToTime($event->end) }};
+    var dt_now = new Date();
+    var target = new Date('{{$event->start}}');
+    timeOffset = target.getTimezoneOffset() * 60000;
+    targetTime = target.getTime();
+    targetUTC = targetTime  + timeOffset;
+    console.log('targetMST', targetTime);
+    console.log('targetUTC', targetUTC);
+
+    var today = new Date();
+    todayTime = today.getTime();
+    todayUTC = todayTime  + timeOffset;
+    console.log('todayMST', todayTime);
+    console.log('todayUTC', todayUTC);
+    refreshTime = (targetUTC - todayUTC);
+    console.log('refreshTime',  refreshTime);
+    if (refreshTime > 1) {
+        setTimeout(function() {
+            window.location.reload(true);
+        }, refreshTime);
+    }
     </script>
 
 

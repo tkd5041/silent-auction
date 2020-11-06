@@ -4,119 +4,75 @@
 
 <div class="container" id="events">
     <div class="auction-header">
-        <h4><b>{{ $event->name }}</b><br><br>
+        <h4><b>{{ $event->name }}</b><br>
+            <hr class="wd-50">
             <small><b>Starts: </b><span class="text-muted pl-4">{{ date('D, M j, Y ', strtotime($bids_start)) }} @
                     {{ date('g:i A', strtotime($bids_start)) }} (MST) </span></small><br>
             <small><b>End Time: </b><span class="text-muted pl-2">{{ date('D, M j, Y ', strtotime($bids_end)) }} @
                     {{ date('g:i A', strtotime($bids_end)) }} (MST) </span></small>
         </h4>
-        
+
     </div> <!--  auction-header 1  -->
     <div class="auction-header float-right">
+        @if($auction_closed == 1)
         <div>
-        
-        <h4 class="text-muted ml-2">Auction Is: <span
-                class="text-danger">CLOSED</span>
-        </h4>
-        
-        <div class="text-center">
-        <a href='/pay/{{ $event->id }}/edit' class='btn btn-primary'>Pay Now</a>
+            <h4 class="text-muted ml-2">Auction Is: <span class="text-danger">CLOSED</span></h4>
+            <div class="text-center">
+                <a href='/pay/{{ $event->id }}/edit' class='btn btn-primary'>Pay Now</a>
+            </div>
         </div>
-        
+        @elseif ($auction_closed == 0)
+        <div>
+            <h4 class="text-muted ml-2">Auction Is: <span class="text-success">OPEN</span></h4>
         </div>
-    </div> <!--  auction-header timer and pay button  -->
+        @elseif ($auction_closed == 2)
+        <div>
+            <h4 class="text-muted ml-2">Auction Is: <span class="text-info">PENDING</span></h4>
+        </div>
+        @endif
+        <hr class="wd-50">
+        <h5 class="float-right">Persons Online: <span class="badge badge-pill badge-warning mt-0">@{{ numberOfUsers }}
+        </h5>
+    </div> <!--  auction-header 1  -->
     <div class="container">
         <!--  container for item cards  -->
-        <div class="row  row-cols-sm-1 row-cols-md-3 row-cols-lg-4 row-cols-xl-4">
-<<<<<<< HEAD
-<<<<<<< HEAD
-            
-            <!-- first card is latest bids -->
-            @if($dt_now > $dt_st && $dt_now < $dt_sp)
-            <div class="col mb-4">
-                <div class="card">
+        <div class="row justify-content-center">
+            <div class="card-deck">
+                @if($auction_closed == 0)
+                <div class="card m-3 p-0" style="max-width: 16rem; min-width: 14rem;">
                     <div class="card-header">
-                        <h5>Latest Bids</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">(Five Most Recent Bids)</h6>
+                        <h5 class="card-title">Latest Bids</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Latest Ten Bids</h6>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bids">
                         <current-bids></current-bids>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        <small class="">Scroll To See More Bids</small>
                     </div>
                 </div>
             </div>
             @endif
-            <!--  end of latest bids -->
-
-            <!--  begin loop of items -->
-=======
-        
->>>>>>> parent of d794874... websockets update 20201101-2100
-=======
-        
->>>>>>> parent of d794874... websockets update 20201101-2100
             @foreach($items as $item)
-            <div class="col mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">{{ Str::limit($item->title, 40) }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">(Retail Value: ${{ $item->retail_value }}.00)</h6>
-
-
-                    </div>
-                    <div class="card-body">
-                        @if(empty($item->image))
-                        <div class="text-center my-4">
-                            <h4 class="text-muted">No Image Available</h4>
-                        </div>
-                        @else
-                        <img src="{{ $item->image }}" class="card-img-top"
-                            alt="{{ $item->title}} image {{ $item->id }}" />
-                        @endif
-                        <hr />
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-                        <item-bid :item="{{ json_encode($item) }}" />
-
-                    </div> 
-                    <!-- card body end -->
-
-                    <!-- card footer start -->
-=======
-                        @if($item->current_bid == 0)
-                        <p><b>Minimum Bid: </b> <span class="text-danger">${{ $item->initial_bid }}.00</span></p>
-                    </div> <!-- div card-body -->
->>>>>>> parent of d794874... websockets update 20201101-2100
-=======
-                        @if($item->current_bid == 0)
-                        <p><b>Minimum Bid: </b> <span class="text-danger">${{ $item->initial_bid }}.00</span></p>
-                    </div> <!-- div card-body -->
->>>>>>> parent of d794874... websockets update 20201101-2100
-                    <div class="card-footer">
-                        
-                        
-                        @if(($item->sold == 0 || $item->sold == 2) && $auction_closed == 1)
-                        <div class="text-center sold">
-                            <h5 class="text-info">Item Closed</h5>
-                        </div>
-                        @endif
+            <div class="card m-3 p-0" style="max-width: 16rem; min-width: 14rem;">
+                <div class="card-header">
+                    <h5 class="card-title">{{ Str::limit($item->title, 40) }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">(Retail Value: ${{ $item->retail_value }}.00)
+                    </h6>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    @if(empty($item->image))
+                    <div class="text-center md-4">
+                        <h4 class="text-muted">No Image Available</h4>
                     </div>
                     @else
-                    <p>
-                        <b>Bidder: </b><span class="text-muted ml-1"><mark> {{ $item->username }} <mark></span><br>
-                        <b>Current Bid: </b><span class="text-success ml-2">${{ $item->current_bid }}.00</span><br>
-                        <b>Minimum Bid: </b><span
-                            class="text-danger">${{ $item->current_bid + $item->increment }}.00</span>
-                    </p>
-                </div> <!-- div card-body -->
-                <div class="card-footer">
-                   
-                    @if($item->sold == 0 && $auction_closed == 1)
-                    <div class="text-center sold">
-                        <h5 class="text-info">Item Closed</h5>
-                    </div>
+                    <img src="{{ $item->image }}" class="card-img-top" alt="{{ $item->title}} image {{ $item->id }}" />
                     @endif
-                    @if($item->sold == 2 && $auction_closed == 1)
+                    <hr />
+                    <item-bid :item="{{ json_encode($item) }}" />
+                </div>
+                <div class="card-footer">
+                    @if(($item->sold == 0 || $item->sold == 2) && $auction_closed == 1)
                     <div class="text-center sold">
                         <h5 class="text-info">Item Closed</h5>
                     </div>
@@ -126,15 +82,20 @@
                         <img class="sold" src="/img/sold-stamp.png" alt="item sold">
                     </div>
                     @endif
-
+                    @if($item->sold == 0 && ($auction_closed == 0 or $auction_closed == 2))
+                    <div class="text-center">
+                        <a href="/auction/{{ $item->id }}/edit" class="btn btn-outline-primary view">View
+                            Item</a>
+                    </div>
+                    @endif
                 </div>
-                @endif
             </div>
+            @endforeach
         </div>
-        @endforeach
     </div>
-</div> <!--  container for item cards  -->
 </div>
+</div>
+
 
 
 @endsection

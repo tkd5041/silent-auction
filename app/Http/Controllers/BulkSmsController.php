@@ -11,10 +11,10 @@ class BulkSmsController extends Controller
     public function sendSms( Request $request )
     {
         // Your Account SID and Auth Token from twilio.com/console
-        $sid    = env( 'TWILIO_ACCOUNT_SID' );
-        $token  = env( 'TWILIO_AUTH_TOKEN' );
+        $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
+        $token  = '6154642453f435cbbf73a43f767a67da'; //env( 'TWILIO_AUTH_TOKEN' );
         $client = new Client( $sid, $token );
-
+        
         // Validate data from form
         $validator = Validator::make($request->all(), [
             'numbers' => 'required',
@@ -50,7 +50,7 @@ class BulkSmsController extends Controller
                     $client->messages->create(
                         $number,
                         [
-                            'from' => env( 'TWILIO_FROM' ),
+                            'from' => '+15206000725', //env( 'TWILIO_FROM' ),
                             'body' => $message,
                         ]
                         );
@@ -65,5 +65,7 @@ class BulkSmsController extends Controller
         } // else 
         
     } // function
+
+    
 
 } // class

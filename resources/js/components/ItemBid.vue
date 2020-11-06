@@ -1,6 +1,6 @@
 <template>
     
-        <div >
+        <div  style="margin-top: auto;">
             <div>
                 <b>Bidder: </b><span class="text-muted mr-2 float-right"><mark :class="'bidder'+item.id" :id="'bidder'+item.id" :ref="'bidder'+item.id">{{ item.username }}</mark></span>
             </div>

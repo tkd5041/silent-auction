@@ -3,17 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Gate;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Event;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -26,58 +21,37 @@ class HomeController extends Controller
 
         if(Gate::denies('edit-users'))
         {
-            $events = Event::where('id','>', 1)
-                            ->where('active', '>', 0)
+            // get active and inactive events for admins
+            $events = Event::where('active','=', 1)
                             ->orderBy('start')
                             ->get();
-            //return('this is the first gate');
         } 
         else 
         {
-            $events = Event::where('id','>', 0)
+            // get only active events for bidders
+            $events = Event::where('active','<', 2)
                             ->orderBy('start')
                             ->get();
-            //return('this is the else');
         }
-        //dd($events);
-        // if no events are active
-        if ($events->isEmpty()) 
-        {
-            $events = Event::where('id', 1)
-                            ->orderBy('start')
+
+        // get all closed events for admins and bidders
+        $closed = Event::where('active','=', 2)
+                            ->orderBy('start', 'desc')
+                            ->limit(5)
                             ->get();
-            $firstDate = Carbon::now()->addDays(1)->format('Y-m-d\TH:i:s');
-            //dd($events, $firstDate);
-            return view('home')->with([
-                'events' => $events,
-                'firstDate' => $firstDate,           
-                ]);
-        }
-        $now = Carbon::now()->subHours(7)->format('Y-m-d H:i:s');
-        //dd($now);
-        $first = Event::where('id','>', 1)
-                        ->where('active', 1)
-                        ->where('start', '>=', $now )
-                        ->first();
-        //dd($first);
-        if (empty($first)) {
-            $firstDate = Carbon::now()->addDays(1)->format('Y-m-d\TH:i:s');
-        } else {
-            $firstDate = Carbon::parse($first->start)->format('Y-m-d\TH:i:s');
-        }              
-        //dd($first, $firstDate); 
-        // dd returns the correct date for countdown
+
+        //dd($events, $closed);
         return view('home')->with([
             'events' => $events,
-            'firstDate' => $firstDate,           
+            'closed' => $closed,           
             ]);
     }
 
-    public function show($id){
+    // public function show($id){
 
-        $event = Event::findOrFail($id);
-        return view('home.show', ['event' => $event]);
-    }
+    //     $event = Event::findOrFail($id);
+    //     return view('home.show', ['event' => $event]);
+    // }
 
     
 }

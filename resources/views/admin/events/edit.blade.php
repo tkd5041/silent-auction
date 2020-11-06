@@ -39,8 +39,7 @@
                         <div class="col-md-6">
                             <input id="start" type="datetime-local"
                                 class="form-control @error('start') is-invalid @enderror" name="start"
-                                value="{{ $event->start }}" aria-describedby="startdate" required autofocus>
-                            <small id="startdate" class="form-text text-muted ml-3">{{ $event->start }} <i class="fa fa-arrow-left" aria-hidden="true"></i> Re-enter date and time</small>
+                                value="{{ date('yy-d-m\\Th:m:s', strtotime($event->start)) }}" aria-describedby="startdate" required autofocus>
                             @error('start')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -55,8 +54,7 @@
                         <div class="col-md-6">
                             <input id="end" type="datetime-local"
                                 class="form-control @error('end') is-invalid @enderror" name="end"
-                                value="{{ $event->end }}" aria-describedby="enddate" required autofocus>
-                            <small id="enddate" class="form-text text-muted ml-3">{{ $event->end }} <i class="fa fa-arrow-left" aria-hidden="true"></i> Re-enter date and time</small>
+                                value="{{ date('yy-d-m\\Th:m:s', strtotime($event->end)) }}" aria-describedby="enddate" required autofocus>
                             @error('end')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

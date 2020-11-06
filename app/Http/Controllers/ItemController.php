@@ -27,4 +27,5 @@ class ItemController extends Controller
         
         return ['id' => $id, 'bidder' => $bidder, 'bid' => $bid, 'next' => $next];
     }
+
 }

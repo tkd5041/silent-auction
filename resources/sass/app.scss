@@ -120,12 +120,19 @@ html, body {
     background-color: #eae6da;
 }
 
-.event-cards .card-body .btn{
+.event-cards .card-footer{
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 18px;
+    background-color: #d1cab5;
+}
+
+.event-cards .card-footer .btn{
     display: block;
     color: #000;
     text-align: center;
     background: linear-gradient(to right, #d3bd7a, #d4af37  ); //#FFCB08, #f9dd75
-    margin-top: 30px;
+    margin: 5px;
     text-decoration: none;
     padding: 10px 5px;
 }
@@ -221,29 +228,29 @@ a .bid{
 	font-family: sans-serif;
 	color: #fff;
 	display: inline-block;
-	font-weight: 50;
+	font-weight: 30;
 	text-align: center;
-	font-size: 20px;
+	font-size: 14px;
 }
 
 #clockdiv > div{
-	padding: 5px;
-	border-radius: 3px;
+	padding: 2px;
+	border-radius: 2px;
 	background: #E9E6DA;
 	display: inline-block;
 }
 
 #clockdiv div > span{
-	padding: 10px;
-	border-radius: 3px;
+	padding: 2px;
+	border-radius: 2px;
 	background: linear-gradient(to right, #6e0707 , #6d3e3e );;
 	display: inline-block;
 }
 
 .smalltext{
     color: #626B6F;
-	padding-top: 5px;
-	font-size: 13px;
+	padding-top: 2px;
+	font-size: 10px;
 }
 
 .auction-header{
@@ -269,11 +276,20 @@ b {
 }
 
 .card {
-    min-width: 150px;
+    min-width: 150x;
 }
 
 .sold img {
     width: 5rem;
+}
+
+.view {
+    width: 7rem;
+}
+
+.bids {
+    max-height: 400px;
+    overflow-y: scroll;
 }
 
 

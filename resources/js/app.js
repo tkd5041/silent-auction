@@ -2,8 +2,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-const files = require.context('./', true, /\.vue$/i)
-files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('current-bids', require('./components/CurrentBids.vue').default);
 Vue.component('item-bid', require('./components/ItemBid.vue').default);
@@ -29,13 +29,13 @@ const app = new Vue({
             })
             .joining((user) => {
                  this.numberOfUsers += 1;
-                // this.$toaster.info(user.name+' has joined the room.');
+                this.$toaster.info(user.name+' has joined the room.');
             })
             .leaving((user) => {
                  this.numberOfUsers -= 1;
-                // this.$toaster.warning(user.name+' has left the room.');
+                this.$toaster.warning(user.name+' has left the room.');
             });
-    }
+        }
 
 });
 

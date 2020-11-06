@@ -41,10 +41,10 @@ export default {
                         var bidder = response.data.bidder;
                         var bid = response.data.bid;
                         var next = response.data.next;
-                        console.log(id, br, bd, nt, bidder, bid, next);
-                        item49.innerHTML = bidder;
-                        bd = bid;
-                        nt = next;
+                        //console.log(id, br, bd, nt, bidder, bid, next);
+                        document.getElementById(br).innerHTML = bidder;
+                        document.getElementById(bd).innerHTML = bid;
+                        document.getElementById(nt).innerHTML = next;
                     });
             });
     },

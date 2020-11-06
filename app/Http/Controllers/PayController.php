@@ -119,7 +119,6 @@ class PayController extends Controller
                     'body' => $message,
                 ]
             );
-
         }
 
         session()->flash('success', 'Thank you for your payment!');
