@@ -40,7 +40,7 @@ class HomeController extends Controller
                             ->limit(5)
                             ->get();
 
-        //dd($events, $closed);
+        dd($events, $closed);
         return view('home')->with([
             'events' => $events,
             'closed' => $closed,           

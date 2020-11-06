@@ -35,7 +35,7 @@
                             <dd>{{ date('g:i A', strtotime($event->end)) }} (MST)</dd>
                         </div>
                         <div class="card-footer">
-                            <a href="{{  route('auction', $event->id) }}" class="btn btn-secondary">Select Event</a>
+                            <!--0a href="{{  route('auction', $event->id) }}" class="btn btn-secondary">Select Event</a-->
                         </div>
                     </div>
                     @endforeach
