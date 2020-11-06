@@ -39,5 +39,9 @@ class AuthServiceProvider extends ServiceProvider
         {
             return $user->hasRole('admin');
         });
+
+        Gate::define('viewWebSocketsDashboard', function ($user = null) {
+            return $user->hasRole('admin');
+        });
     }
 }

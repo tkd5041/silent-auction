@@ -135,6 +135,7 @@
     var dt_st = {{ strToTime($event->start) }};
     var dt_sp = {{ strToTime($event->end) }};
     var dt_now = new Date();
+    
     var target = new Date('{{$event->start}}');
     timeOffset = target.getTimezoneOffset() * 60000;
     targetTime = target.getTime();
