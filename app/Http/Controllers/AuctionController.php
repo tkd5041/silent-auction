@@ -247,7 +247,7 @@ class AuctionController extends Controller
             if($auction->save()){
                 $bids = Auction::where('event_id', session('selected_event'))->latest()->limit(10)->get();
                 //$items = Item::where('event_id', session('selected_event'))->get();
-                broadcast(new NewBid($bids))->toOthers();
+                //broadcast(new NewBid($bids))->toOthers();
                 session()->flash('success', 'Your Bid Was Submitted Successfully');
             }else{
                 session()->flash('error', 'There was an error submitting your bid');
