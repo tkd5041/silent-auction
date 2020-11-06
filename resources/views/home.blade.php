@@ -66,7 +66,7 @@
                     <th scope="row">{{ $clsd->id }}</th>
                     <td>{{ $clsd->name }}</td>
                     <td>{{ date('D, M j, Y ', strtotime($clsd->end)) }}</td>
-                    <td><a href="{{  route('auction', $clsd->id) }}" class="btn btn-sm btn-outline-info float-right">View Event</a></td>
+                    <td><!--a href="{{  route('auction', $clsd->id) }}" class="btn btn-sm btn-outline-info float-right">View Event</a></td-->
                 </tr>
                 @endforeach
             </tbody>
