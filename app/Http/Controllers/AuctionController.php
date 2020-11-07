@@ -177,8 +177,8 @@ class AuctionController extends Controller
                 if($item->current_bidder > 0)
                 {
                     
-                    $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
-                    $token  = 'e6806a43258937da06fb0a1aa355320e'; //env( 'TWILIO_AUTH_TOKEN' );
+                    $sid    = ''; //env( 'TWILIO_ACCOUNT_SID' );
+                    $token  = ''; //env( 'TWILIO_AUTH_TOKEN' );
                     $client = new Client( $sid, $token );
 
                     $number = $cb->phone;
@@ -373,11 +373,11 @@ class AuctionController extends Controller
                     // mark text sent
                     $item->texted = 1;
                     $item->save();
-                    
+
                     // Text the winner
                     $cb = User::findOrFail($item->current_bidder);
-                    $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
-                    $token  = 'e6806a43258937da06fb0a1aa355320e'; //env( 'TWILIO_AUTH_TOKEN' );
+                    $sid    = ''; //env( 'TWILIO_ACCOUNT_SID' );
+                    $token  = ''; //env( 'TWILIO_AUTH_TOKEN' );
                     $client = new Client( $sid, $token );
                     $number = $cb->phone;
                     $message = "Congratulations! You have won " . $item->title . " for $" . $item->current_bid . ".00! Please visit https://pal-auction.org/home to pay. Thank you for your support!";
