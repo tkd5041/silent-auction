@@ -12,7 +12,7 @@ class BulkSmsController extends Controller
     {
         // Your Account SID and Auth Token from twilio.com/console
         $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
-        $token  = '6154642453f435cbbf73a43f767a67da'; //env( 'TWILIO_AUTH_TOKEN' );
+        $token  = 'e6806a43258937da06fb0a1aa355320e'; //env( 'TWILIO_AUTH_TOKEN' );
         $client = new Client( $sid, $token );
         
         // Validate data from form
@@ -42,6 +42,7 @@ class BulkSmsController extends Controller
                 // check if number is valid
                 $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
 
+                try {
                 // if number has no error codes then send the message
                 if ( ! $phone->carrier['error_code'] ) 
                 { // if-2
@@ -55,6 +56,10 @@ class BulkSmsController extends Controller
                         ]
                         );
                 } // if-2
+            } catch (\Exception $e) {
+
+                console.log($e->getMessage());
+            }
 
             } // foreach
             return back()->with( 'success', $count . " message/s sent!" );

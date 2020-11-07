@@ -176,8 +176,27 @@ class AuctionController extends Controller
                 // send a text notification to current bidder that they have been outbid. include link to re-bid
                 if($item->current_bidder > 0)
                 {
-                    $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/home to bid again!";
-                    //sendMessage($cb->phone, $message);
+                    
+                    $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
+                    $token  = 'e6806a43258937da06fb0a1aa355320e'; //env( 'TWILIO_AUTH_TOKEN' );
+                    $client = new Client( $sid, $token );
+
+                    $number = $cb->phone;
+                    $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
+
+                    // if number has no error codes then send the message
+                    if ( ! $phone->carrier['error_code'] ) {
+                        $message = "You have been outbid on item " . $item->title . ". https://pal-auction.org/home to bid again!";
+                        //dd($sid, $token, $client, $number, $message);
+                        $client->messages->create(
+                            $number,
+                            [
+                                'from' => '+15206000725',env( 'TWILIO_FROM' ),
+                                'body' => $message,
+                            ]
+                        );
+
+                    }
                 }
 
                 // send a mail notification to current bidder that they have been outbid. include link to re-bid
@@ -298,10 +317,11 @@ class AuctionController extends Controller
             session(['auction_closed' => 0 ]);
         }
         //dd([$event, $bids, $items, $bids_start, $bids_end, $dt_now, $dt_st, $dt_sp, session('auction_closed'), ($dt_now > $dt_sp), ($dt_now < $dt_st) ]);
-    // check if any items are left
-        if(!empty($items))
+        
+        // check if any items are left
+        if(!$items->isEmpty())
         {
-    // check individual timestamps and close them if they are expired
+            // check individual timestamps and close them if they are expired
             foreach($items as $item)
             {
                 $item_end = Carbon::parse($item->end_time)->timestamp;
@@ -328,29 +348,54 @@ class AuctionController extends Controller
 
     //close auction if the item set is empty
             $items = Item::where('event_id', $id)
-            ->where('sold', 0)
-            ->get();
+                    ->where('sold', 0)
+                    ->get();
 
-            
+                       
             //dd($items);
-            if(!empty($items))
+            if($items->isEmpty())
             {
                 $event = Event::findOrFail($id);
                 if ($event->active == 1)
                 {
                     $event->active = 2;
                     $event->save();
+                }  
+                
+                $items = Item::where('event_id', $id)
+                ->where('sold', 1)
+                ->where('texted', 0)
+                ->get();
+                //dd($items);
 
-                    $items = Item::where('event_id', $id)
-                    ->where('sold', 1)
-                    ->get();
-                    //dd($items);
-                    foreach($items as $item)
+                foreach($items as $item)
+                {
+                    // mark text sent
+                    $item->texted = 1;
+                    $item->save();
+                    
+                    // Text the winner
+                    $cb = User::findOrFail($item->current_bidder);
+                    $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
+                    $token  = 'e6806a43258937da06fb0a1aa355320e'; //env( 'TWILIO_AUTH_TOKEN' );
+                    $client = new Client( $sid, $token );
+                    $number = $cb->phone;
+                    $message = "Congratulations! You have won " . $item->title . " for $" . $item->current_bid . ".00! Please visit https://pal-auction.org/home to pay. Thank you for your support!";
+
+                    $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
+
+                    // if number has no error codes then send the message
+                    if ( ! $phone->carrier['error_code'] ) 
                     {
-                        // Text the winner
-                        $message = "Congratulations! You have won " . $item->title . " for $" . $item->current_bid . ".00! Please visit https://pal-auction.org/home to pay. Thank you for your support!";
-                        sendMessage($cb->phone, $message);
+                        $client->messages->create(
+                            $number,
+                            [
+                                'from' => '+15206000725', //env( 'TWILIO_FROM' ),
+                                'body' => $message,
+                            ]
+                        );
                     }
+                }
             }
 
     // get fresh information on the bids to send back to the index page
@@ -391,29 +436,4 @@ class AuctionController extends Controller
             'dt_sp' => $dt_sp,
         ]);
     }
-}
-
-    public function sendMessage($n, $m)
-    {
-        $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
-        $token  = '6154642453f435cbbf73a43f767a67da'; //env( 'TWILIO_AUTH_TOKEN' );
-        $client = new Client( $sid, $token );
-        $number = $n;
-        $message = $m;
-
-        $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
-
-        // if number has no error codes then send the message
-        if ( ! $phone->carrier['error_code'] ) {
-            $client->messages->create(
-                $number,
-                [
-                    'from' => '+15206000725', //env( 'TWILIO_FROM' ),
-                    'body' => $message,
-                ]
-            );
-        }
-    }
-
-        
 }
