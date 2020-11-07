@@ -102,7 +102,7 @@ class PayController extends Controller
         // text winner of successful payment
         // Text the winner
         $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
-        $token  = 'e6806a43258937da06fb0a1aa355320e'; //env( 'TWILIO_AUTH_TOKEN' );
+        $token  = 'db8eaf5f25bd0e5b4a7612c55becf61c'; //env( 'TWILIO_AUTH_TOKEN' );
         $client = new Client( $sid, $token );
         $winner = User::findOrFail($item->current_bidder);
         $number = $winner->phone;
