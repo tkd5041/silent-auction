@@ -177,9 +177,11 @@ class AuctionController extends Controller
                 if($item->current_bidder > 0)
                 {
                     
-                    $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
-                    $token  = 'db8eaf5f25bd0e5b4a7612c55becf61c'; //env( 'TWILIO_AUTH_TOKEN' );
-                    $client = new Client( $sid, $token );
+                    $sid = config('services.twilio.sid');
+                    $token = config('services.twilio.token');
+                    $from = config('services.twilio.from');
+                    $client = new Client( $sid, $token);
+                    //dd($sid, $token, $from, $client);
 
                     $number = $cb->phone;
                     $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
@@ -191,7 +193,7 @@ class AuctionController extends Controller
                         $client->messages->create(
                             $number,
                             [
-                                'from' => '+15206000725',env( 'TWILIO_FROM' ),
+                                'from' => $from,
                                 'body' => $message,
                             ]
                         );
@@ -376,9 +378,12 @@ class AuctionController extends Controller
 
                     // Text the winner
                     $cb = User::findOrFail($item->current_bidder);
-                    $sid    = 'ACa86f2ce31eff8fe2c761a70ca6c5a0bf'; //env( 'TWILIO_ACCOUNT_SID' );
-                    $token  = 'db8eaf5f25bd0e5b4a7612c55becf61c'; //env( 'TWILIO_AUTH_TOKEN' );
-                    $client = new Client( $sid, $token );
+                    $sid = config('services.twilio.sid');
+                    $token = config('services.twilio.token');
+                    $from = config('services.twilio.from');
+                    $client = new Client( $sid, $token);
+                    //dd($sid, $token, $from, $client);
+
                     $number = $cb->phone;
                     $message = "Congratulations! You have won " . $item->title . " for $" . $item->current_bid . ".00! Please visit https://pal-auction.org/home to pay. Thank you for your support!";
 
@@ -390,7 +395,7 @@ class AuctionController extends Controller
                         $client->messages->create(
                             $number,
                             [
-                                'from' => '+15206000725', //env( 'TWILIO_FROM' ),
+                                'from' => $from,
                                 'body' => $message,
                             ]
                         );
