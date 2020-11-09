@@ -331,14 +331,10 @@ class AuctionController extends Controller
                     else
                     {
                         $item->sold = 1;
-
                     }
-
                     $item->save();
                 } 
-
             }
-
         } 
 
     //close auction if the item set is empty
@@ -356,44 +352,6 @@ class AuctionController extends Controller
                     $event->active = 2;
                     $event->save();
                 }  
-                
-                $items = Item::where('event_id', $id)
-                ->where('sold', 1)
-                ->where('texted', 0)
-                ->get();
-                //dd($items);
-
-                foreach($items as $item)
-                {
-                    // mark text sent
-                    $item->texted = 1;
-                    $item->save();
-
-                    // Text the winner
-                    $cb = User::findOrFail($item->current_bidder);
-                    $sid = config('services.twilio.sid');
-                    $token = config('services.twilio.token');
-                    $from = config('services.twilio.from');
-                    $client = new Client( $sid, $token);
-                    //dd($sid, $token, $from, $client);
-
-                    $number = $cb->phone;
-                    $message = "Congratulations! You have won " . $item->title . " for $" . $item->current_bid . ".00! Please visit https://pal-auction.org/home to pay. Thank you for your support!";
-
-                    $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
-
-                    // if number has no error codes then send the message
-                    if ( ! $phone->carrier['error_code'] ) 
-                    {
-                        $client->messages->create(
-                            $number,
-                            [
-                                'from' => $from,
-                                'body' => $message,
-                            ]
-                        );
-                    }
-                }
             }
 
     // get fresh information on the bids to send back to the index page
@@ -418,5 +376,49 @@ class AuctionController extends Controller
             'dt_st' => $dt_st,
             'dt_sp' => $dt_sp,
         ]);
+    }
+
+    public function textwinners($id)
+    {
+        $items = Item::where('event_id', $id)
+            ->where('sold', 1)
+            ->where('texted', 0)
+            ->get();
+            //dd($items);
+        $count = 0;
+        foreach($items as $item)
+        {
+            // mark text sent
+            $item->texted = 1;
+            $item->save();
+
+            // Text the winner
+            $cb = User::findOrFail($item->current_bidder);
+            $sid = config('services.twilio.sid');
+            $token = config('services.twilio.token');
+            $from = config('services.twilio.from');
+            $client = new Client( $sid, $token);
+            //dd($sid, $token, $from, $client);
+
+            $number = $cb->phone;
+            $message = "Congratulations! You have won " . $item->title . " for $" . $item->current_bid . ".00! Please visit https://pal-auction.org/home to pay. Thank you for your support!";
+
+            $phone = $client->lookups->v1->phoneNumbers($number)->fetch(["type" => ["carrier"]]);
+
+            // if number has no error codes then send the message
+            if ( ! $phone->carrier['error_code'] ) 
+            {
+                $client->messages->create(
+                    $number,
+                    [
+                        'from' => $from,
+                        'body' => $message,
+                    ]
+                );
+            }
+            $count++;
+        }
+        Session::flash('success', "Successfully notified " . $count . " bidders.");
+        return \Redirect::back();
     }
 }

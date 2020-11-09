@@ -11,7 +11,9 @@
             <small><b>End Time: </b><span class="text-muted pl-2">{{ date('D, M j, Y ', strtotime($bids_end)) }} @
                     {{ date('g:i A', strtotime($bids_end)) }} (MST) </span></small>
         </h4>
+        @if($auction_status == 2)
 
+        @endif
     </div> <!--  auction-header 1  -->
     <div class="auction-header float-right">
         <div>status: {{ $auction_status }} event: {{$event->active}}</div>
@@ -67,44 +69,50 @@
         <div>
             <h4 class="text-muted ml-2">Auction Is: <span class="text-danger">CLOSED</span></h4>
             <div class="text-center">
-                <a href='/pay/{{ $event->id }}/edit' class='btn btn-primary'>Pay Now</a>
+                <a href="{{ route('auction.text', $event->id) }}" type="button"
+                    class="btn btn-success" data-toggle="tooltip"
+                    data-placement="top" title="Text Winners">
+                    Text Winners
+                </a>
             </div>
         </div>
-        @endif
-        <hr class="wd-50">
-        <h5 class="float-right">Persons Online: <span class="badge badge-pill badge-warning mt-0">@{{ numberOfUsers }}
-        </h5>
-    </div> <!--  auction-header 1  -->
-    <div class="container">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th class="text-center" scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th class="text-center" scope="col">Value</th>
-                        <th class="text-center" scope="col">Sold</th>
-                        <th class="text-center" scope="col">Bidder</th>
-                        <th class="text-center" scope="col">Bid</th>
-                        <th class="text-center" scope="col">Paid</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($items as $item)
-                    <tr>
-                        <th scope="row" style="text-align: center">{{ $item->id }}</th>
-                        <td style="text-align: left">{{ $item->title }}</td>
-                        <td style="text-align: center">${{ $item->retail_value }}.00</td>
-                        <td style="text-align: center">{{ ($item->sold == 1) ? 'Yes' : 'No' }}</td>
-                        <td style="text-align: center">{{ $item->username }} | {{$item->name}}</td>
-                        <td style="text-align: right">${{ $item->current_bid }}.00</td>
-                        <td style="text-align: center">{{ ($item->paid) ? 'Yes' : 'No' }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
     </div>
+</div>
+@endif
+<hr class="wd-50">
+<h5 class="float-right">Persons Online: <span class="badge badge-pill badge-warning mt-0">@{{ numberOfUsers }}
+</h5>
+</div> <!--  auction-header 1  -->
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th class="text-center" scope="col">Value</th>
+                    <th class="text-center" scope="col">Sold</th>
+                    <th class="text-center" scope="col">Bidder</th>
+                    <th class="text-center" scope="col">Bid</th>
+                    <th class="text-center" scope="col">Paid</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($items as $item)
+                <tr>
+                    <th scope="row" style="text-align: center">{{ $item->id }}</th>
+                    <td style="text-align: left">{{ $item->title }}</td>
+                    <td style="text-align: center">${{ $item->retail_value }}.00</td>
+                    <td style="text-align: center">{{ ($item->sold == 1) ? 'Yes' : 'No' }}</td>
+                    <td style="text-align: center">{{ $item->username }} | {{$item->name}}</td>
+                    <td style="text-align: right">${{ $item->current_bid }}.00</td>
+                    <td style="text-align: center">{{ ($item->paid) ? 'Yes' : 'No' }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 </div>
 
 @endsection
