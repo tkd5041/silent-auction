@@ -33,7 +33,7 @@ class AuctionController extends Controller
                    ->orderBy('end_time', 'DESC')
                    ->orderBy('title', 'ASC')
                    ->get();
-                
+             
         session(['selected_event' => $id]);
         session(['event_name' => $event->name]);
         

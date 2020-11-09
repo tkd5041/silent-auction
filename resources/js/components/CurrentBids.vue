@@ -34,17 +34,19 @@ export default {
                 // get data on item so we can update the item to the new bidder information
                 axios.get('/item/'+e.bids[0].item_id)
                     .then ((response) => {
-                        var id = 'item'+response.data.id;
-                        var br = 'bidder'+response.data.id;
-                        var bd = 'bid'+response.data.id;
-                        var nt = 'next'+response.data.id;
+                        var id = 'item'+e.bids[0].item_id;
+                        var br = 'bidder'+e.bids[0].item_id;
+                        var bd = 'bid'+e.bids[0].item_id;
+                        var nt = 'next'+e.bids[0].item_id;
                         var bidder = e.bids[0].username;
-                        var bid = response.data.bid;
-                        var next = response.data.next;
+                        var bid = e.bids[0].current_bid;
+                        var next = e.bids[0].next;
                         console.log(id, br, bd, nt, bidder, bid, next);
-                        this.$refs.bd.innerHTML = e.bids[0].username;
-                        document.getElementById(bd).innerHTML = bid;
-                        document.getElementById(nt).innerHTML = next;
+                        document.getElementById(br).innerHTML = e.bids[0].username;
+                        document.getElementById(bd).innerHTML = '$'+e.bids[0].current_bid+'.00';
+                        // bd.innerHTML = this.bid;
+                        
+                        //document.getElementById(nt).innerHTML = this.next;
                     });
             });
     },
