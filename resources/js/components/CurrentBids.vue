@@ -38,11 +38,11 @@ export default {
                         var br = 'bidder'+response.data.id;
                         var bd = 'bid'+response.data.id;
                         var nt = 'next'+response.data.id;
-                        var bidder = response.data.bidder;
+                        var bidder = e.bids[0].username;
                         var bid = response.data.bid;
                         var next = response.data.next;
-                        //console.log(id, br, bd, nt, bidder, bid, next);
-                        document.getElementById(br).innerHTML = bidder;
+                        console.log(id, br, bd, nt, bidder, bid, next);
+                        this.$refs.bd.innerHTML = e.bids[0].username;
                         document.getElementById(bd).innerHTML = bid;
                         document.getElementById(nt).innerHTML = next;
                     });

@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+//namespace App\Events;
 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Twilio\Rest\Client;
 use Carbon\Carbon;
+use App\Events\NewBid;
 use App\Auction;
+use App\Axial;
 use App\Images;
 use App\Event;
 use App\Item;
@@ -21,10 +24,8 @@ class AuctionController extends Controller
 // INDEX    
     public function index($id)
     {
-        
+        $axial = Axial::where('event_id', $id)->first();
         $event = Event::findOrFail($id);
-        $bids = Auction::where('event_id', $id)->latest()->limit(5)->get();
-        $auction_closed = session('auction_closed');
         $items = DB::table('items')
                    ->where('items.event_id', '=', $id)
                    ->LeftJoin('users', 'users.id', '=', 'items.current_bidder')
@@ -32,73 +33,57 @@ class AuctionController extends Controller
                    ->orderBy('end_time', 'DESC')
                    ->orderBy('title', 'ASC')
                    ->get();
-               
-        if ($bids->isEmpty()) {
-            $bids = Auction::where('event_id',1)->get();
-        }
-        if ($items->isEmpty()) {
-            $items = Item::where('event_id',1)->get();
-        }
-        if ('event_id' == 1){
-            return view('auction.index',['event' => $event, 'bids' => $bids, 'items' => $items]);
-        }
-        
+                
         session(['selected_event' => $id]);
         session(['event_name' => $event->name]);
-        session(['bids_start' => $event->start]);
-        session(['bids_end' => $event->end]);
-        //$bids_start = session('bids_start');
-        //$bids_end = session('bids_end');
-        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
-        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
-        $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
-        $dt_st = Carbon::parse($bids_start)->timestamp;
-        $dt_sp = Carbon::parse($bids_end)->timestamp;
         
-        //dd([$event, $bids, $items, $bids_start, $bids_end, $dt_now, $dt_st, $dt_sp]);
+        $bids_start = Carbon::parse($axial->dt_st)->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse($axial->dt_sp)->format('Y-m-d\TH:i:s');
+        $dt_nw = Carbon::parse(now())->timestamp; //->setTimezone('MST');
+        $dt_st = Carbon::parse($axial->dt_st)->timestamp;
+        $dt_sp = Carbon::parse($axial->dt_sp)->timestamp;
+        $auction_status = $axial->status;
+
+        //dd([$axial, $event, $items, $auction_status, $bids_start, $bids_end, $dt_nw, $dt_st, $dt_sp]);
         return view('auction.index',[
-            'event' => $event, 
-            'bids' => $bids,
-            'auction_closed' => $auction_closed, 
+            'event' => $event,
             'items' => $items,
+            'auction_status' => $auction_status, 
             'bids_start' => $bids_start,
             'bids_end' => $bids_end,
-            'dt_now' => $dt_now,
-            'dt_st' => $dt_st,
-            'dt_sp' => $dt_sp,
+            'dt_nw' => $dt_nw, // date now
+            'dt_st' => $dt_st, // date start
+            'dt_sp' => $dt_sp, // date stop
         ]);
         
     }
 
  // EDIT
     public function edit($id)
-    {
-        //dd($id);
-        $item = Item::findOrFail($id);
-        //dd($item);
+    {        
+        $axial = Axial::where('event_id', session('selected_event'))->first();
         $event = Event::findOrFail(session('selected_event'));
-        //dd($item->current_bidder);
+        $item = Item::findOrFail($id);
         $user = User::where('id', $item->current_bidder)->get();
-        //dd($user);
         $images = Images::where('item_id', $id)->get();
-        $auction_closed = session('auction_closed');
         
-        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
-        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
-        $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
-        $dt_st = Carbon::parse($bids_start)->timestamp;
-        $dt_sp = Carbon::parse($bids_end)->timestamp;
+        $bids_start = Carbon::parse($axial->dt_st)->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse($axial->dt_sp)->format('Y-m-d\TH:i:s');
+        $dt_nw = Carbon::parse(now())->timestamp; //->setTimezone('MST');
+        $dt_st = Carbon::parse($axial->dt_st)->timestamp;
+        $dt_sp = Carbon::parse($axial->dt_sp)->timestamp;
+        $auction_status = $axial->status; 
         
-        //dd($event, $item, $user, $images);
+        //dd([$axial, $event, $item, $user, $images, $bids_start, $bids_end, $dt_nw, $dt_st, $dt_sp, $auction_status]);
         return view('auction.edit', [
             '$event' => $event,
             'item' => $item,
-            'auction_closed' => $auction_closed,
+            'auction_status' => $auction_status,
             'user' => $user, 
             'images' => $images,
             'bids_start' => $bids_start,
             'bids_end' => $bids_end,
-            'dt_now' => $dt_now,
+            'dt_nw' => $dt_nw,
             'dt_st' => $dt_st,
             'dt_sp' => $dt_sp,
             ]);
@@ -107,6 +92,7 @@ class AuctionController extends Controller
 // LIST
     public function list($id)
     {
+        $axial = Axial::where('event_id', session('selected_event'))->first();
         $event = Event::findOrFail($id);
         $items = DB::table('items')
                     ->where('items.event_id', '=', $id)
@@ -116,22 +102,21 @@ class AuctionController extends Controller
         // get all the fresh auction time information
         session(['selected_event' => $id]);
         session(['event_name' => $event->name]);
-        session(['bids_start' => $event->start]);
-        session(['bids_end' => $event->end]);
-        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
-        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
-        $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
-        $dt_st = Carbon::parse($bids_start)->timestamp;
-        $dt_sp = Carbon::parse($bids_end)->timestamp;
+        
+        $bids_start = Carbon::parse($axial->dt_st)->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse($axial->dt_sp)->format('Y-m-d\TH:i:s');
+        $dt_nw = Carbon::parse(now())->timestamp; //->setTimezone('MST');
+        $dt_st = Carbon::parse($axial->dt_st)->timestamp;
+        $dt_sp = Carbon::parse($axial->dt_sp)->timestamp;
+        $auction_status = $axial->status;
 
         
         return view('auction.monitor',[
-            'event' => $event, 
-            'bids' => $bids, 
+            'event' => $event,  
             'items' => $items,
             'bids_start' => $bids_start,
             'bids_end' => $bids_end,
-            'dt_now' => $dt_now,
+            'dt_nw' => $dt_nw,
             'dt_st' => $dt_st,
             'dt_sp' => $dt_sp,
         ]);
@@ -214,7 +199,7 @@ class AuctionController extends Controller
                     // mail($email,$subject,$message,$headers);
             }
                 
-                $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
+                $dt_nw = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
                 $item_sp = Carbon::parse($item->end_time)->timestamp;
 
             
@@ -240,18 +225,18 @@ class AuctionController extends Controller
                 // $cur_date = Carbon::now()->subHours(7)->addSeconds(30)->setTimezone('UTC')->toDateTimeString();
                 // $be_new = Carbon::parse($bids_end)->addSeconds(30)->format('Y-m-d\TH:i:s');//->toDateTimeString();
                 // //dd($cur_date, $bids_end, $be_new);
-                // $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
+                // $dt_nw = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
                 // $dt_sp = Carbon::parse($bids_end)->timestamp;
                 // $dt_ben = Carbon::parse($be_new)->timestamp;
                 
-                //dd($dt_sp, $dt_now, $dt_ben, ($dt_now +15) > $dt_sp && $dt_now < $dt_ben);
-                //dd( $dt_ben > $dt_now && $dt_now < $dt_sp);
+                //dd($dt_sp, $dt_nw, $dt_ben, ($dt_nw +15) > $dt_sp && $dt_nw < $dt_ben);
+                //dd( $dt_ben > $dt_nw && $dt_nw < $dt_sp);
         
 
         
         
             // if bid is within 30 seconds then add 30 seconds to that item and reset timer by 30 seconds
-            //if (($dt_now +15) > $dt_sp && $dt_now < $dt_ben)
+            //if (($dt_nw +15) > $dt_sp && $dt_nw < $dt_ben)
             //{
                 //     $old_time = Carbon::parse($bids_end)->toTimeString();
                 //     $new_time = Carbon::parse($be_new)->toTimeString();
@@ -268,7 +253,7 @@ class AuctionController extends Controller
             if($auction->save()){
                 $bids = Auction::where('event_id', session('selected_event'))->latest()->limit(10)->get();
                 //$items = Item::where('event_id', session('selected_event'))->get();
-                //broadcast(new NewBid($bids))->toOthers();
+                broadcast(new NewBid($bids))->toOthers();
                 session()->flash('success', 'Your Bid Was Submitted Successfully');
             }else{
                 session()->flash('error', 'There was an error submitting your bid');
@@ -287,38 +272,46 @@ class AuctionController extends Controller
     public function monitor($id) 
     {
     // this is similar to the index but it is just to monitor the closing of the auction and update the event and item information    
-    // get relevent info
-        $event = Event::findOrFail($id);
-        $bids = Auction::where('event_id', $id)->latest()->get();
-        $auction_closed = session('auction_closed');
-
-    // get only the items that have not sold yet !important for end of auction!
-        $items = Item::where('event_id', $id)
-                    ->where('sold', 0)
-                    ->orderBy('end_time', 'DESC')
-                    ->get();
-         
-    // get all the fresh auction time information
+        
+        // get relevent info
+        $axial = Axial::where('event_id', session('selected_event'))->first();
+        $event = Event::findOrFail(session('selected_event'));
         session(['selected_event' => $id]);
         session(['event_name' => $event->name]);
-        session(['bids_start' => $event->start]);
-        session(['bids_end' => $event->end]);
-        $bids_start = Carbon::parse(session('bids_start'))->format('Y-m-d\TH:i:s');
-        $bids_end = Carbon::parse(session('bids_end'))->format('Y-m-d\TH:i:s');
-        $dt_now = Carbon::now()->subHours(7)->setTimezone('UTC')->timestamp; //->setTimezone('MST');
-        $dt_st = Carbon::parse($bids_start)->timestamp;
-        $dt_sp = Carbon::parse($bids_end)->timestamp;
-        if($dt_now > $dt_sp)
+                
+        $bids_start = Carbon::parse($axial->dt_st)->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse($axial->dt_sp)->format('Y-m-d\TH:i:s');
+        $dt_nw = Carbon::parse(now())->timestamp; //->setTimezone('MST');
+        $dt_st = Carbon::parse($axial->dt_st)->timestamp;
+        $dt_sp = Carbon::parse($axial->dt_sp)->timestamp;
+        $auction_status = $axial->status; 
+
+        // get only the items that have not sold yet !important for end of auction!
+        $items = Item::where('event_id', $id)
+        ->where('sold', 0)
+        ->orderBy('end_time', 'DESC')
+        ->get();
+
+        // determine status of the auction
+        if($dt_nw < $dt_st)                            // auction is pending
         {
-            session(['auction_closed' => 1 ]);
-        } else if($dt_now < $dt_st)
+            $auction_status = 0;
+            $axial->status = 0;
+            $axial->save();
+
+        } 
+        else if($dt_nw > $dt_st && $dt_nw < $dt_sp)   // auction is open
         {
-            session(['auction_closed' => 2 ]);
-        }else
-        {
-            session(['auction_closed' => 0 ]);
+            $auction_status = 1; 
+            $axial->status = 1;
+            $axial->save();
         }
-        //dd([$event, $bids, $items, $bids_start, $bids_end, $dt_now, $dt_st, $dt_sp, session('auction_closed'), ($dt_now > $dt_sp), ($dt_now < $dt_st) ]);
+        else if ($dt_nw > $dt_sp)                      // auction is closed
+        {
+            $auction_status = 2; 
+            $axial->status = 2;
+            $axial->save();
+        }
         
         // check if any items are left
         if(!$items->isEmpty())
@@ -327,9 +320,9 @@ class AuctionController extends Controller
             foreach($items as $item)
             {
                 $item_end = Carbon::parse($item->end_time)->timestamp;
-                //dd($item_end, $dt_now, $dt_now >= $item_end);
+                
                 // if expired mark item as sold
-                if($dt_now >= $item_end)
+                if($dt_nw >= $item_end)
                 {
                     if($item->current_bidder == 0 )
                     {
@@ -413,30 +406,15 @@ class AuctionController extends Controller
                    ->orderBy('current_bid', 'DESC')
                    ->orderBy('title', 'ASC')
                    ->get();
-        //dd($items);                         
-        if ($bids->isEmpty()) {
-            $bids = Auction::where('event_id',1)->get();
-        }
-        if ($items->isEmpty()) {
-            $items = Item::where('event_id',1)->get();
-        }
-        if ('event_id' == 1){
-            return view('auction.index',['event' => $event, 'bids' => $bids, 'items' => $items]);
-        }
-
-        
-
-
-        
-        //dd([$event, $bids, $items, $bids_start, $bids_end, $dt_now, $dt_st, $dt_sp]);
+                
+        //dd([$event, $bids, $items, $bids_start, $bids_end, $dt_nw, $dt_st, $dt_sp]);
         return view('auction.monitor',[
-            'event' => $event, 
-            'bids' => $bids, 
+            'event' => $event,  
             'items' => $items,
-            'auction_closed' => $auction_closed,
+            'auction_status' => $auction_status,
             'bids_start' => $bids_start,
             'bids_end' => $bids_end,
-            'dt_now' => $dt_now,
+            'dt_nw' => $dt_nw,
             'dt_st' => $dt_st,
             'dt_sp' => $dt_sp,
         ]);

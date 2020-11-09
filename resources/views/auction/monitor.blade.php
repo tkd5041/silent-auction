@@ -14,11 +14,32 @@
 
     </div> <!--  auction-header 1  -->
     <div class="auction-header float-right">
-        @if($auction_closed == 1)
+        <div>status: {{ $auction_status }} event: {{$event->active}}</div>
+        @if ($auction_status == 0)
         <div>
-            <h4 class="text-muted ml-2">Auction Is: <span class="text-danger">CLOSED</span></h4>
+            <h4 class="text-muted ml-2">Auction Is: <span class="text-info">PENDING</span></h4>
+            <div class="row py-2 justify-content-center">
+                <div id="clockdiv">
+                    <div>
+                        <span class="days"></span>
+                        <div class="smalltext">Days</div>
+                    </div>
+                    <div>
+                        <span class="hours"></span>
+                        <div class="smalltext">Hours</div>
+                    </div>
+                    <div>
+                        <span class="minutes"></span>
+                        <div class="smalltext">Minutes</div>
+                    </div>
+                    <div>
+                        <span class="seconds"></span>
+                        <div class="smalltext">Seconds</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        @elseif ($auction_closed == 0)
+        @elseif ($auction_status == 1)
         <div>
             <h4 class="text-muted ml-2">Auction Is: <span class="text-success">OPEN</span></h4>
             <div class="row py-2 justify-content-center">
@@ -42,28 +63,11 @@
                 </div>
             </div>
         </div>
-        @elseif ($auction_closed == 2)
+        @elseif ($auction_status == 2)
         <div>
-            <h4 class="text-muted ml-2">Auction Is: <span class="text-info">PENDING</span></h4>
-            <div class="row py-2 justify-content-center">
-                <div id="clockdiv">
-                    <div>
-                        <span class="days"></span>
-                        <div class="smalltext">Days</div>
-                    </div>
-                    <div>
-                        <span class="hours"></span>
-                        <div class="smalltext">Hours</div>
-                    </div>
-                    <div>
-                        <span class="minutes"></span>
-                        <div class="smalltext">Minutes</div>
-                    </div>
-                    <div>
-                        <span class="seconds"></span>
-                        <div class="smalltext">Seconds</div>
-                    </div>
-                </div>
+            <h4 class="text-muted ml-2">Auction Is: <span class="text-danger">CLOSED</span></h4>
+            <div class="text-center">
+                <a href='/pay/{{ $event->id }}/edit' class='btn btn-primary'>Pay Now</a>
             </div>
         </div>
         @endif

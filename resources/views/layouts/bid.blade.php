@@ -138,65 +138,79 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
     </script>
-    <script>
-    function getTimeRemaining(endtime) {
-        var t = Date.parse(endtime) - Date.parse(new Date());
-        var seconds = Math.floor((t / 1000) % 60);
-        var minutes = Math.floor((t / 1000 / 60) % 60);
-        var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-        var days = Math.floor(t / (1000 * 60 * 60 * 24));
-        return {
-            'total': t,
-            'days': days,
-            'hours': hours,
-            'minutes': minutes,
-            'seconds': seconds
-        };
+    <script type="text/javascript">
+    var cur_status = '';
+    var dt_st = {{ $dt_st }};
+    var dt_sp = {{ $dt_sp }};
+    var dt_nw = {{ $dt_nw }};
+    console.log('dt_nw: ', dt_nw);
+    console.log('dt_st: ', dt_st);
+    console.log('dt_sp: ', dt_sp);
+    console.log('if: ', (dt_st - dt_nw) / 60);
+    console.log('elseif: ', (dt_sp - dt_nw) / 60);
+    if( dt_nw < dt_st )
+    {
+        dt_df = (dt_st - dt_nw) / 60;
+        cur_status = 'The Auction Has Opened!'
+        console.log('if-dt_df: ', dt_df);
     }
+    else if(dt_nw > dt_st && dt_nw < dt_sp)
+    {
+        dt_df = (dt_sp - dt_nw) / 60 ;
+        cur_status = '<h3 class="text-center">The Auction Has Ended!</h3>'
+        console.log('elseif-dt_df: ', dt_df);
+    }
+    else
+    {
+        $("#clockdiv").remove();
+        $("#subBid").remove();
+    }
+    
+    var timeInMinutes = dt_df;
+        var currentTime = Date.parse(new Date());
+        var deadline = new Date(currentTime + timeInMinutes * 60 * 1000);
 
-    function initializeClock(id, endtime) {
-        var clock = document.getElementById(id);
-        // var daysSpan = clock.querySelector('.days');
-        // var hoursSpan = clock.querySelector('.hours');
-        // var minutesSpan = clock.querySelector('.minutes');
-        // var secondsSpan = clock.querySelector('.seconds');
 
-        function updateClock() {
-            var t = getTimeRemaining(endtime);
-
-            // daysSpan.innerHTML = t.days;
-            // hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-            // minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-            // secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-
-            if (t.total <= 0) {
-                clearInterval(timeinterval);
-                setTimeout(function(){ 
-                    alert("Auction Closed"); 
-                    location.reload();
-                }, 1000);
-            }
+        function getTimeRemaining(endtime) {
+            var t = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((t / 1000) % 60);
+            var minutes = Math.floor((t / 1000 / 60) % 60);
+            var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+            var days = Math.floor(t / (1000 * 60 * 60 * 24));
+            return {
+                'total': t,
+                'days': days,
+                'hours': hours,
+                'minutes': minutes,
+                'seconds': seconds
+            };
         }
 
-        updateClock();
-        var timeinterval = setInterval(updateClock, 1000);
-    }
+        function initializeClock(id, endtime) {
+            var clock = document.getElementById(id);
+            function updateClock() {
+                var t = getTimeRemaining(endtime);
+                var daysSpan = clock.querySelector('.days');
+                var hoursSpan = clock.querySelector('.hours');
+                var minutesSpan = clock.querySelector('.minutes');
+                var secondsSpan = clock.querySelector('.seconds');
+                daysSpan.innerHTML = t.days;
+                hoursSpan.innerHTML = t.hours;
+                minutesSpan.innerHTML = t.minutes;
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+                if (t.total <= 1 && t.total >= 0) {
+                    // Redirect if the Countdown is Over
+                    alert(cur_status);
+                    window.location.reload();
+                }
 
-    var dNow = {{$dt_now}};
-    var dStart = {{$dt_st}};
-    var dEnd = {{$dt_sp}};
+            }
 
-    if (dNow < dStart) {
-        var deadline = new Date(Date.parse('{{ $bids_start }}'));
-        $('.bid-group').remove();
-    } else if (dNow > dStart && dNow < dEnd) {
-        var deadline = new Date(Date.parse('{{ $bids_end }}'));
-    } else {
-        $('.bid-group').remove();
-        window.location = "https://silent-auction.test/auction/{{ $item->event_id }}";
-    }
+            updateClock(); // run function once at first to avoid delay
+            var timeinterval = setInterval(updateClock, 1000);
+        }
 
-    initializeClock('clockdiv', deadline);
+        initializeClock('clockdiv', deadline);
     </script>
 
 </body>

@@ -23,7 +23,7 @@ class ItemController extends Controller
         $bid = "$" . $item[0]->current_bid . ".00";
         $next = "$" . ($item[0]->current_bid + $item[0]->increment) . ".00";
                     
-        //dd($id, $bidder, $bid, $next);
+        dd($item, $id, $bidder, $bid, $next);
         
         return ['id' => $id, 'bidder' => $bidder, 'bid' => $bid, 'next' => $next];
     }

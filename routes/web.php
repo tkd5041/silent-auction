@@ -15,6 +15,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('event',function(){
+    event(new NewBid('Hey how are you!'));
+});
+
 Route::get('/bids', 'BidsController@get')->middleware('auth');
 Route::post('/bids', 'BidsController@get')->middleware('auth');
 Route::get('/item/{id}', 'ItemController@get')->middleware('auth');

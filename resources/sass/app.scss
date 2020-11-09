@@ -225,32 +225,38 @@ a .bid{
 }
 
 #clockdiv{
-	font-family: sans-serif;
-	color: #fff;
+	color: #636b6f;
 	display: inline-block;
-	font-weight: 30;
+	font-weight: 50;
 	text-align: center;
-	font-size: 14px;
+	font-size: 16px;
 }
 
 #clockdiv > div{
-	padding: 2px;
-	border-radius: 2px;
-	background: #E9E6DA;
+	padding: 5px 5px 2px 5px;
+	border-radius: 3px;
+	background: #E8E6DA;
 	display: inline-block;
 }
 
 #clockdiv div > span{
-	padding: 2px;
-	border-radius: 2px;
-	background: linear-gradient(to right, #6e0707 , #6d3e3e );;
+	padding: 4px 6px;
+	border-radius: 3px;
+	background: #6d0709;
 	display: inline-block;
 }
 
 .smalltext{
-    color: #626B6F;
-	padding-top: 2px;
+	padding: 0px 2px;
 	font-size: 10px;
+  color: #636b6f;
+}
+.days,
+.hours,
+.minutes,
+.seconds {
+  color: #fff;
+  padding: 4px 6px;
 }
 
 .auction-header{

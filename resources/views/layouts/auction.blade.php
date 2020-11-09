@@ -110,8 +110,11 @@
                 </div>
                 @yield('content')
             </div>
-            <div>{{ strToTime($event->start) }}</div>
-            <div>{{ strToTime($event->end) }}</div>
+            <!--div>Now: {{ $dt_nw }} | Date: {{date('m-d-Y H:i:s', $dt_nw) }}</div>
+            <div>Start: {{ $dt_st }} | Date: {{date('m-d-Y H:i:s', $dt_st) }}</div>
+            <div>Stop {{ $dt_sp }} | Date: {{date('m-d-Y H:i:s', $dt_sp) }}</div>
+            <div>Diff St {{ ($dt_st - $dt_nw) * 60 }}</div>
+            <div>Diff Sp {{ ($dt_sp - $dt_nw) * 60 }}</div-->
         </main>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -131,37 +134,80 @@
     });
     </script>
 
-    <script>
-    var dt_st = {{ strToTime($event->start) }};
-    var dt_sp = {{ strToTime($event->end) }};
-    var dt_now = new Date();
-    
-    var target = new Date('{{$event->start}}');
-    timeOffset = target.getTimezoneOffset() * 60000;
-    targetTime = target.getTime();
-    targetUTC = targetTime  + timeOffset;
-    console.log('targetMST', targetTime);
-    console.log('targetUTC', targetUTC);
-
-    var today = new Date();
-    todayTime = today.getTime();
-    todayUTC = todayTime  + timeOffset;
-    console.log('todayMST', todayTime);
-    console.log('todayUTC', todayUTC);
-    refreshTime = (targetUTC - todayUTC);
-    console.log('refreshTime',  refreshTime);
-    if (refreshTime > 1) {
-        setTimeout(function() {
-            window.location.reload(true);
-        }, refreshTime);
+    <script type="text/javascript">
+    var cur_status = '';
+    var dt_st = {{ $dt_st }};
+    var dt_sp = {{ $dt_sp }};
+    var dt_nw = {{ $dt_nw }};
+    // console.log('dt_nw: ', dt_nw);
+    // console.log('dt_st: ', dt_st);
+    // console.log('dt_sp: ', dt_sp);
+    // console.log('if: ', (dt_st - dt_nw) / 60);
+    // console.log('elseif: ', (dt_sp - dt_nw) / 60);
+    if( dt_nw < dt_st )
+    {
+        dt_df = (dt_st - dt_nw) / 60;
+        cur_status = 'The Auction Has Opened!'
+        console.log('if-dt_df: ', dt_df);
     }
+    else if(dt_nw > dt_st && dt_nw < dt_sp)
+    {
+        dt_df = (dt_sp - dt_nw) / 60 ;
+        cur_status = 'The Auction Has Ended!'
+        console.log('elseif-dt_df: ', dt_df);
+    }
+    else
+    {
+        $("#clockdiv").remove();
+    }
+    
+    var timeInMinutes = dt_df;
+        var currentTime = Date.parse(new Date());
+        var deadline = new Date(currentTime + timeInMinutes * 60 * 1000);
+
+
+        function getTimeRemaining(endtime) {
+            var t = Date.parse(endtime) - Date.parse(new Date());
+            var seconds = Math.floor((t / 1000) % 60);
+            var minutes = Math.floor((t / 1000 / 60) % 60);
+            var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+            var days = Math.floor(t / (1000 * 60 * 60 * 24));
+            return {
+                'total': t,
+                'days': days,
+                'hours': hours,
+                'minutes': minutes,
+                'seconds': seconds
+            };
+        }
+
+        function initializeClock(id, endtime) {
+            var clock = document.getElementById(id);
+            function updateClock() {
+                var t = getTimeRemaining(endtime);
+                var daysSpan = clock.querySelector('.days');
+                var hoursSpan = clock.querySelector('.hours');
+                var minutesSpan = clock.querySelector('.minutes');
+                var secondsSpan = clock.querySelector('.seconds');
+                daysSpan.innerHTML = t.days;
+                hoursSpan.innerHTML = t.hours;
+                minutesSpan.innerHTML = t.minutes;
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+                if (t.total <= 1 && t.total >= 0) {
+                    // Redirect if the Countdown is Over
+                    alert(cur_status);
+                    window.location.reload();
+                }
+
+            }
+
+            updateClock(); // run function once at first to avoid delay
+            var timeinterval = setInterval(updateClock, 1000);
+        }
+
+        initializeClock('clockdiv', deadline);
     </script>
 
-
-
-
 </body>
-
-
 
 </html>

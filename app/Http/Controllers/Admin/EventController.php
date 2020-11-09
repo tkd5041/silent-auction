@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Axial;
 use App\Event;
 use App\Item;
 
@@ -46,7 +47,18 @@ class EventController extends Controller
         $event->active = 0;
 
         if($event->save()){
-             session()->flash('success', $event->name . ' has been created');
+            //get newest event
+            $event = Event::orderBy('id', 'desc')->first();
+
+            // insert into sessions
+            $axial = new Axial();
+            $axial->event_id = $event->id;
+            $axial->status = 0;
+            $axial->dt_nw = now();
+            $axial->dt_st = $event->start;
+            $axial->dt_sp = $event->end;
+            $axial->save();
+            session()->flash('success', $event->name . ' has been created');
         }else{
             session()->flash('error', 'There was an error creating the event');
         }
@@ -58,6 +70,7 @@ class EventController extends Controller
     {
         // get related items so they can be saved
         $items = Item::where('event_id',$event->id)->get();
+        $axials = Axial::where('event_id', $event->id)->get();
         
         $event->name = request('name');
         $event->start = request('start');
@@ -65,6 +78,13 @@ class EventController extends Controller
         $event->active = request('active');
         //dd($items, $event);
 
+        foreach($axials as $axial)
+        {
+            $axial->dt_nw = now();
+            $axial->dt_st = $event->start;
+            $axial->dt_sp = $event->end;
+            $axial->save();
+        }
         foreach($items as $item)
         {
             $item->end_time = $event->end;

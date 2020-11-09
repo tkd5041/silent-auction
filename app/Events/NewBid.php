@@ -17,7 +17,7 @@ class NewBid implements ShouldBroadcast
     public $bids;
     // public $user;
 
-    public function __construct()
+    public function __construct($bids)
     {
         $this->bids = $bids;
         $this->dontBroadcastToCurrentUser();
