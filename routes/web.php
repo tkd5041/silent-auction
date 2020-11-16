@@ -39,6 +39,7 @@ Route::get('/auction/{id}/edit', 'AuctionController@edit')->middleware('auth')->
 Route::get('/auction/{id}/list', 'AuctionController@list')->middleware('can:manage-users')->middleware('auth')->name('auction.list');
 Route::get('/auction/{id}/text', 'AuctionController@textwinners')->middleware('can:manage-users')->middleware('auth')->name('auction.text');
 Route::get('/auction/{id}/monitor', 'AuctionController@monitor')->middleware('can:manage-users')->middleware('auth')->name('auction.monitor');
+Route::get('/auction/{id}/winners', 'AuctionController@winners')->middleware('can:manage-users')->middleware('auth')->name('auction.winners');
 Route::get('/auction/{id}', 'AuctionController@index')->middleware('auth')->name('auction');
 
 Route::get('/admin/donors/search', 'Admin\DonorController@search');

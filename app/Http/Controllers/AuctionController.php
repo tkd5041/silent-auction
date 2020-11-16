@@ -92,14 +92,16 @@ class AuctionController extends Controller
 // LIST
     public function list($id)
     {
-        $axial = Axial::where('event_id', session('selected_event'))->first();
+        $axial = Axial::where('event_id', $id)->first();
         $event = Event::findOrFail($id);
         $items = DB::table('items')
-                    ->where('items.event_id', '=', $id)
-                    ->orderBy('title', 'ASC')
-                    ->get();
-
-        // get all the fresh auction time information
+                   ->where('items.event_id', '=', $id)
+                   ->LeftJoin('users', 'users.id', '=', 'items.current_bidder')
+                   ->select('items.*', 'users.username', 'users.name', 'users.email','users.phone')
+                   ->orderBy('users.name', 'ASC')
+                   ->orderBy('title', 'ASC')
+                   ->get();
+             
         session(['selected_event' => $id]);
         session(['event_name' => $event->name]);
         
@@ -110,8 +112,10 @@ class AuctionController extends Controller
         $dt_sp = Carbon::parse($axial->dt_sp)->timestamp;
         $auction_status = $axial->status;
 
+        //dd($axial, $event, $items, $bids_start, $bids_end, $dt_nw, $dt_st, $dt_sp, $auction_status);
         
-        return view('auction.monitor',[
+        return view('auction.list',[
+            'axial' => $axial,  
             'event' => $event,  
             'items' => $items,
             'bids_start' => $bids_start,
@@ -119,6 +123,46 @@ class AuctionController extends Controller
             'dt_nw' => $dt_nw,
             'dt_st' => $dt_st,
             'dt_sp' => $dt_sp,
+            'auction_status' => $auction_status,
+        ]);
+    }
+
+    // WINNERS
+    public function winners($id)
+    {
+        $axial = Axial::where('event_id', $id)->first();
+        $event = Event::findOrFail($id);
+        $items = DB::table('items')
+                   ->where('items.event_id', '=', $id)
+                   ->where('items.sold', 1)
+                   ->LeftJoin('users', 'users.id', '=', 'items.current_bidder')
+                   ->select('items.*', 'users.username', 'users.name', 'users.email','users.phone')
+                   ->orderBy('users.name', 'ASC')
+                   ->orderBy('title', 'ASC')
+                   ->get();
+             
+        session(['selected_event' => $id]);
+        session(['event_name' => $event->name]);
+        
+        $bids_start = Carbon::parse($axial->dt_st)->format('Y-m-d\TH:i:s');
+        $bids_end = Carbon::parse($axial->dt_sp)->format('Y-m-d\TH:i:s');
+        $dt_nw = Carbon::parse(now())->timestamp; //->setTimezone('MST');
+        $dt_st = Carbon::parse($axial->dt_st)->timestamp;
+        $dt_sp = Carbon::parse($axial->dt_sp)->timestamp;
+        $auction_status = $axial->status;
+
+        //dd($axial, $event, $items, $bids_start, $bids_end, $dt_nw, $dt_st, $dt_sp, $auction_status);
+        
+        return view('auction.winners',[
+            'axial' => $axial,  
+            'event' => $event,  
+            'items' => $items,
+            'bids_start' => $bids_start,
+            'bids_end' => $bids_end,
+            'dt_nw' => $dt_nw,
+            'dt_st' => $dt_st,
+            'dt_sp' => $dt_sp,
+            'auction_status' => $auction_status,
         ]);
     }
 

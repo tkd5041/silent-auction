@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-12">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
@@ -15,8 +15,17 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
-
+    <!-- MDB icon -->
+    <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="/css/mdb.min.css">
+    <!-- MDBootstrap Datatables  -->
+    <link href="/css/datatables.min.css" rel="stylesheet">
+    
     <link rel="icon" type="image/png" href="/favicon.ico" />
     <!-- Styles -->
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
@@ -87,12 +96,6 @@
                                 <a href="{{ route('admin.users.index') }}" class="dropdown-item">
                                     Users
                                 </a>
-                                <a href="{{ route('auction.winners') }}" class="dropdown-item">
-                                    Winners
-                                </a>
-                                <a href="{{ route('sms.index') }}" class="dropdown-item">
-                                    SMS
-                                </a>
                                 @endcan
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -120,14 +123,16 @@
                 </div>
                 @yield('content')
             </div>
+
         </main>
-
     </div>
-    <!--script src="https://code.jquery.com/jquery-3.5.1.min.js"
-            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous">
-        </script-->
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="/js/mdb.min.js"></script>
+    <!-- Your custom scripts (optional) -->
+    <script type="text/javascript"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script>
     $(".alert").fadeTo(5000, 750).slideUp(750, function() {
         $(".alert").slideUp(750);
@@ -139,7 +144,14 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
     </script>
-
+    <script>
+    $(document).ready(function() {
+        $('#winners').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+    });
+    </script>
 </body>
+
+
 
 </html>
