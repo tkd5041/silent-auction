@@ -87,9 +87,6 @@
                                 <a href="{{ route('admin.users.index') }}" class="dropdown-item">
                                     Users
                                 </a>
-                                <a href="{{ route('auction.winners') }}" class="dropdown-item">
-                                    Winners
-                                </a>
                                 <a href="{{ route('sms.index') }}" class="dropdown-item">
                                     SMS
                                 </a>
